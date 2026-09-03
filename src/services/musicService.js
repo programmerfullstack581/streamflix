@@ -1,18 +1,18 @@
-// Servicio central de música y catálogo estilo Spotify
+// Servicio central de música y descargas directas MP3
 
 export const GENRES_CATEGORIES = [
-  { id: 'reggaeton', name: 'Reggaetón & Urbano', color: 'from-amber-500 to-red-600', query: 'reggaeton 2024 hits', icon: '🔥' },
-  { id: 'trap', name: 'Trap Latino', color: 'from-purple-600 to-indigo-900', query: 'trap latino lo mas nuevo', icon: '😈' },
-  { id: 'pop', name: 'Pop Éxitos', color: 'from-pink-500 to-rose-600', query: 'pop en espanol exitos', icon: '✨' },
-  { id: 'rock', name: 'Rock & Alternativo', color: 'from-red-700 to-zinc-900', query: 'rock en espanol clasicos', icon: '🎸' },
-  { id: 'salsa', name: 'Salsa & Tropical', color: 'from-yellow-500 to-orange-600', query: 'salsa brava clasicos', icon: '🎺' },
-  { id: 'lofi', name: 'Lo-Fi & Chill Beats', color: 'from-teal-600 to-blue-900', query: 'lofi hip hop chill beats to relax', icon: '☕' },
-  { id: 'electronic', name: 'Electrónica & EDM', color: 'from-blue-500 to-cyan-400', query: 'edm electronic party hits', icon: '⚡' },
-  { id: 'cumbia', name: 'Cumbia & Fiesta', color: 'from-emerald-500 to-green-700', query: 'cumbia villera fiesta exitos', icon: '🪗' },
-  { id: 'regional', name: 'Regional & Corridos', color: 'from-stone-600 to-amber-800', query: 'corridos tumbados peso pluma', icon: '🤠' },
-  { id: 'hiphop', name: 'Hip-Hop Global', color: 'from-orange-600 to-purple-800', query: 'hip hop hits 2024', icon: '🎤' },
-  { id: 'romantica', name: 'Baladas & Románticas', color: 'from-pink-600 to-red-900', query: 'baladas romanticas en espanol', icon: '❤️' },
-  { id: 'vallenato', name: 'Vallenato Sentimiento', color: 'from-amber-600 to-yellow-700', query: 'vallenatos clasicos colombia', icon: '🪗' },
+  { id: 'reggaeton', name: 'Reggaetón & Urbano', color: 'from-red-950 via-red-900 to-black', query: 'reggaeton 2024 hits', icon: '🔥' },
+  { id: 'trap', name: 'Trap Latino & Drill', color: 'from-neutral-900 via-red-950 to-black', query: 'trap latino lo mas nuevo', icon: '⚡' },
+  { id: 'pop', name: 'Pop Latino & Global', color: 'from-red-900 via-rose-950 to-black', query: 'pop en espanol exitos', icon: '✨' },
+  { id: 'rock', name: 'Rock & Alternativo', color: 'from-red-800 via-zinc-900 to-black', query: 'rock en espanol clasicos', icon: '🎸' },
+  { id: 'salsa', name: 'Salsa Brava & Tropical', color: 'from-amber-900 via-red-950 to-black', query: 'salsa brava clasicos', icon: '🎺' },
+  { id: 'lofi', name: 'Lo-Fi Chill & Beats', color: 'from-zinc-900 via-red-950 to-black', query: 'lofi hip hop chill beats to relax', icon: '☕' },
+  { id: 'electronic', name: 'Electrónica & EDM', color: 'from-red-900 via-stone-900 to-black', query: 'edm electronic party hits', icon: '🎧' },
+  { id: 'cumbia', name: 'Cumbia & Fiesta', color: 'from-red-950 via-neutral-900 to-black', query: 'cumbia villera fiesta exitos', icon: '🪗' },
+  { id: 'regional', name: 'Regional Mexicano', color: 'from-red-950 via-amber-950 to-black', query: 'corridos tumbados peso pluma', icon: '🤠' },
+  { id: 'hiphop', name: 'Hip-Hop & Rap', color: 'from-stone-900 via-red-950 to-black', query: 'hip hop hits 2024', icon: '🎤' },
+  { id: 'romantica', name: 'Baladas & Sentimiento', color: 'from-rose-950 via-red-950 to-black', query: 'baladas romanticas en espanol', icon: '❤️' },
+  { id: 'vallenato', name: 'Vallenatos Clásicos', color: 'from-red-900 via-zinc-950 to-black', query: 'vallenatos clasicos colombia', icon: '🪗' },
 ];
 
 export const TOP_ARTISTS = [
@@ -186,41 +186,123 @@ export const CURATED_TOP_HITS = [
 export const FEATURED_PLAYLISTS = [
   {
     id: 'top-50-global',
-    name: 'Top 50 Global',
-    description: 'Las canciones más escuchadas del momento en todo el mundo.',
+    name: 'Top 50 Hits Mundiales',
+    description: 'Los temas más reproducidos y descargados a nivel global.',
     cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=60',
     tracksCount: 50,
-    gradient: 'from-emerald-700 to-black'
   },
   {
     id: 'reggaeton-hits',
-    name: 'Éxitos Reggaetón 2024',
-    description: 'El mejor perreo y los éxitos urbanos que dominan la calle.',
+    name: 'Éxitos Callejeros 2024',
+    description: 'El reggaetón y trap más sonado en discotecas y calles.',
     cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=60',
     tracksCount: 40,
-    gradient: 'from-amber-600 to-black'
   },
   {
     id: 'lofi-relax',
-    name: 'Lo-Fi Beats & Relax',
-    description: 'Música instrumental y tranquila para estudiar, trabajar o descansar.',
+    name: 'Beats & Lo-Fi Session',
+    description: 'Instrumentales relajantes para concentración, estudio y trabajo.',
     cover: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=60',
     tracksCount: 60,
-    gradient: 'from-indigo-800 to-black'
   },
   {
     id: 'rock-clasicos',
-    name: 'Rock Clásicos en Español',
-    description: 'Los himnos legendarios de Soda Stereo, Héroes del Silencio, Enanitos Verdes y más.',
+    name: 'Leyendas del Rock',
+    description: 'Grandes himnos de rock clásico en español e inglés.',
     cover: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=500&auto=format&fit=crop&q=60',
     tracksCount: 45,
-    gradient: 'from-red-900 to-black'
   }
 ];
+
+// Helper para extraer Video ID de cualquier enlace o string
+export function extractVideoId(urlOrQuery) {
+  if (!urlOrQuery) return null;
+  const str = urlOrQuery.trim();
+
+  // Caso: ya es un video ID simple de 11 caracteres
+  if (/^[a-zA-Z0-9_-]{11}$/.test(str)) {
+    return str;
+  }
+
+  // Caso: youtu.be/ID
+  const youtuBeMatch = str.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (youtuBeMatch) return youtuBeMatch[1];
+
+  // Caso: youtube.com/watch?v=ID
+  const ytWatchMatch = str.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (ytWatchMatch) return ytWatchMatch[1];
+
+  // Caso: youtube.com/shorts/ID
+  const shortsMatch = str.match(/shorts\/([a-zA-Z0-9_-]{11})/);
+  if (shortsMatch) return shortsMatch[1];
+
+  // Caso: youtube.com/embed/ID
+  const embedMatch = str.match(/embed\/([a-zA-Z0-9_-]{11})/);
+  if (embedMatch) return embedMatch[1];
+
+  return null;
+}
+
+// Obtener detalles de una canción por su Video ID
+export async function getTrackDetailsById(videoId) {
+  const instances = [
+    'https://inv.nadeko.net',
+    'https://invidious.nerdvpn.de',
+    'https://invidious.privacyredirect.com',
+    'https://invidious.jing.rocks',
+    'https://vid.priv.au'
+  ];
+
+  for (const base of instances) {
+    try {
+      const url = `${base}/api/v1/videos/${videoId}`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
+      if (!res.ok) continue;
+      const v = await res.json();
+      if (!v || !v.title) continue;
+
+      const sec = v.lengthSeconds || 180;
+      const mins = Math.floor(sec / 60);
+      const remaining = String(sec % 60).padStart(2, '0');
+
+      return {
+        videoId: v.videoId || videoId,
+        title: v.title,
+        artist: v.author || 'Artista Oficial',
+        album: 'Audio / Official',
+        duration: `${mins}:${remaining}`,
+        seconds: sec,
+        thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+        views: v.viewCount ? (v.viewCount > 1e6 ? (v.viewCount / 1e6).toFixed(1) + 'M' : String(v.viewCount)) : 'Oficial',
+      };
+    } catch (_) {
+      continue;
+    }
+  }
+
+  // Fallback si no hay conexión
+  return {
+    videoId: videoId,
+    title: 'Canción Enlace Directo',
+    artist: 'Audio Oficial',
+    album: 'MP3 HD',
+    duration: '3:30',
+    seconds: 210,
+    thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+    views: 'HD'
+  };
+}
 
 // ── Búsqueda en API Invidious / Piped con fallback ─────────────────────────────
 export async function searchMusicOnline(query) {
   if (!query || query.trim() === '') return [];
+
+  // Verificar si el usuario pegó una URL directa
+  const extractedId = extractVideoId(query);
+  if (extractedId) {
+    const directTrack = await getTrackDetailsById(extractedId);
+    return [directTrack];
+  }
 
   const instances = [
     'https://inv.nadeko.net',
@@ -256,7 +338,7 @@ export async function searchMusicOnline(query) {
           videoId: v.videoId,
           title: v.title,
           artist: v.author || 'Artista',
-          album: 'Single / Official',
+          album: 'Audio / Official',
           duration: `${mins}:${remaining}`,
           seconds: sec,
           thumbnail: `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`,
@@ -283,7 +365,7 @@ export async function searchMusicOnline(query) {
 export const MusicStorage = {
   getLikedTracks() {
     try {
-      return JSON.parse(localStorage.getItem('streamify_liked_tracks') || '[]');
+      return JSON.parse(localStorage.getItem('redstream_liked_tracks') || '[]');
     } catch {
       return [];
     }
@@ -298,13 +380,13 @@ export const MusicStorage = {
     } else {
       updated = [track, ...current];
     }
-    localStorage.setItem('streamify_liked_tracks', JSON.stringify(updated));
+    localStorage.setItem('redstream_liked_tracks', JSON.stringify(updated));
     return { updated, isLiked: !exists };
   },
 
   getCustomPlaylists() {
     try {
-      return JSON.parse(localStorage.getItem('streamify_custom_playlists') || '[]');
+      return JSON.parse(localStorage.getItem('redstream_custom_playlists') || '[]');
     } catch {
       return [];
     }
@@ -321,28 +403,13 @@ export const MusicStorage = {
       createdAt: new Date().toISOString()
     };
     const updated = [newPl, ...playlists];
-    localStorage.setItem('streamify_custom_playlists', JSON.stringify(updated));
-    return updated;
-  },
-
-  addTrackToPlaylist(playlistId, track) {
-    const playlists = this.getCustomPlaylists();
-    const updated = playlists.map(pl => {
-      if (pl.id === playlistId) {
-        const exists = pl.tracks.some(t => t.videoId === track.videoId);
-        if (!exists) {
-          return { ...pl, tracks: [...pl.tracks, track] };
-        }
-      }
-      return pl;
-    });
-    localStorage.setItem('streamify_custom_playlists', JSON.stringify(updated));
+    localStorage.setItem('redstream_custom_playlists', JSON.stringify(updated));
     return updated;
   },
 
   getDownloads() {
     try {
-      return JSON.parse(localStorage.getItem('streamify_downloads') || '[]');
+      return JSON.parse(localStorage.getItem('redstream_downloads') || '[]');
     } catch {
       return [];
     }
@@ -356,14 +423,14 @@ export const MusicStorage = {
       downloadedAt: new Date().toLocaleString()
     };
     const updated = [newEntry, ...current.filter(t => t.videoId !== track.videoId)];
-    localStorage.setItem('streamify_downloads', JSON.stringify(updated));
+    localStorage.setItem('redstream_downloads', JSON.stringify(updated));
     return updated;
   },
 
   removeDownload(videoId) {
     const current = this.getDownloads();
     const updated = current.filter(t => t.videoId !== videoId);
-    localStorage.setItem('streamify_downloads', JSON.stringify(updated));
+    localStorage.setItem('redstream_downloads', JSON.stringify(updated));
     return updated;
   }
 };

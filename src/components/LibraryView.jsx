@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function LibraryView({
-  viewType = 'favoritos', // 'favoritos', 'playlist-detail', 'biblioteca'
+  viewType = 'favoritos',
   likedTracks = [],
   selectedPlaylist = null,
   onPlayTrack,
@@ -27,72 +27,72 @@ export default function LibraryView({
 }) {
   const isLikedView = viewType === 'favoritos';
   const tracks = isLikedView ? likedTracks : (selectedPlaylist?.tracks || []);
-  const title = isLikedView ? 'Canciones que te gustan' : (selectedPlaylist?.name || 'Tu Biblioteca');
+  const title = isLikedView ? 'Canciones Favoritas' : (selectedPlaylist?.name || 'Tu Biblioteca');
   const description = isLikedView 
-    ? 'Tus canciones favoritas guardadas para escuchar en cualquier momento.'
-    : (selectedPlaylist?.description || 'Playlist personalizada');
+    ? 'Tus canciones guardadas con el corazón listas para reproducir y descargar.'
+    : (selectedPlaylist?.description || 'Playlist de música');
 
   return (
     <div className="space-y-6 pb-32 animate-fadeIn">
       
-      {/* Header Banner */}
+      {/* Header Banner Red & Black */}
       <div className={`p-6 sm:p-8 rounded-3xl border shadow-2xl flex flex-col sm:flex-row items-center sm:items-end space-y-4 sm:space-y-0 sm:space-x-6 ${
         isLikedView 
-          ? 'bg-gradient-to-br from-indigo-900 via-purple-950 to-[#181818] border-purple-500/20' 
-          : 'bg-gradient-to-br from-emerald-950 via-[#202020] to-[#181818] border-emerald-500/20'
+          ? 'bg-gradient-to-br from-red-950 via-[#181818] to-black border-red-500/30 shadow-red-neon' 
+          : 'bg-gradient-to-br from-neutral-900 via-[#181818] to-black border-white/10'
       }`}>
         <div className={`w-36 h-36 sm:w-44 sm:h-44 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-2xl ${
           isLikedView 
-            ? 'bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600' 
-            : 'bg-[#282828]'
+            ? 'bg-gradient-to-br from-red-600 via-rose-700 to-black ring-2 ring-red-500/50' 
+            : 'bg-[#1e1e1e] ring-1 ring-white/10'
         }`}>
           {isLikedView ? (
             <Heart className="w-20 h-20 fill-white text-white" />
           ) : (
-            <ListMusic className="w-20 h-20 text-[#1DB954]" />
+            <ListMusic className="w-20 h-20 text-red-500" />
           )}
         </div>
 
         <div className="space-y-2 text-center sm:text-left flex-1 min-w-0">
-          <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#1DB954] bg-[#1DB954]/10 px-2.5 py-1 rounded-full border border-[#1DB954]/30">
-            {isLikedView ? 'Colección Favorita' : 'Playlist Personalizada'}
+          <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-red-400 bg-red-600/20 px-2.5 py-1 rounded-full border border-red-500/30">
+            {isLikedView ? 'Colección Favorita' : 'Playlist'}
           </span>
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight truncate">
             {title}
           </h1>
           <p className="text-xs sm:text-sm text-gray-300">{description}</p>
           <p className="text-xs text-gray-400 flex items-center justify-center sm:justify-start space-x-2 pt-1">
-            <span className="font-bold text-white">Streamify User</span>
+            <span className="font-bold text-white">StreamBeat Red</span>
             <span>•</span>
-            <span className="text-[#1DB954] font-bold">{tracks.length} canciones</span>
+            <span className="text-red-400 font-bold">{tracks.length} canciones</span>
           </p>
         </div>
       </div>
 
-      {/* Action Bar (Play all / Shuffle) */}
+      {/* Action Bar */}
       {tracks.length > 0 && (
         <div className="flex items-center space-x-4 py-2">
           <button
             onClick={() => onPlayAll(tracks)}
-            className="w-14 h-14 rounded-full bg-[#1DB954] hover:bg-[#1ed760] text-black flex items-center justify-center shadow-xl transition-transform hover:scale-105"
+            className="w-14 h-14 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-red-neon transition-transform hover:scale-105"
             title="Reproducir todo"
           >
-            <Play className="w-7 h-7 fill-black ml-1" />
+            <Play className="w-7 h-7 fill-white ml-1" />
           </button>
         </div>
       )}
 
       {/* Tracks Table */}
       {tracks.length === 0 ? (
-        <div className="p-16 text-center bg-[#181818] rounded-2xl border border-white/5 space-y-3 text-gray-400">
-          <Heart className="w-12 h-12 mx-auto text-gray-600" />
+        <div className="p-16 text-center bg-[#121212] rounded-3xl border border-white/5 space-y-3 text-gray-400">
+          <Heart className="w-12 h-12 mx-auto text-gray-700" />
           <h3 className="text-lg font-bold text-white">No tienes canciones guardadas aquí</h3>
           <p className="text-xs max-w-sm mx-auto">
-            Explora canciones en el Inicio o en Buscar y toca el ícono de corazón o descarga para guardarlas en tu biblioteca.
+            Explora canciones en el Inicio o en Buscar y toca el ícono de corazón para guardarlas en tu biblioteca.
           </p>
         </div>
       ) : (
-        <div className="bg-[#181818]/60 rounded-2xl border border-white/5 overflow-hidden">
+        <div className="bg-[#121212] rounded-2xl border border-white/5 overflow-hidden">
           {/* Table Header */}
           <div className="grid grid-cols-12 gap-2 px-4 py-3 border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
             <div className="col-span-1 text-center">#</div>
@@ -115,13 +115,13 @@ export default function LibraryView({
                   key={track.videoId + idx}
                   onClick={() => onPlayTrack(track)}
                   className={`grid grid-cols-12 gap-2 px-4 py-3 items-center cursor-pointer transition-colors group ${
-                    isThisPlaying ? 'bg-[#282828]' : 'hover:bg-white/5'
+                    isThisPlaying ? 'bg-red-950/40 text-red-400' : 'hover:bg-white/5'
                   }`}
                 >
                   {/* Number / Play icon */}
                   <div className="col-span-1 text-center text-xs font-mono text-gray-400">
                     {isThisPlaying ? (
-                      <Disc3 className="w-4 h-4 text-[#1DB954] animate-spin mx-auto" />
+                      <Disc3 className="w-4 h-4 text-red-500 animate-spin mx-auto" />
                     ) : (
                       <>
                         <span className="group-hover:hidden">{idx + 1}</span>
@@ -134,7 +134,7 @@ export default function LibraryView({
                   <div className="col-span-6 sm:col-span-5 flex items-center space-x-3 min-w-0">
                     <img src={track.thumbnail} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className={`text-xs sm:text-sm font-bold truncate ${isThisPlaying ? 'text-[#1DB954]' : 'text-white'}`}>
+                      <p className={`text-xs sm:text-sm font-bold truncate ${isThisPlaying ? 'text-red-400' : 'text-white'}`}>
                         {track.title}
                       </p>
                       <p className="text-[11px] text-gray-400 truncate sm:hidden">{track.artist}</p>
@@ -154,11 +154,11 @@ export default function LibraryView({
                         onToggleLike(track);
                       }}
                       className={`p-1.5 transition-colors ${
-                        isLiked ? 'text-[#1DB954]' : 'text-gray-600 hover:text-white'
+                        isLiked ? 'text-red-500' : 'text-gray-600 hover:text-white'
                       }`}
                       title={isLiked ? 'Quitar de Favoritos' : 'Guardar'}
                     >
-                      <Heart className={`w-4 h-4 ${isLiked ? 'fill-[#1DB954]' : ''}`} />
+                      <Heart className={`w-4 h-4 ${isLiked ? 'fill-red-500' : ''}`} />
                     </button>
 
                     <button
@@ -166,8 +166,8 @@ export default function LibraryView({
                         e.stopPropagation();
                         onOpenDownload(track);
                       }}
-                      className="p-1.5 text-gray-400 hover:text-[#1DB954] transition-colors"
-                      title="Descargar en cualquier formato (MP3, WAV, FLAC)"
+                      className="p-1.5 text-gray-400 hover:text-red-400 transition-colors"
+                      title="Descargar en MP3 directo"
                     >
                       <Download className="w-4 h-4" />
                     </button>

@@ -7,20 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        spotify: {
-          green: '#1DB954',
-          'green-bright': '#1ed760',
-          black: '#121212',
+        redstream: {
+          primary: '#E50914',
+          neon: '#FF0033',
           dark: '#000000',
-          base: '#121212',
-          card: '#181818',
-          hover: '#282828',
-          subdued: '#a7a7a7',
-          highlight: '#333333'
+          carbon: '#0a0a0a',
+          card: '#141414',
+          cardHover: '#1f1f1f',
+          muted: '#8e8e8e',
+          accent: '#FF334B'
         }
       },
       fontFamily: {
-        sans: ['CircularSp', 'Circular', '-apple-system', 'BlinkMacSystemFont', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+      },
+      boxShadow: {
+        'red-neon': '0 0 25px rgba(229, 9, 20, 0.4)',
+        'red-glow': '0 0 15px rgba(255, 0, 51, 0.6)',
       }
     },
   },

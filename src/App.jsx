@@ -11,7 +11,7 @@ import {
   MusicStorage, 
   CURATED_TOP_HITS 
 } from './services/musicService';
-import { Sparkles, Heart, Download } from 'lucide-react';
+import { Sparkles, Heart, Download, Zap } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('inicio');
@@ -81,7 +81,7 @@ export default function App() {
   const handleToggleLike = (track) => {
     const { updated, isLiked } = MusicStorage.toggleLikeTrack(track);
     setLikedTracks(updated);
-    showToast(isLiked ? '❤️ Guardado en tus canciones que te gustan' : 'Eliminado de tus favoritos');
+    showToast(isLiked ? '❤️ Canción agregada a tus favoritos' : 'Eliminada de tus favoritos');
   };
 
   const handleCreatePlaylist = (name) => {
@@ -106,12 +106,12 @@ export default function App() {
   const likedTrackIds = likedTracks.map(t => t.videoId);
 
   return (
-    <div className="h-screen w-screen bg-black text-white flex flex-col font-sans overflow-hidden select-none">
+    <div className="h-screen w-screen bg-[#050505] text-white flex flex-col font-sans overflow-hidden select-none">
       
       {/* Main App Container */}
       <div className="flex flex-1 overflow-hidden p-2 gap-2">
         
-        {/* Desktop Spotify Sidebar */}
+        {/* Desktop Sidebar Red Edition */}
         <Sidebar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -126,7 +126,7 @@ export default function App() {
         />
 
         {/* Main Content Area */}
-        <div className="flex-1 bg-[#121212] rounded-xl flex flex-col overflow-hidden relative">
+        <div className="flex-1 bg-[#0a0a0a] rounded-2xl border border-white/5 flex flex-col overflow-hidden relative shadow-2xl">
           
           {/* Top Navbar */}
           <Navbar
@@ -136,7 +136,7 @@ export default function App() {
             setSearchQuery={setSearchQuery}
             likedCount={likedTracks.length}
             downloadsCount={downloads.length}
-            onOpenQuickDownload={() => setActiveTab('descargas')}
+            onOpenQuickDownload={() => setActiveTab('descargar-url')}
           />
 
           {/* Dynamic Scrollable Views */}
@@ -153,10 +153,21 @@ export default function App() {
                 onOpenDownload={handleOpenDownload}
                 onSelectGenre={handleSelectGenreOrArtist}
                 onSelectArtist={handleSelectGenreOrArtist}
+                onGoToUrlDownload={() => setActiveTab('descargar-url')}
               />
             )}
 
-            {/* View: BUSCAR */}
+            {/* View: DESCARGAR MÚSICA CON URL (MP3 DIRECTO) */}
+            {activeTab === 'descargar-url' && (
+              <DownloadsView
+                downloads={downloads}
+                onPlayTrack={handlePlayTrack}
+                onOpenDownloadModal={handleOpenDownload}
+                onRefreshDownloads={handleRefreshDownloads}
+              />
+            )}
+
+            {/* View: BUSCAR & EXPLORAR */}
             {activeTab === 'buscar' && (
               <SearchView
                 searchQuery={searchQuery}
@@ -171,7 +182,7 @@ export default function App() {
               />
             )}
 
-            {/* View: FAVORITOS (Canciones que te gustan) */}
+            {/* View: FAVORITOS */}
             {activeTab === 'favoritos' && (
               <LibraryView
                 viewType="favoritos"
@@ -201,22 +212,7 @@ export default function App() {
               />
             )}
 
-            {/* View: BIBLIOTECA GENERAL */}
-            {activeTab === 'biblioteca' && (
-              <LibraryView
-                viewType="favoritos"
-                likedTracks={likedTracks}
-                onPlayTrack={handlePlayTrack}
-                currentTrack={currentTrack}
-                isPlaying={isPlaying}
-                onToggleLike={handleToggleLike}
-                likedTrackIds={likedTrackIds}
-                onOpenDownload={handleOpenDownload}
-                onPlayAll={handlePlayAll}
-              />
-            )}
-
-            {/* View: DESCARGAS */}
+            {/* View: HISTORIAL DE DESCARGAS */}
             {activeTab === 'descargas' && (
               <DownloadsView
                 downloads={downloads}
@@ -232,7 +228,7 @@ export default function App() {
 
       </div>
 
-      {/* Persistent Bottom Spotify Player Bar */}
+      {/* Persistent Bottom Red & Black Player Bar */}
       <Player
         currentTrack={currentTrack}
         isPlaying={isPlaying}
@@ -257,8 +253,8 @@ export default function App() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-[#1DB954] text-black font-black px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2 animate-fadeIn border border-black/20">
-          <Sparkles className="w-4 h-4" />
+        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white font-black px-5 py-3 rounded-full shadow-red-neon flex items-center space-x-2 animate-fadeIn border border-white/20">
+          <Zap className="w-4 h-4 fill-white" />
           <span className="text-xs sm:text-sm">{toastMessage}</span>
         </div>
       )}

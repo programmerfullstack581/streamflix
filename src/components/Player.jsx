@@ -9,14 +9,15 @@ import {
   Repeat1, 
   Volume2, 
   VolumeX, 
-  Volume1,
+  Volume1, 
   Heart, 
   Download, 
   ListMusic, 
   Maximize2, 
   Sparkles,
   Video,
-  X
+  X,
+  Zap
 } from 'lucide-react';
 
 export default function Player({
@@ -38,20 +39,18 @@ export default function Player({
   const [volume, setVolume] = useState(80);
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
-  const [repeatMode, setRepeatMode] = useState('off'); // 'off', 'all', 'one'
+  const [repeatMode, setRepeatMode] = useState('off');
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
 
   const playerRef = useRef(null);
 
-  // Update duration when track changes
   useEffect(() => {
     setCurrentTime(0);
     setDuration(currentTrack.seconds || 180);
     setIsPlaying(true);
   }, [currentTrack]);
 
-  // Audio simulation timer while playing
   useEffect(() => {
     let interval = null;
     if (isPlaying) {
@@ -107,10 +106,10 @@ export default function Player({
     <>
       {/* Mini Video / Lyrics Popup */}
       {isVideoPopupOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-8 z-50 w-80 sm:w-96 bg-[#181818] border border-white/15 rounded-2xl shadow-2xl overflow-hidden animate-fadeIn">
-          <div className="flex items-center justify-between p-3 bg-[#202020] border-b border-white/10">
-            <span className="text-xs font-bold text-white flex items-center space-x-2">
-              <Video className="w-4 h-4 text-[#1DB954]" />
+        <div className="fixed bottom-24 right-4 sm:right-8 z-50 w-80 sm:w-96 bg-[#141414] border border-red-500/40 rounded-3xl shadow-red-neon overflow-hidden animate-fadeIn">
+          <div className="flex items-center justify-between p-3.5 bg-[#1a1a1a] border-b border-red-500/20">
+            <span className="text-xs font-black text-white flex items-center space-x-2">
+              <Video className="w-4 h-4 text-red-500" />
               <span>Video Musical Oficial</span>
             </span>
             <button onClick={() => setIsVideoPopupOpen(false)} className="text-gray-400 hover:text-white">
@@ -130,10 +129,10 @@ export default function Player({
 
       {/* Queue Drawer */}
       {isQueueOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-8 z-50 w-80 sm:w-96 bg-[#181818] border border-white/15 rounded-2xl shadow-2xl max-h-[60vh] flex flex-col overflow-hidden animate-fadeIn">
-          <div className="flex items-center justify-between p-4 bg-[#202020] border-b border-white/10">
-            <h3 className="text-sm font-bold text-white flex items-center space-x-2">
-              <ListMusic className="w-4 h-4 text-[#1DB954]" />
+        <div className="fixed bottom-24 right-4 sm:right-8 z-50 w-80 sm:w-96 bg-[#141414] border border-red-500/30 rounded-3xl shadow-red-neon max-h-[60vh] flex flex-col overflow-hidden animate-fadeIn">
+          <div className="flex items-center justify-between p-4 bg-[#1c1c1c] border-b border-white/10">
+            <h3 className="text-xs font-black text-white flex items-center space-x-2">
+              <ListMusic className="w-4 h-4 text-red-500" />
               <span>Cola de Reproducción ({queue.length})</span>
             </h3>
             <button onClick={() => setIsQueueOpen(false)} className="text-gray-400 hover:text-white">
@@ -149,13 +148,13 @@ export default function Player({
                   onClick={() => {
                     if (onSelectQueueTrack) onSelectQueueTrack(t);
                   }}
-                  className={`flex items-center space-x-3 p-2 rounded-xl cursor-pointer transition-colors ${
-                    isCurrent ? 'bg-[#1DB954]/20 border border-[#1DB954]/40' : 'hover:bg-white/5'
+                  className={`flex items-center space-x-3 p-2.5 rounded-xl cursor-pointer transition-colors ${
+                    isCurrent ? 'bg-red-950/60 border border-red-500/40 text-white' : 'hover:bg-white/5 text-gray-300'
                   }`}
                 >
                   <img src={t.thumbnail} alt="" className="w-10 h-10 rounded-lg object-cover" />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-bold truncate ${isCurrent ? 'text-[#1DB954]' : 'text-white'}`}>{t.title}</p>
+                    <p className={`text-xs font-bold truncate ${isCurrent ? 'text-red-400' : 'text-white'}`}>{t.title}</p>
                     <p className="text-[10px] text-gray-400 truncate">{t.artist}</p>
                   </div>
                   <span className="text-[10px] text-gray-500 font-mono">{t.duration}</span>
@@ -166,8 +165,8 @@ export default function Player({
         </div>
       )}
 
-      {/* Persistent Spotify Bottom Player Bar */}
-      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#181818] border-t border-white/10 px-3 sm:px-6 py-2.5 sm:py-3 select-none backdrop-blur-xl shadow-[0_-5px_25px_rgba(0,0,0,0.8)]">
+      {/* Bottom Red & Black Player Bar */}
+      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d0d]/98 border-t border-red-600/30 px-3 sm:px-6 py-2.5 sm:py-3 select-none backdrop-blur-2xl shadow-[0_-5px_30px_rgba(229,9,20,0.2)]">
         
         {/* Invisible Audio Bridge */}
         <div className="w-0 h-0 overflow-hidden opacity-0 absolute pointer-events-none">
@@ -190,7 +189,7 @@ export default function Player({
               <img
                 src={currentTrack.thumbnail}
                 alt={currentTrack.title}
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg object-cover shadow-lg ring-1 ring-white/10 group-hover/cover:brightness-75 transition-all"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover shadow-lg ring-1 ring-red-600/60 group-hover/cover:brightness-75 transition-all"
               />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/cover:opacity-100 transition-opacity">
                 <Video className="w-5 h-5 text-white" />
@@ -209,11 +208,11 @@ export default function Player({
             <button
               onClick={() => onToggleLike(currentTrack)}
               className={`p-1.5 rounded-full hover:scale-110 transition-transform hidden sm:block ${
-                isLiked ? 'text-[#1DB954]' : 'text-gray-400 hover:text-white'
+                isLiked ? 'text-red-500' : 'text-gray-400 hover:text-white'
               }`}
               title={isLiked ? 'Quitar de Favoritos' : 'Guardar en Favoritos'}
             >
-              <Heart className={`w-4 h-4 ${isLiked ? 'fill-[#1DB954]' : ''}`} />
+              <Heart className={`w-4 h-4 ${isLiked ? 'fill-red-500' : ''}`} />
             </button>
           </div>
 
@@ -224,7 +223,7 @@ export default function Player({
               <button
                 onClick={() => setIsShuffle(!isShuffle)}
                 className={`p-1 transition-colors hidden sm:block ${
-                  isShuffle ? 'text-[#1DB954]' : 'text-gray-400 hover:text-white'
+                  isShuffle ? 'text-red-500' : 'text-gray-400 hover:text-white'
                 }`}
                 title="Aleatorio"
               >
@@ -239,15 +238,16 @@ export default function Player({
                 <SkipBack className="w-5 h-5 fill-current" />
               </button>
 
+              {/* Big Red Play Button */}
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white hover:bg-white/90 text-black flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-red-neon transition-transform hover:scale-105"
                 title={isPlaying ? 'Pausar' : 'Reproducir'}
               >
                 {isPlaying ? (
-                  <Pause className="w-5 h-5 fill-black" />
+                  <Pause className="w-5 h-5 fill-white" />
                 ) : (
-                  <Play className="w-5 h-5 fill-black ml-0.5" />
+                  <Play className="w-5 h-5 fill-white ml-0.5" />
                 )}
               </button>
 
@@ -262,7 +262,7 @@ export default function Player({
               <button
                 onClick={toggleRepeat}
                 className={`p-1 transition-colors hidden sm:block ${
-                  repeatMode !== 'off' ? 'text-[#1DB954]' : 'text-gray-400 hover:text-white'
+                  repeatMode !== 'off' ? 'text-red-500' : 'text-gray-400 hover:text-white'
                 }`}
                 title={`Repetir: ${repeatMode}`}
               >
@@ -272,12 +272,12 @@ export default function Player({
 
             {/* Time progress seek bar */}
             <div className="w-full flex items-center space-x-2 text-[10px] sm:text-xs text-gray-400 font-mono group">
-              <span className="w-8 text-right select-none">{formatSeconds(currentTime)}</span>
+              <span className="w-8 text-right select-none text-gray-300">{formatSeconds(currentTime)}</span>
               
               <div className="relative flex-1 flex items-center h-4 cursor-pointer">
                 <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-white group-hover:bg-[#1DB954] transition-colors"
+                    className="h-full bg-red-600 group-hover:bg-[#FF0033] shadow-[0_0_8px_#E50914] transition-colors"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -291,7 +291,7 @@ export default function Player({
                 />
               </div>
 
-              <span className="w-8 text-left select-none">{formatSeconds(duration)}</span>
+              <span className="w-8 text-left select-none text-gray-300">{formatSeconds(duration)}</span>
             </div>
           </div>
 
@@ -301,18 +301,18 @@ export default function Player({
             {/* Quick Download Format Button */}
             <button
               onClick={() => onOpenDownload(currentTrack)}
-              className="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 bg-[#1DB954] hover:bg-[#1ed760] text-black rounded-full text-xs font-black transition-transform hover:scale-105 shadow-md flex-shrink-0"
-              title="Descargar en MP3 320k, WAV, FLAC o MP4"
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white rounded-xl text-xs font-black transition-transform hover:scale-105 shadow-red-neon flex-shrink-0"
+              title="Descargar en MP3 directo"
             >
               <Download className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Descargar</span>
+              <span className="hidden md:inline">Descargar MP3</span>
             </button>
 
             {/* Queue Toggle */}
             <button
               onClick={() => setIsQueueOpen(!isQueueOpen)}
               className={`p-1.5 transition-colors hidden sm:block ${
-                isQueueOpen ? 'text-[#1DB954]' : 'text-gray-400 hover:text-white'
+                isQueueOpen ? 'text-red-500' : 'text-gray-400 hover:text-white'
               }`}
               title="Cola de reproducción"
             >
@@ -326,7 +326,7 @@ export default function Player({
                 className="text-gray-400 hover:text-white p-1 transition-colors"
               >
                 {isMuted || volume === 0 ? (
-                  <VolumeX className="w-4 h-4 text-red-400" />
+                  <VolumeX className="w-4 h-4 text-red-500" />
                 ) : volume < 50 ? (
                   <Volume1 className="w-4 h-4" />
                 ) : (
@@ -337,7 +337,7 @@ export default function Player({
               <div className="w-20 relative flex items-center h-3">
                 <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-white group-hover:bg-[#1DB954] transition-colors"
+                    className="h-full bg-red-600 group-hover:bg-[#FF0033] transition-colors"
                     style={{ width: `${isMuted ? 0 : volume}%` }}
                   />
                 </div>

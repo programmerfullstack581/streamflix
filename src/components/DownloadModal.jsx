@@ -28,119 +28,79 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
   const FORMAT_GROUPS = [
     {
       type: 'audio',
-      title: 'Formatos de Audio',
+      title: 'Formatos de Audio (MP3 / FLAC / WAV)',
       formats: [
         {
           id: 'mp3-320',
-          name: 'MP3 — 320 kbps',
-          tag: 'MÁXIMA CALIDAD',
-          badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+          name: 'MP3 — 320 kbps (Directo)',
+          tag: 'MÁXIMA CALIDAD ⭐',
+          badgeColor: 'bg-red-600/20 text-red-400 border-red-500/40',
           size: '~8.5 MB',
           desc: 'Audio en la más alta fidelidad estéreo MP3 disponible.',
-          icon: FileAudio,
+          icon: Zap,
           providers: [
-            { name: 'Cobalt Tools (Recomendado ⭐ Sin Anuncios)', url: 'https://cobalt.tools/', note: 'Pega el enlace y selecciona calidad 320k', best: true },
-            { name: 'Loader.to MP3 320k Directo', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3` },
-            { name: 'Y2Mate MP3 Ultra', url: `https://www.y2mate.com/youtube-mp3/${track.videoId}` },
-            { name: 'YT1S Convertidor MP3', url: `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}` },
+            { name: 'Descarga Directa MP3 (Loader Ultra)', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3`, best: true },
+            { name: 'Cobalt Tools (Sin Anuncios ⭐)', url: 'https://cobalt.tools/', note: 'Pega el enlace y selecciona calidad 320k' },
+            { name: 'Y2Mate MP3 Pro', url: `https://www.y2mate.com/youtube-mp3/${track.videoId}` },
+            { name: 'YT1S MP3', url: `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}` },
           ]
         },
         {
           id: 'mp3-128',
-          name: 'MP3 — 128 kbps',
+          name: 'MP3 — 128 kbps (Ligero)',
           tag: 'LIVIANO',
-          badgeColor: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+          badgeColor: 'bg-neutral-800 text-gray-300 border-neutral-700',
           size: '~3.4 MB',
           desc: 'Formato estándar ligero ideal para ahorrar espacio en el teléfono.',
           icon: Music,
           providers: [
-            { name: 'Cobalt Tools MP3 Rápido', url: 'https://cobalt.tools/', note: 'Descarga rápida instantánea' },
-            { name: 'SSYouTube MP3 Rápido', url: `https://ssyoutube.com/en57/youtube-video-downloader?url=${encodeURIComponent(ytUrl)}` },
-            { name: 'Y2Mate MP3', url: `https://www.y2mate.com/youtube/${track.videoId}` },
+            { name: 'Descarga Rápida 128k', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3` },
+            { name: 'SSYouTube MP3', url: `https://ssyoutube.com/en57/youtube-video-downloader?url=${encodeURIComponent(ytUrl)}` },
           ]
         },
         {
           id: 'flac',
           name: 'FLAC — Lossless',
           tag: 'HI-FI SIN PÉRDIDA',
-          badgeColor: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
+          badgeColor: 'bg-red-950 text-red-300 border-red-700',
           size: '~25 MB',
-          desc: 'Formato de estudio sin pérdida para audiófilos y equipos de sonido Hi-Fi.',
-          icon: Zap,
+          desc: 'Formato de estudio sin pérdida para audiófilos y sonido Hi-Fi.',
+          icon: FileAudio,
           providers: [
-            { name: 'Cobalt Tools FLAC Studio', url: 'https://cobalt.tools/', note: 'Elige FLAC en la lista de formatos' },
             { name: 'Loader.to FLAC Hi-Fi', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=flac` },
+            { name: 'Cobalt Tools FLAC Studio', url: 'https://cobalt.tools/', note: 'Elige FLAC en formatos' },
           ]
         },
         {
           id: 'wav',
           name: 'WAV — PCM Audio',
-          tag: 'SIN COMPRESIÓN',
-          badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+          tag: 'AUDIO PURO',
+          badgeColor: 'bg-neutral-800 text-gray-300 border-neutral-700',
           size: '~35 MB',
-          desc: 'Audio PCM puro sin compresión, ideal para edición o producción musical.',
+          desc: 'Audio PCM puro sin compresión.',
           icon: Radio,
           providers: [
-            { name: 'Cobalt Tools WAV Master', url: 'https://cobalt.tools/', note: 'Selecciona formato WAV' },
-            { name: 'Loader.to WAV', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=wav` },
-          ]
-        },
-        {
-          id: 'm4a',
-          name: 'M4A / AAC (Apple)',
-          tag: 'OPTIMIZADO IPHONE / MAC',
-          badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-          size: '~6.8 MB',
-          desc: 'Códec AAC optimizado nativamente para iPhone, iPad, Mac y iTunes.',
-          icon: FileAudio,
-          providers: [
-            { name: 'Cobalt Tools AAC/M4A', url: 'https://cobalt.tools/', note: 'Selecciona formato AAC/M4A' },
-            { name: 'Loader.to M4A', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=m4a` },
-          ]
-        },
-        {
-          id: 'ogg',
-          name: 'OGG / OPUS',
-          tag: 'FORMATO SPOTIFY',
-          badgeColor: 'bg-green-500/20 text-green-400 border-green-500/30',
-          size: '~4.2 MB',
-          desc: 'El códec de compresión moderno utilizado por Spotify en streaming.',
-          icon: Music,
-          providers: [
-            { name: 'Cobalt Tools OPUS/OGG', url: 'https://cobalt.tools/', note: 'Elige OGG / OPUS' },
+            { name: 'Loader.to WAV Directo', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=wav` },
+            { name: 'Cobalt Tools WAV Master', url: 'https://cobalt.tools/' },
           ]
         }
       ]
     },
     {
       type: 'video',
-      title: 'Formatos de Video Musical',
+      title: 'Formatos de Video Musical (MP4)',
       formats: [
         {
           id: 'mp4-1080',
           name: 'MP4 — Full HD 1080p',
           tag: 'VIDEO FULL HD',
-          badgeColor: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+          badgeColor: 'bg-rose-950 text-rose-300 border-rose-800',
           size: '~60 MB',
-          desc: 'Video musical oficial con la máxima resolución y nitidez.',
+          desc: 'Video musical oficial con la máxima resolución.',
           icon: Film,
           providers: [
-            { name: 'Cobalt Tools 1080p (Sin Publicidad)', url: 'https://cobalt.tools/', note: 'Selecciona 1080p' },
-            { name: 'SaveFrom.net 1080p', url: `https://en.savefrom.net/#url=${encodeURIComponent(ytUrl)}` },
+            { name: 'Cobalt 1080p (Sin Anuncios)', url: 'https://cobalt.tools/', note: 'Selecciona 1080p' },
             { name: 'Y2Mate 1080p', url: `https://www.y2mate.com/youtube/${track.videoId}` },
-          ]
-        },
-        {
-          id: 'mp4-720',
-          name: 'MP4 — HD 720p',
-          tag: 'VIDEO HD',
-          badgeColor: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-          size: '~28 MB',
-          desc: 'Video en alta definición optimizado para cualquier pantalla.',
-          icon: Film,
-          providers: [
-            { name: 'Cobalt Tools 720p', url: 'https://cobalt.tools/', note: 'Selecciona 720p' },
-            { name: 'SSYouTube MP4 720p', url: `https://ssyoutube.com/en57/youtube-video-downloader?url=${encodeURIComponent(ytUrl)}` },
           ]
         }
       ]
@@ -158,7 +118,6 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
   };
 
   const handleProviderClick = (provider) => {
-    // Registrar la descarga en la biblioteca local
     MusicStorage.recordDownload(track, selectedFormat.name);
     if (onDownloadRecorded) onDownloadRecorded();
     setStatusMessage(`✅ Guardando registro de descarga en ${selectedFormat.name}`);
@@ -167,28 +126,28 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md p-3 sm:p-6 overflow-y-auto animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-3 sm:p-6 overflow-y-auto animate-fadeIn"
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-2xl bg-[#181818] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
+        className="w-full max-w-2xl bg-[#141414] border border-red-600/40 rounded-2xl sm:rounded-3xl shadow-red-neon overflow-hidden flex flex-col max-h-[92vh]"
         onClick={e => e.stopPropagation()}
       >
-        {/* Header Track info */}
-        <div className="bg-gradient-to-r from-emerald-950/80 via-[#202020] to-[#181818] p-5 sm:p-6 border-b border-white/10 flex items-center justify-between">
+        {/* Header Track info Red & Black */}
+        <div className="bg-gradient-to-r from-red-950 via-[#1a1a1a] to-[#141414] p-5 sm:p-6 border-b border-red-600/30 flex items-center justify-between">
           <div className="flex items-center space-x-4 min-w-0">
             <img 
               src={track.thumbnail} 
               alt={track.title} 
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover shadow-2xl ring-2 ring-[#1DB954]/50 flex-shrink-0"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-2xl ring-2 ring-red-600/70 flex-shrink-0"
             />
             <div className="min-w-0">
-              <span className="text-[10px] font-black uppercase tracking-widest text-[#1DB954] bg-[#1DB954]/10 px-2 py-0.5 rounded-full border border-[#1DB954]/20">
-                Descargador Multi-Formato
+              <span className="text-[10px] font-black uppercase tracking-widest text-red-400 bg-red-600/20 px-2 py-0.5 rounded-full border border-red-500/30">
+                Descargador Directo MP3
               </span>
               <h2 className="text-lg sm:text-xl font-black text-white truncate mt-1">{track.title}</h2>
-              <p className="text-sm text-gray-400 font-medium truncate">{track.artist}</p>
-              <p className="text-xs text-gray-500 font-mono mt-0.5">Duración: {track.duration} • {track.views || 'Oficial'}</p>
+              <p className="text-sm text-gray-300 font-medium truncate">{track.artist}</p>
+              <p className="text-xs text-gray-500 font-mono mt-0.5">Duración: {track.duration} • Audio Alta Calidad</p>
             </div>
           </div>
           <button 
@@ -203,16 +162,16 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
         <div className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1">
           
           {/* Action Copy Link */}
-          <div className="bg-[#121212] p-3.5 rounded-xl border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="bg-[#0d0d0d] p-3.5 rounded-2xl border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="min-w-0 w-full">
               <p className="text-xs text-gray-400 font-medium truncate">Enlace directo de la canción:</p>
-              <p className="text-xs text-emerald-400 font-mono truncate">{ytUrl}</p>
+              <p className="text-xs text-red-400 font-mono truncate">{ytUrl}</p>
             </div>
             <button
               onClick={handleCopyLink}
               className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 flex-shrink-0 ${
                 copied 
-                  ? 'bg-emerald-600 text-white shadow-lg' 
+                  ? 'bg-red-600 text-white shadow-lg' 
                   : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
@@ -224,8 +183,8 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           {/* Format Selector */}
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center space-x-2">
-              <Sparkles className="w-4 h-4 text-[#1DB954]" />
-              <span>1. Selecciona el formato que deseas descargar:</span>
+              <Sparkles className="w-4 h-4 text-[#E50914]" />
+              <span>1. Elige el formato para descargar:</span>
             </h3>
 
             <div className="space-y-4">
@@ -242,19 +201,17 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
                           onClick={() => setSelectedFormatId(fmt.id)}
                           className={`p-3 rounded-xl border text-left transition-all flex items-start space-x-3 ${
                             isSelected 
-                              ? 'bg-emerald-950/40 border-[#1DB954] shadow-lg shadow-[#1DB954]/10 ring-1 ring-[#1DB954]' 
-                              : 'bg-[#121212] border-white/5 hover:border-white/20 hover:bg-white/5'
+                              ? 'bg-red-950/50 border-red-500 shadow-lg ring-1 ring-red-500' 
+                              : 'bg-[#0d0d0d] border-white/5 hover:border-white/20 hover:bg-white/5'
                           }`}
                         >
-                          <div className={`p-2 rounded-lg ${isSelected ? 'bg-[#1DB954] text-black' : 'bg-white/5 text-gray-400'}`}>
+                          <div className={`p-2 rounded-lg ${isSelected ? 'bg-red-600 text-white' : 'bg-white/5 text-gray-400'}`}>
                             <Icon className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <span className={`text-sm font-bold truncate ${isSelected ? 'text-white' : 'text-gray-200'}`}>
-                                {fmt.name}
-                              </span>
-                            </div>
+                            <span className={`text-sm font-bold truncate block ${isSelected ? 'text-white' : 'text-gray-200'}`}>
+                              {fmt.name}
+                            </span>
                             <div className="flex items-center space-x-2 mt-1">
                               <span className={`text-[9px] font-black uppercase px-1.5 py-0.2 rounded border ${fmt.badgeColor}`}>
                                 {fmt.tag}
@@ -275,8 +232,8 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           {/* Server Providers */}
           <div className="pt-2 border-t border-white/10">
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center space-x-2">
-              <Download className="w-4 h-4 text-[#1DB954]" />
-              <span>2. Descarga en <span className="text-[#1DB954] font-black">{selectedFormat.name}</span>:</span>
+              <Download className="w-4 h-4 text-[#E50914]" />
+              <span>2. Descarga en <span className="text-red-400 font-black">{selectedFormat.name}</span>:</span>
             </h3>
 
             <div className="space-y-2.5">
@@ -287,26 +244,26 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => handleProviderClick(p)}
-                  className={`flex items-center justify-between p-3.5 rounded-xl border transition-all group ${
+                  className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all group ${
                     p.best 
-                      ? 'bg-gradient-to-r from-emerald-950/60 to-[#121212] border-emerald-500/50 hover:border-emerald-400 shadow-lg' 
-                      : 'bg-[#121212] border-white/5 hover:border-white/20 hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-red-950/80 to-[#121212] border-red-500/60 hover:border-red-400 shadow-red-neon' 
+                      : 'bg-[#0d0d0d] border-white/5 hover:border-white/20 hover:bg-white/5'
                   }`}
                 >
                   <div className="flex items-center space-x-3 min-w-0">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      p.best ? 'bg-[#1DB954] text-black font-black' : 'bg-white/10 text-white'
+                      p.best ? 'bg-red-600 text-white font-black shadow-md' : 'bg-white/10 text-white'
                     }`}>
                       <Download className="w-4 h-4" />
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-white group-hover:text-[#1DB954] transition-colors truncate">
+                        <span className="text-sm font-bold text-white group-hover:text-red-400 transition-colors truncate">
                           {p.name}
                         </span>
                         {p.best && (
-                          <span className="text-[9px] font-black bg-[#1DB954] text-black px-1.5 py-0.2 rounded-full">
-                            SIN ANUNCIOS
+                          <span className="text-[9px] font-black bg-red-600 text-white px-2 py-0.2 rounded-full">
+                            DIRECTO MP3
                           </span>
                         )}
                       </div>
@@ -315,26 +272,26 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
                   </div>
 
                   <div className="flex items-center space-x-2 flex-shrink-0 pl-2">
-                    <span className="text-xs font-bold text-[#1DB954] hidden sm:inline">Descargar ahora</span>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#1DB954] transition-colors" />
+                    <span className="text-xs font-bold text-red-400 hidden sm:inline">Descargar ahora</span>
+                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-red-400 transition-colors" />
                   </div>
                 </a>
               ))}
             </div>
 
             {statusMessage && (
-              <p className="text-xs font-bold text-emerald-400 text-center mt-3 animate-fadeIn">{statusMessage}</p>
+              <p className="text-xs font-bold text-red-400 text-center mt-3 animate-fadeIn">{statusMessage}</p>
             )}
           </div>
 
         </div>
 
         {/* Footer */}
-        <div className="bg-[#121212] px-6 py-3.5 border-t border-white/10 flex items-center justify-between text-xs text-gray-500">
-          <span>Formato actual: <strong className="text-white">{selectedFormat.name}</strong></span>
+        <div className="bg-[#0d0d0d] px-6 py-3.5 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
+          <span>Formato: <strong className="text-white">{selectedFormat.name}</strong></span>
           <button 
             onClick={onClose}
-            className="px-4 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg font-bold transition-colors"
+            className="px-4 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold transition-colors"
           >
             Cerrar
           </button>
