@@ -230,34 +230,11 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
             </div>
           </div>
 
-          {/* In-Modal Direct Downloader Widget */}
-          <div className="pt-2 border-t border-white/10 space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-white flex items-center space-x-2">
-              <Zap className="w-4 h-4 text-red-500 fill-current" />
-              <span>2. Descarga Directa en Esta Pantalla (Sin Salir):</span>
-            </h3>
-
-            <div className="p-4 bg-[#0a0a0a] rounded-2xl border border-red-500/40 flex flex-col items-center justify-center text-center space-y-3 shadow-inner">
-              <div className="w-full max-w-md h-24 overflow-hidden rounded-xl flex items-center justify-center bg-[#111] border border-white/5">
-                <iframe
-                  key={`${track.videoId}-${selectedFormatId}`}
-                  src={`https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=${selectedFormatId.includes('mp4') ? '1080' : selectedFormatId.includes('flac') ? 'flac' : selectedFormatId.includes('wav') ? 'wav' : 'mp3'}`}
-                  className="w-full h-full border-0 rounded-xl"
-                  scrolling="no"
-                  title="Direct Download Modal"
-                />
-              </div>
-              <p className="text-[11px] text-gray-400 font-medium">
-                Presiona el botón de descarga dentro del cuadro para descargar <strong className="text-red-400">{selectedFormat.name}</strong> directo a tu dispositivo.
-              </p>
-            </div>
-          </div>
-
           {/* Server Providers */}
           <div className="pt-2 border-t border-white/10">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center space-x-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white mb-3 flex items-center space-x-2">
               <Download className="w-4 h-4 text-[#E50914]" />
-              <span>Otras Opciones de Descarga Rápida:</span>
+              <span>Opciones de Descarga Directa en <strong className="text-red-400">{selectedFormat.name}</strong>:</span>
             </h3>
 
             <div className="space-y-2.5">
