@@ -39,10 +39,10 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           desc: 'Audio en la más alta fidelidad estéreo MP3 disponible.',
           icon: Zap,
           providers: [
-            { name: 'Descarga Directa MP3 (Loader Ultra)', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3`, best: true },
-            { name: 'Cobalt Tools (Sin Anuncios ⭐)', url: 'https://cobalt.tools/', note: 'Pega el enlace y selecciona calidad 320k' },
-            { name: 'Y2Mate MP3 Pro', url: `https://www.y2mate.com/youtube-mp3/${track.videoId}` },
-            { name: 'YT1S MP3', url: `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}` },
+            { name: 'Y2Mate MP3 (Descarga Rápida 320k)', url: `https://www.y2mate.com/youtube-mp3/${track.videoId}`, best: true },
+            { name: 'YT1S Convertidor MP3', url: `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}` },
+            { name: 'Cobalt Tools (Sin Anuncios ⭐)', url: 'https://cobalt.tools/', note: 'Pega el enlace copiado y descarga al instante' },
+            { name: 'Loader.to MP3 Directo', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3` },
           ]
         },
         {
@@ -54,8 +54,9 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           desc: 'Formato estándar ligero ideal para ahorrar espacio en el teléfono.',
           icon: Music,
           providers: [
-            { name: 'Descarga Rápida 128k', url: `https://loader.to/api/button/?url=${encodeURIComponent(ytUrl)}&f=mp3` },
+            { name: 'YT1S MP3 Rápido', url: `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}`, best: true },
             { name: 'SSYouTube MP3', url: `https://ssyoutube.com/en57/youtube-video-downloader?url=${encodeURIComponent(ytUrl)}` },
+            { name: 'Y2Mate MP3', url: `https://www.y2mate.com/youtube-mp3/${track.videoId}` },
           ]
         },
         {

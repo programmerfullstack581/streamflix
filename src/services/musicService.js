@@ -245,6 +245,27 @@ export function extractVideoId(urlOrQuery) {
 
 // Obtener detalles de una canción por su Video ID
 export async function getTrackDetailsById(videoId) {
+  // 1. Intento con noembed.com (CORS libre, ultra rápido y confiable)
+  try {
+    const noembedRes = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal: AbortSignal.timeout(3500) });
+    if (noembedRes.ok) {
+      const data = await noembedRes.json();
+      if (data && data.title && !data.error) {
+        return {
+          videoId: videoId,
+          title: data.title,
+          artist: data.author_name || 'Artista Oficial',
+          album: 'MP3 HD 320kbps',
+          duration: '3:30',
+          seconds: 210,
+          thumbnail: data.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          views: 'HD'
+        };
+      }
+    }
+  } catch (_) {}
+
+  // 2. Intento con instancias Invidious
   const instances = [
     'https://inv.nadeko.net',
     'https://invidious.nerdvpn.de',
@@ -280,7 +301,7 @@ export async function getTrackDetailsById(videoId) {
     }
   }
 
-  // Fallback si no hay conexión
+  // Fallback
   return {
     videoId: videoId,
     title: 'Canción Enlace Directo',
