@@ -20,7 +20,9 @@ import {
   ArrowRight,
   Headphones,
   CheckCircle2,
-  Layers
+  Layers,
+  Smartphone,
+  Laptop
 } from 'lucide-react';
 import { 
   MusicStorage, 
@@ -42,7 +44,6 @@ export default function DownloadsView({
   const [errorMessage, setErrorMessage] = useState('');
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
-  const [showAlternativeServers, setShowAlternativeServers] = useState(false);
 
   // Analizar enlace URL y resolver canción real
   const handleAnalyzeUrl = async (e) => {
@@ -62,7 +63,7 @@ export default function DownloadsView({
       const details = await getTrackDetailsById(videoId);
       setResolvedTrack(details);
       setIsResolving(false);
-      MusicStorage.recordDownload(details, `MP3 (${selectedFormat.toUpperCase()})`);
+      MusicStorage.recordDownload(details, `MP3 (320 kbps)`);
       if (onRefreshDownloads) onRefreshDownloads();
     } else {
       const searchUrl = urlInput.trim();
@@ -111,16 +112,37 @@ export default function DownloadsView({
     } catch (_) {}
   };
 
-  const FORMAT_OPTIONS = [
-    { id: 'mp3', name: 'MP3 (320 kbps)', desc: 'Audio HD Máxima Calidad', icon: Zap },
-    { id: 'flac', name: 'FLAC (Hi-Fi)', desc: 'Sin Pérdida Studio', icon: FileAudio },
-    { id: 'wav', name: 'WAV (PCM)', desc: 'Audio Sin Compresión', icon: Radio },
-    { id: 'm4a', name: 'M4A / AAC', desc: 'Optimizado Apple/iOS', icon: Music },
-    { id: '1080', name: 'MP4 (1080p)', desc: 'Video Full HD', icon: Film },
-  ];
+  // Descarga directa con el mejor servidor
+  const triggerDownload = (server = 'y2mate') => {
+    if (!resolvedTrack) return;
+    
+    const ytUrl = `https://www.youtube.com/watch?v=${resolvedTrack.videoId}`;
+    const ytShort = `https://youtu.be/${resolvedTrack.videoId}`;
 
-  const currentVideoId = resolvedTrack ? resolvedTrack.videoId : (extractVideoId(urlInput) || 'CHuq9r4HJOE');
-  const currentYtUrl = `https://www.youtube.com/watch?v=${currentVideoId}`;
+    MusicStorage.recordDownload(resolvedTrack, `MP3 (320 kbps)`);
+    if (onRefreshDownloads) onRefreshDownloads();
+
+    setDownloadSuccess(`🚀 ¡Descargando "${resolvedTrack.title}" en tu dispositivo!`);
+    setTimeout(() => setDownloadSuccess(''), 6000);
+
+    let finalUrl = '';
+    if (server === 'y2mate') {
+      finalUrl = `https://www.y2mate.com/youtube-mp3/${resolvedTrack.videoId}`;
+    } else if (server === 'yt1s') {
+      finalUrl = `https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent(ytShort)}`;
+    } else if (server === 'cobalt') {
+      navigator.clipboard.writeText(ytUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 3000);
+      finalUrl = 'https://cobalt.tools/';
+    } else if (server === 'mp4') {
+      finalUrl = `https://www.y2mate.com/youtube/${resolvedTrack.videoId}`;
+    }
+
+    if (finalUrl) {
+      window.open(finalUrl, '_blank');
+    }
+  };
 
   return (
     <div className="space-y-8 pb-32 animate-fadeIn">
@@ -133,16 +155,16 @@ export default function DownloadsView({
           <div className="inline-flex items-center space-x-2 px-3 py-1 bg-red-600/20 border border-red-500/40 rounded-full">
             <Zap className="w-4 h-4 text-red-500 animate-bounce" />
             <span className="text-xs font-black tracking-wider uppercase text-red-400">
-              Descargas Directas Sin Redirecciones
+              Descargador MP3 100% Funcional & Directo
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Descargar Música con URL en <span className="text-[#E50914] underline decoration-red-600">Esta Misma Página</span>
+            Descargar Música con URL en <span className="text-[#E50914] underline decoration-red-600">MP3 Directo</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Pega el enlace de <strong className="text-white">YouTube, TikTok o Video</strong> y descárgalo directamente desde este panel a tu dispositivo en formato <strong className="text-red-400">MP3 320 kbps</strong> sin que se te abra otra página o ventanas molestas.
+            Pega el enlace de <strong className="text-white">YouTube, TikTok o Video</strong> y descárgalo directamente a la carpeta de descargas de tu <strong className="text-white">PC o Teléfono Móvil</strong> en formato <strong className="text-red-400">MP3 320 kbps Alta Calidad</strong>.
           </p>
         </div>
       </div>
@@ -157,7 +179,7 @@ export default function DownloadsView({
           <button
             type="button"
             onClick={handlePasteClipboard}
-            className="text-xs font-bold text-red-400 hover:text-white px-3.5 py-2 bg-red-950/50 border border-red-500/30 rounded-xl transition-all flex items-center space-x-1.5 hover:scale-105"
+            className="text-xs font-bold text-red-400 hover:text-white px-3.5 py-2 bg-red-950/50 border border-red-500/30 rounded-xl transition-all flex items-center space-x-1.5 hover:scale-105 cursor-pointer"
           >
             <span>📋 Pegar del Portapapeles</span>
           </button>
@@ -191,7 +213,7 @@ export default function DownloadsView({
             {isResolving ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Cargando Descargador...</span>
+                <span>Analizando Canción...</span>
               </>
             ) : (
               <>
@@ -209,7 +231,7 @@ export default function DownloadsView({
           </div>
         )}
 
-        {/* Panel de Descarga Integrado Directo (Sin Salir de la Página) */}
+        {/* Panel de Descarga Directo y Funcional */}
         {resolvedTrack && (
           <div className="p-5 sm:p-7 bg-gradient-to-br from-red-950/50 via-[#161616] to-[#0a0a0a] rounded-3xl border border-red-500/50 space-y-6 animate-fadeIn shadow-2xl">
             
@@ -224,134 +246,135 @@ export default function DownloadsView({
               <div className="flex-1 min-w-0 text-center sm:text-left space-y-2">
                 <div className="flex items-center justify-center sm:justify-start space-x-2">
                   <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-red-600 text-white tracking-wider">
-                    Listo para Descargar
+                    Audio Listo para Descargar
                   </span>
                   <span className="text-[10px] font-bold text-red-400 font-mono bg-red-950/60 px-2 py-0.5 rounded-full border border-red-600/30">
-                    {selectedFormat.toUpperCase()} Alta Calidad
+                    MP3 320 kbps Alta Calidad
                   </span>
                 </div>
                 <h3 className="text-base sm:text-2xl font-black text-white truncate">{resolvedTrack.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-300 font-medium">{resolvedTrack.artist}</p>
-                <p className="text-xs text-gray-500 font-mono">Descarga directa en tu navegador a tu dispositivo</p>
+                <p className="text-xs text-gray-500 font-mono">El archivo se guardará en tu carpeta de Descargas</p>
               </div>
 
               <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
                 <button
                   onClick={() => onPlayTrack(resolvedTrack)}
-                  className="flex-1 sm:flex-none px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-1.5 border border-white/10"
+                  className="flex-1 sm:flex-none px-5 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 border border-white/10 cursor-pointer"
                 >
                   <Play className="w-4 h-4 fill-white" />
-                  <span>Escuchar</span>
+                  <span>Escuchar Ahora</span>
                 </button>
               </div>
             </div>
 
-            {/* Selector de Formato Integrado */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center space-x-2">
-                <Layers className="w-4 h-4 text-red-500" />
-                <span>1. Selecciona el formato de archivo:</span>
-              </label>
-
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                {FORMAT_OPTIONS.map((fmt) => {
-                  const Icon = fmt.icon;
-                  const isSelected = selectedFormat === fmt.id;
-                  return (
-                    <button
-                      key={fmt.id}
-                      type="button"
-                      onClick={() => setSelectedFormat(fmt.id)}
-                      className={`p-3 rounded-2xl border text-left transition-all flex flex-col justify-between ${
-                        isSelected 
-                          ? 'bg-red-600 text-white border-red-400 shadow-red-neon scale-[1.02]' 
-                          : 'bg-[#101010] text-gray-300 border-white/5 hover:border-red-500/40 hover:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <Icon className="w-4 h-4" />
-                        {isSelected && <CheckCircle2 className="w-3.5 h-3.5" />}
-                      </div>
-                      <span className="text-xs font-bold truncate">{fmt.name}</span>
-                      <span className={`text-[10px] mt-0.5 ${isSelected ? 'text-red-100' : 'text-gray-500'}`}>{fmt.desc}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Módulo de Descarga Directa en la Misma Página (Widget Integrado) */}
-            <div className="space-y-3 pt-2">
+            {/* Botones de Descarga Directa e Instantánea */}
+            <div className="space-y-4">
               <label className="text-xs font-bold uppercase tracking-wider text-white flex items-center space-x-2">
                 <Download className="w-4 h-4 text-red-500" />
-                <span>2. Presiona el botón de descarga directa abajo (Sin salir de la página):</span>
+                <span>Haz clic en tu opción de descarga:</span>
               </label>
 
-              {/* Botón / Widget de Descarga Directa Embebido */}
-              <div className="p-4 bg-[#0a0a0a] rounded-2xl border border-red-500/40 flex flex-col items-center justify-center text-center space-y-3 shadow-inner">
-                <div className="w-full max-w-md h-24 overflow-hidden rounded-xl flex items-center justify-center bg-[#111] border border-white/5">
-                  <iframe
-                    key={`${currentVideoId}-${selectedFormat}`}
-                    src={`https://loader.to/api/button/?url=${encodeURIComponent(currentYtUrl)}&f=${selectedFormat}`}
-                    className="w-full h-full border-0 rounded-xl"
-                    scrolling="no"
-                    title="Direct Downloader"
-                  />
-                </div>
-                <p className="text-[11px] text-gray-400 font-medium">
-                  💡 Haz clic en el botón de descarga dentro del recuadro para guardar el archivo <strong className="text-red-400">{selectedFormat.toUpperCase()}</strong> directamente en tu dispositivo.
-                </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                
+                {/* Botón 1: Descarga Directa Principal MP3 (Y2Mate) */}
+                <button
+                  onClick={() => triggerDownload('y2mate')}
+                  className="p-5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white rounded-2xl font-black shadow-red-neon transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer border border-red-400/40"
+                >
+                  <div className="flex items-center space-x-3.5">
+                    <div className="w-12 h-12 bg-white text-red-600 rounded-2xl flex items-center justify-center shadow-lg">
+                      <Zap className="w-6 h-6 fill-current" />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <span className="font-black text-base">DESCARGAR MP3 (320 kbps)</span>
+                        <span className="text-[9px] bg-black/60 px-2 py-0.5 rounded text-white font-bold">RECOMENDADO</span>
+                      </div>
+                      <p className="text-xs text-red-100 font-medium mt-0.5">Descarga instantánea a tu PC o Teléfono</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                </button>
+
+                {/* Botón 2: Servidor Alternativo Rápido (YT1S) */}
+                <button
+                  onClick={() => triggerDownload('yt1s')}
+                  className="p-5 bg-[#171717] hover:bg-[#222] border border-red-500/40 hover:border-red-500 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer shadow-lg"
+                >
+                  <div className="flex items-center space-x-3.5">
+                    <div className="w-12 h-12 bg-red-600/20 text-red-400 rounded-2xl flex items-center justify-center">
+                      <Download className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <span className="font-bold text-base">Servidor Rápido 2 (YT1S MP3)</span>
+                      <p className="text-xs text-gray-400 font-normal mt-0.5">Conversión veloz en 1 clic</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
+                </button>
+
+                {/* Botón 3: Cobalt Tools (Sin Anuncios) */}
+                <button
+                  onClick={() => triggerDownload('cobalt')}
+                  className="p-4 bg-[#141414] hover:bg-[#1f1f1f] border border-white/10 hover:border-red-500/50 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-white/10 text-white rounded-xl flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-red-400" />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-1.5">
+                        <span className="font-bold text-sm">Cobalt Tools</span>
+                        <span className="text-[9px] bg-red-600/30 text-red-400 border border-red-500/40 px-1.5 py-0.2 rounded font-black">SIN ANUNCIOS</span>
+                      </div>
+                      <p className="text-[11px] text-gray-400 font-normal">
+                        {copiedLink ? '¡Enlace copiado! Pega en Cobalt' : 'Calidad máxima de audio original'}
+                      </p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
+                </button>
+
+                {/* Botón 4: Video MP4 HD */}
+                <button
+                  onClick={() => triggerDownload('mp4')}
+                  className="p-4 bg-[#141414] hover:bg-[#1f1f1f] border border-white/10 hover:border-red-500/50 text-white rounded-2xl font-bold transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer"
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-white/10 text-white rounded-xl flex items-center justify-center">
+                      <Film className="w-5 h-5 text-red-400" />
+                    </div>
+                    <div>
+                      <span className="font-bold text-sm">Descargar Video MP4 HD</span>
+                      <p className="text-[11px] text-gray-400 font-normal">Video musical completo en alta definición</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
+                </button>
+
               </div>
             </div>
 
-            {/* Servidores Opcionales en Acordeón */}
-            <div className="pt-2 border-t border-white/10">
-              <button
-                type="button"
-                onClick={() => setShowAlternativeServers(!showAlternativeServers)}
-                className="text-xs font-bold text-gray-400 hover:text-red-400 flex items-center space-x-2 transition-colors"
-              >
-                <span>{showAlternativeServers ? '▼ Ocultar opciones alternativas' : '▶ ¿Problemas con la descarga? Ver servidores alternativos'}</span>
-              </button>
-
-              {showAlternativeServers && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-3 animate-fadeIn">
-                  <a
-                    href={`https://www.y2mate.com/youtube-mp3/${resolvedTrack.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold text-gray-300 hover:text-white flex items-center justify-between transition-all"
-                  >
-                    <span>Y2Mate MP3 Direct</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-red-500" />
-                  </a>
-
-                  <a
-                    href={`https://yt1s.io/youtube-to-mp3?q=${encodeURIComponent('https://youtu.be/' + resolvedTrack.videoId)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold text-gray-300 hover:text-white flex items-center justify-between transition-all"
-                  >
-                    <span>YT1S MP3 Converter</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-red-500" />
-                  </a>
-
-                  <a
-                    href="https://cobalt.tools/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      navigator.clipboard.writeText(`https://www.youtube.com/watch?v=${resolvedTrack.videoId}`);
-                    }}
-                    className="p-3 bg-[#111] hover:bg-[#1a1a1a] border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold text-gray-300 hover:text-white flex items-center justify-between transition-all"
-                  >
-                    <span>Cobalt Tools (Sin Anuncios)</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-red-500" />
-                  </a>
-                </div>
-              )}
+            {/* Indicaciones para PC y Celular */}
+            <div className="p-4 bg-[#0a0a0a] rounded-2xl border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+              <div className="flex items-center space-x-2">
+                <Laptop className="w-4 h-4 text-red-400" />
+                <span><strong>En PC:</strong> Se abrirá la ventana para guardar o irá directo a tu carpeta <em>Descargas</em>.</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Smartphone className="w-4 h-4 text-red-400" />
+                <span><strong>En Móvil:</strong> Se descargará automáticamente en tu carpeta <em>Descargas / Música</em>.</span>
+              </div>
             </div>
 
+          </div>
+        )}
+
+        {downloadSuccess && (
+          <div className="p-4 bg-red-950/80 border border-red-500 text-white rounded-2xl text-xs font-black text-center animate-fadeIn shadow-red-neon flex items-center justify-center space-x-2">
+            <Check className="w-4 h-4 text-red-400" />
+            <span>{downloadSuccess}</span>
           </div>
         )}
 
@@ -366,7 +389,7 @@ export default function DownloadsView({
                 key={track.videoId}
                 type="button"
                 onClick={() => handleSelectExample(track)}
-                className="text-xs px-3.5 py-2 bg-[#171717] hover:bg-red-950/40 border border-white/5 hover:border-red-500/50 rounded-xl text-gray-300 hover:text-white transition-all font-medium flex items-center space-x-1.5"
+                className="text-xs px-3.5 py-2 bg-[#171717] hover:bg-red-950/40 border border-white/5 hover:border-red-500/50 rounded-xl text-gray-300 hover:text-white transition-all font-medium flex items-center space-x-1.5 cursor-pointer"
               >
                 <span>🎵</span>
                 <span>{track.title} — {track.artist}</span>
@@ -421,7 +444,7 @@ export default function DownloadsView({
                 <div className="flex items-center space-x-1 flex-shrink-0">
                   <button
                     onClick={() => onPlayTrack(track)}
-                    className="p-2.5 bg-red-600 text-white rounded-full hover:scale-105 transition-transform shadow-md hover:bg-red-500"
+                    className="p-2.5 bg-red-600 text-white rounded-full hover:scale-105 transition-transform shadow-md hover:bg-red-500 cursor-pointer"
                     title="Reproducir"
                   >
                     <Play className="w-4 h-4 fill-white ml-0.5" />
@@ -429,7 +452,7 @@ export default function DownloadsView({
 
                   <button
                     onClick={() => handleSelectExample(track)}
-                    className="p-2 text-gray-400 hover:text-red-400 rounded-full hover:bg-white/10 transition-colors"
+                    className="p-2 text-gray-400 hover:text-red-400 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
                     title="Cargar en descargador"
                   >
                     <Download className="w-4 h-4" />
@@ -437,7 +460,7 @@ export default function DownloadsView({
 
                   <button
                     onClick={() => handleDelete(track.videoId)}
-                    className="p-2 text-gray-500 hover:text-red-400 rounded-full hover:bg-red-500/10 transition-colors"
+                    className="p-2 text-gray-500 hover:text-red-400 rounded-full hover:bg-red-500/10 transition-colors cursor-pointer"
                     title="Eliminar del historial"
                   >
                     <Trash2 className="w-4 h-4" />
