@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Play, 
   Pause, 
@@ -41,12 +41,9 @@ export default function Player({
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isVideoPopupOpen, setIsVideoPopupOpen] = useState(false);
 
-  const playerRef = useRef(null);
-
   useEffect(() => {
     setCurrentTime(0);
     setDuration(currentTrack.seconds || 180);
-    setIsPlaying(true);
   }, [currentTrack]);
 
   useEffect(() => {
@@ -100,9 +97,11 @@ export default function Player({
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
+  const fallbackImg = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&auto=format&fit=crop&q=60';
+
   return (
     <>
-      {/* Mini Video / Lyrics Popup */}
+      {/* Mini Video / Lyrics Popup (Only when user explicitly opens it) */}
       {isVideoPopupOpen && (
         <div className="fixed bottom-24 right-2 sm:right-8 z-50 w-[95vw] sm:w-96 bg-[#141414] border border-red-500/40 rounded-3xl shadow-red-neon overflow-hidden animate-fadeIn">
           <div className="flex items-center justify-between p-3.5 bg-[#1a1a1a] border-b border-red-500/20">
@@ -116,7 +115,7 @@ export default function Player({
           </div>
           <div className="aspect-video bg-black">
             <iframe
-              src={`https://www.youtube.com/embed/${currentTrack.videoId}?autoplay=1&enablejsapi=1`}
+              src={`https://www.youtube-nocookie.com/embed/${currentTrack.videoId}?autoplay=1`}
               title={currentTrack.title}
               className="w-full h-full"
               allow="autoplay; encrypted-media"
@@ -150,7 +149,12 @@ export default function Player({
                     isCurrent ? 'bg-red-950/60 border border-red-500/40 text-white' : 'hover:bg-white/5 text-gray-300'
                   }`}
                 >
-                  <img src={t.thumbnail} alt="" className="w-10 h-10 rounded-lg object-cover" />
+                  <img 
+                    src={t.thumbnail} 
+                    onError={(e) => { e.target.src = fallbackImg; }}
+                    alt="" 
+                    className="w-10 h-10 rounded-lg object-cover" 
+                  />
                   <div className="flex-1 min-w-0">
                     <p className={`text-xs font-bold truncate ${isCurrent ? 'text-red-400' : 'text-white'}`}>{t.title}</p>
                     <p className="text-[10px] text-gray-400 truncate">{t.artist}</p>
@@ -163,22 +167,8 @@ export default function Player({
         </div>
       )}
 
-      {/* Responsive Bottom Player Bar */}
+      {/* Responsive Bottom Player Bar (Zero Background Network Spam) */}
       <footer className="fixed bottom-0 left-0 right-0 z-40 bg-[#0d0d0d]/98 border-t border-red-600/30 px-3 sm:px-6 py-2.5 sm:py-3 select-none backdrop-blur-2xl shadow-[0_-5px_30px_rgba(229,9,20,0.25)]">
-        
-        {/* Invisible Audio Bridge */}
-        <div className="w-0 h-0 overflow-hidden opacity-0 absolute pointer-events-none">
-          <iframe
-            ref={playerRef}
-            key={currentTrack.videoId}
-            width="1"
-            height="1"
-            src={`https://www.youtube.com/embed/${currentTrack.videoId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playsinline=1&modestbranding=1&rel=0`}
-            allow="autoplay; encrypted-media"
-            title="audio-stream"
-          />
-        </div>
-
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Left: Track Details */}
@@ -186,6 +176,7 @@ export default function Player({
             <div className="relative group/cover flex-shrink-0 cursor-pointer" onClick={() => setIsVideoPopupOpen(!isVideoPopupOpen)}>
               <img
                 src={currentTrack.thumbnail}
+                onError={(e) => { e.target.src = fallbackImg; }}
                 alt={currentTrack.title}
                 className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl object-cover shadow-lg ring-1 ring-red-600/60 group-hover/cover:brightness-75 transition-all"
               />

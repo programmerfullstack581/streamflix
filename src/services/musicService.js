@@ -28,13 +28,13 @@ export const TOP_ARTISTS = [
 
 export const CURATED_TOP_HITS = [
   {
-    videoId: 'CHuq9r4HJOE',
+    videoId: 'k85mRPqvMbE',
     title: 'Tití Me Preguntó',
     artist: 'Bad Bunny',
     album: 'Un Verano Sin Ti',
     duration: '4:04',
     seconds: 244,
-    thumbnail: 'https://i.ytimg.com/vi/CHuq9r4HJOE/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
     views: '890M',
     genre: 'Reggaetón'
   },
@@ -45,29 +45,29 @@ export const CURATED_TOP_HITS = [
     album: 'Papi Juancho',
     duration: '3:05',
     seconds: 185,
-    thumbnail: 'https://i.ytimg.com/vi/T3Auu0f-Z6M/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&auto=format&fit=crop&q=80',
     views: '1.2B',
     genre: 'Pop Urbano'
   },
   {
-    videoId: 'yU_E3O9q2e0',
+    videoId: 'vla02RzL1uM',
     title: 'LUNA',
     artist: 'Feid ft. ATL Jacob',
     album: 'FERXXOCALIPSIS',
     duration: '3:16',
     seconds: 196,
-    thumbnail: 'https://i.ytimg.com/vi/yU_E3O9q2e0/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=80',
     views: '350M',
     genre: 'Reggaetón'
   },
   {
-    videoId: 'xqeR5F4mRaE',
+    videoId: 'wnJ6LuUFpMo',
     title: 'Mi Gente',
     artist: 'J Balvin, Willy William',
     album: 'Vibras',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/xqeR5F4mRaE/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
     views: '4.5B',
     genre: 'Urbano'
   },
@@ -78,62 +78,62 @@ export const CURATED_TOP_HITS = [
     album: 'MAÑANA SERÁ BONITO',
     duration: '2:52',
     seconds: 172,
-    thumbnail: 'https://i.ytimg.com/vi/739Cvd4fJ5Q/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&auto=format&fit=crop&q=80',
     views: '480M',
     genre: 'Reggaetón'
   },
   {
-    videoId: 'K4DyBUG242c',
+    videoId: 'DiItGE3eAyQ',
     title: 'Con Calma',
     artist: 'Daddy Yankee ft. Snow',
     album: 'Con Calma',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/K4DyBUG242c/hqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=80',
     views: '2.1B',
     genre: 'Reggaetón'
   },
   {
-    videoId: '60ItHLz5WEA',
+    videoId: 'y83x7Wg2f1U',
     title: 'Pepas',
     artist: 'Farruko',
     album: 'La 167',
     duration: '3:17',
     seconds: 197,
-    thumbnail: 'https://i.ytimg.com/vi/60ItHLz5WEA/mqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=500&auto=format&fit=crop&q=80',
     views: '900M',
     genre: 'Guaracha / Dance'
   },
   {
-    videoId: 'mXnRNNiqBrI',
+    videoId: 't_jHrUE5IOk',
     title: 'Felices los 4',
     artist: 'Maluma',
     album: 'F.A.M.E.',
     duration: '3:25',
     seconds: 205,
-    thumbnail: 'https://i.ytimg.com/vi/mXnRNNiqBrI/mqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
     views: '1.8B',
     genre: 'Pop Urbano'
   },
   {
-    videoId: 'kTJczUoc26U',
+    videoId: '7zp1TbLFPp8',
     title: 'Danza Kuduro',
     artist: 'Don Omar ft. Lucenzo',
     album: 'Meet The Orphans',
     duration: '3:41',
     seconds: 221,
-    thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/mqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&auto=format&fit=crop&q=80',
     views: '3.2B',
     genre: 'Mambo / Reggaetón'
   },
   {
-    videoId: '450p7goxZqg',
+    videoId: 'YqeW9_5kURI',
     title: 'Lean On',
     artist: 'Major Lazer ft. MØ & DJ Snake',
     album: 'Peace Is the Mission',
     duration: '2:56',
     seconds: 176,
-    thumbnail: 'https://i.ytimg.com/vi/450p7goxZqg/mqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
     views: '3.2B',
     genre: 'Electronic'
   },
@@ -144,42 +144,9 @@ export const CURATED_TOP_HITS = [
     album: '÷ (Divide)',
     duration: '3:53',
     seconds: 233,
-    thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/mqdefault.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
     views: '6.1B',
     genre: 'Pop'
-  },
-  {
-    videoId: 'RgKAFK5djSk',
-    title: 'See You Again',
-    artist: 'Wiz Khalifa ft. Charlie Puth',
-    album: 'Furious 7',
-    duration: '3:56',
-    seconds: 236,
-    thumbnail: 'https://i.ytimg.com/vi/RgKAFK5djSk/mqdefault.jpg',
-    views: '5.9B',
-    genre: 'Hip Hop / Pop'
-  },
-  {
-    videoId: '4NRXx6U8ABQ',
-    title: 'Blinding Lights',
-    artist: 'The Weeknd',
-    album: 'After Hours',
-    duration: '3:20',
-    seconds: 200,
-    thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/mqdefault.jpg',
-    views: '1.1B',
-    genre: 'Synthwave / Pop'
-  },
-  {
-    videoId: 'JFcgOboQZ08',
-    title: 'lofi hip hop radio - beats to relax/study to',
-    artist: 'Lofi Girl',
-    album: 'Chill Radio',
-    duration: 'LIVE',
-    seconds: 300,
-    thumbnail: 'https://i.ytimg.com/vi/JFcgOboQZ08/mqdefault.jpg',
-    views: '50M',
-    genre: 'Lo-Fi Chill'
   }
 ];
 
