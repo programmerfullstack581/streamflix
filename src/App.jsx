@@ -140,13 +140,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Single-Page Content: Descargador Directo con URL */}
+      {/* Main Single-Page Content: Descargador Directo con URL o Nombre */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-8">
         <DownloadsView
           downloads={downloads}
           onPlayTrack={handlePlayTrack}
           onOpenDownloadModal={handleOpenDownload}
           onRefreshDownloads={handleRefreshDownloads}
+          isPlaying={isPlaying}
         />
       </main>
 

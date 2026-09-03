@@ -22,69 +22,97 @@ import {
   CheckCircle2,
   Layers,
   Smartphone,
-  Laptop
+  Laptop,
+  Scissors,
+  Mic2,
+  Share2,
+  ListPlus
 } from 'lucide-react';
 import { 
   MusicStorage, 
   extractVideoId, 
   getTrackDetailsById,
+  searchMusicOnline,
   CURATED_TOP_HITS 
 } from '../services/musicService';
+import AudioVisualizer from './AudioVisualizer';
+import RingtoneModal from './RingtoneModal';
+import LyricsModal from './LyricsModal';
+import ShareModal from './ShareModal';
 
 export default function DownloadsView({
   downloads = [],
   onPlayTrack,
   onOpenDownloadModal,
-  onRefreshDownloads
+  onRefreshDownloads,
+  isPlaying = false
 }) {
   const [urlInput, setUrlInput] = useState('');
   const [isResolving, setIsResolving] = useState(false);
   const [resolvedTrack, setResolvedTrack] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchMode, setSearchMode] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Analizar enlace URL y resolver canción real con validación estricta
-  const handleAnalyzeUrl = async (e) => {
+  // Modales adicionales
+  const [ringtoneTrack, setRingtoneTrack] = useState(null);
+  const [lyricsTrack, setLyricsTrack] = useState(null);
+  const [shareTrack, setShareTrack] = useState(null);
+
+  // Analizar enlace URL o buscar por Nombre
+  const handleAnalyzeOrSearch = async (e) => {
     if (e) e.preventDefault();
     const cleanInput = urlInput.trim();
     if (!cleanInput) {
-      setErrorMessage('⚠️ Por favor ingresa o pega un enlace de YouTube o video musical.');
+      setErrorMessage('⚠️ Ingresa el nombre de una canción/artista o pega un enlace de YouTube.');
       setResolvedTrack(null);
-      return;
-    }
-
-    // 1. Extraer videoId de la URL
-    const videoId = extractVideoId(cleanInput);
-
-    // 2. Validar que tenga formato de URL o video ID válido
-    const isUrl = /^(https?:\/\/|www\.|youtu\.be|youtube\.com)/i.test(cleanInput);
-
-    if (!videoId || (!isUrl && cleanInput.length !== 11)) {
-      setErrorMessage('⚠️ Enlace no válido. Debes pegar una URL real de YouTube (ej: https://youtu.be/... o https://www.youtube.com/watch?v=...)');
-      setResolvedTrack(null);
+      setSearchResults([]);
       return;
     }
 
     setErrorMessage('');
     setIsResolving(true);
     setResolvedTrack(null);
+    setSearchResults([]);
 
-    const details = await getTrackDetailsById(videoId);
-    if (details) {
-      setResolvedTrack(details);
+    const videoId = extractVideoId(cleanInput);
+    const isUrl = /^(https?:\/\/|www\.|youtu\.be|youtube\.com)/i.test(cleanInput);
+
+    // Si es un enlace de YouTube directo
+    if (videoId || isUrl) {
+      setSearchMode(false);
+      const targetId = videoId || extractVideoId(cleanInput);
+      if (targetId) {
+        const details = await getTrackDetailsById(targetId);
+        if (details) {
+          setResolvedTrack(details);
+          setIsResolving(false);
+          MusicStorage.recordDownload(details, `MP3 (320 kbps)`);
+          if (onRefreshDownloads) onRefreshDownloads();
+          return;
+        }
+      }
       setIsResolving(false);
-      MusicStorage.recordDownload(details, `MP3 (320 kbps)`);
-      if (onRefreshDownloads) onRefreshDownloads();
+      setErrorMessage('❌ No se pudo encontrar el video con esa URL. Verifica que sea público.');
+      return;
+    }
+
+    // Si no es URL, es una BÚSQUEDA POR NOMBRE
+    setSearchMode(true);
+    const results = await searchMusicOnline(cleanInput);
+    setIsResolving(false);
+    if (results && results.length > 0) {
+      setSearchResults(results);
     } else {
-      setIsResolving(false);
-      setErrorMessage('❌ No se pudo encontrar el video con esa URL. Verifica que el enlace sea público y válido.');
+      setErrorMessage(`❌ No se encontraron canciones para "${cleanInput}". Intenta con otro término.`);
     }
   };
 
-  const handleSelectExample = async (track) => {
-    setUrlInput(`https://www.youtube.com/watch?v=${track.videoId}`);
+  const handleSelectTrack = (track) => {
     setResolvedTrack(track);
+    setUrlInput(`https://www.youtube.com/watch?v=${track.videoId}`);
     MusicStorage.recordDownload(track, 'MP3 (320 kbps)');
     if (onRefreshDownloads) onRefreshDownloads();
   };
@@ -125,35 +153,41 @@ export default function DownloadsView({
   return (
     <div className="space-y-6 sm:space-y-8 pb-32 animate-fadeIn w-full overflow-x-hidden">
       
-      {/* Header Banner Red Edition - Fully Responsive */}
+      {/* Header Banner Red Edition */}
       <div className="p-5 sm:p-8 md:p-10 bg-gradient-to-r from-red-950 via-[#141414] to-black rounded-2xl sm:rounded-3xl border border-red-600/30 shadow-red-neon relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
         
         <div className="relative z-10 max-w-3xl space-y-3 sm:space-y-4">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 bg-red-600/20 border border-red-500/40 rounded-full">
-            <Zap className="w-4 h-4 text-red-500 animate-bounce" />
-            <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-red-400">
-              Descargador MP3 100% Funcional
-            </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-red-600/20 border border-red-500/40 rounded-full">
+              <Zap className="w-4 h-4 text-red-500 animate-bounce" />
+              <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-red-400">
+                Descargador & Buscador MP3 Pro
+              </span>
+            </div>
+            
+            <div className="hidden sm:block">
+              <AudioVisualizer isPlaying={isPlaying} />
+            </div>
           </div>
 
           <h1 className="text-xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Descargar Música con URL en <span className="text-[#E50914] underline decoration-red-600">MP3 Directo</span>
+            Descargar Música con <span className="text-[#E50914] underline decoration-red-600">Nombre o URL</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Pega el enlace de <strong className="text-white">YouTube, TikTok o Video</strong> y descárgalo directamente a tu <strong className="text-white">PC o Teléfono Celular</strong> en formato <strong className="text-red-400">MP3 320 kbps</strong>.
+            Busca cualquier canción por su <strong className="text-white">Nombre o Artista</strong> o pega su enlace de <strong className="text-white">YouTube</strong> y descárgalo directamente en <strong className="text-red-400">MP3 320 kbps</strong> a tu PC o Teléfono Celular.
           </p>
         </div>
       </div>
 
-      {/* Apartado Principal: Input de URL para descarga directa */}
+      {/* Apartado Principal: Input Híbrido (Búsqueda por Nombre o Enlace URL) */}
       <div className="bg-[#121212] p-4 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-red-600/30 shadow-2xl space-y-5">
         
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <h2 className="text-sm sm:text-base md:text-lg font-black text-white flex items-center space-x-2">
-            <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914]" />
-            <span>Pega la URL de la Canción o Video:</span>
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914]" />
+            <span>Escribe el Nombre de la Canción o pega la URL:</span>
           </h2>
           <button
             type="button"
@@ -164,11 +198,11 @@ export default function DownloadsView({
           </button>
         </div>
 
-        <form onSubmit={handleAnalyzeUrl} className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+        <form onSubmit={handleAnalyzeOrSearch} className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Pega aquí: https://youtu.be/... o enlace de YouTube"
+              placeholder="Ej: Martin Elias Cancelada, Karol G Provenza, o https://youtu.be/..."
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               className="w-full bg-[#0a0a0a] border border-white/10 focus:border-[#E50914] text-white placeholder-gray-500 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-4 pr-10 text-xs sm:text-sm font-medium outline-none transition-all shadow-inner focus:ring-1 focus:ring-[#E50914]"
@@ -176,7 +210,7 @@ export default function DownloadsView({
             {urlInput && (
               <button
                 type="button"
-                onClick={() => { setUrlInput(''); setResolvedTrack(null); }}
+                onClick={() => { setUrlInput(''); setResolvedTrack(null); setSearchResults([]); }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 text-xs"
               >
                 ✕
@@ -192,12 +226,12 @@ export default function DownloadsView({
             {isResolving ? (
               <>
                 <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                <span>Analizando Canción...</span>
+                <span>Buscando...</span>
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-white" />
-                <span>GENERAR DESCARGA</span>
+                <span>BUSCAR / DESCARGAR</span>
               </>
             )}
           </button>
@@ -207,6 +241,51 @@ export default function DownloadsView({
           <div className="p-3 bg-red-950/40 border border-red-600/40 rounded-xl flex items-center space-x-2 text-xs text-red-300">
             <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
             <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {/* Resultados de Búsqueda por Nombre (Grid Interactivo) */}
+        {searchResults.length > 0 && !resolvedTrack && (
+          <div className="space-y-4 pt-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center space-x-2">
+              <Music className="w-4 h-4 text-red-500" />
+              <span>Resultados encontrados ({searchResults.length}) — Toca para descargar:</span>
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[450px] overflow-y-auto pr-1">
+              {searchResults.map((track) => (
+                <div
+                  key={track.videoId}
+                  className="p-3.5 bg-[#171717] hover:bg-[#202020] rounded-2xl border border-white/5 hover:border-red-500/40 transition-all flex items-center space-x-3 group shadow-md"
+                >
+                  <img src={track.thumbnail} alt="" className="w-14 h-14 rounded-xl object-cover flex-shrink-0 shadow ring-1 ring-white/10" />
+                  
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs sm:text-sm font-bold text-white truncate">{track.title}</h4>
+                    <p className="text-[11px] text-gray-400 truncate">{track.artist}</p>
+                    <span className="text-[10px] text-red-400 font-mono font-bold mt-1 block">{track.duration}</span>
+                  </div>
+
+                  <div className="flex items-center space-x-1.5 flex-shrink-0">
+                    <button
+                      onClick={() => onPlayTrack(track)}
+                      className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+                      title="Escuchar"
+                    >
+                      <Play className="w-4 h-4 fill-white" />
+                    </button>
+                    <button
+                      onClick={() => handleSelectTrack(track)}
+                      className="px-3 py-2 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white font-black text-xs rounded-xl shadow-red-neon transition-transform hover:scale-105 flex items-center space-x-1"
+                      title="Descargar MP3"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Descargar</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -234,6 +313,33 @@ export default function DownloadsView({
                 <h3 className="text-sm sm:text-xl md:text-2xl font-black text-white truncate">{resolvedTrack.title}</h3>
                 <p className="text-xs sm:text-sm text-gray-300 font-medium">{resolvedTrack.artist}</p>
                 <p className="text-[11px] sm:text-xs text-gray-500 font-mono">Formato de salida: Audio MP3 Estéreo HD</p>
+                
+                {/* Herramientas Rápidas (Ringtone, Letras, Compartir) */}
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                  <button
+                    onClick={() => setRingtoneTrack(resolvedTrack)}
+                    className="px-2.5 py-1 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 rounded-lg text-xs font-bold transition-all flex items-center space-x-1"
+                  >
+                    <Scissors className="w-3.5 h-3.5" />
+                    <span>Crear Ringtone</span>
+                  </button>
+
+                  <button
+                    onClick={() => setLyricsTrack(resolvedTrack)}
+                    className="px-2.5 py-1 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 rounded-lg text-xs font-bold transition-all flex items-center space-x-1"
+                  >
+                    <Mic2 className="w-3.5 h-3.5" />
+                    <span>Ver Letra</span>
+                  </button>
+
+                  <button
+                    onClick={() => setShareTrack(resolvedTrack)}
+                    className="px-2.5 py-1 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 rounded-lg text-xs font-bold transition-all flex items-center space-x-1"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Compartir</span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
@@ -380,11 +486,11 @@ export default function DownloadsView({
             O prueba con una canción popular haciendo clic:
           </p>
           <div className="flex flex-wrap gap-2">
-            {CURATED_TOP_HITS.slice(0, 6).map((track) => (
+            {CURATED_TOP_HITS.slice(0, 8).map((track) => (
               <button
                 key={track.videoId}
                 type="button"
-                onClick={() => handleSelectExample(track)}
+                onClick={() => handleSelectTrack(track)}
                 className="text-xs px-3 py-1.5 sm:px-3.5 sm:py-2 bg-[#171717] hover:bg-red-950/40 border border-white/5 hover:border-red-500/50 rounded-xl text-gray-300 hover:text-white transition-all font-medium flex items-center space-x-1.5 cursor-pointer"
               >
                 <span>🎵</span>
@@ -410,7 +516,7 @@ export default function DownloadsView({
             <Download className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-gray-700" />
             <h3 className="text-sm sm:text-base font-bold text-white">No tienes descargas registradas todavía</h3>
             <p className="text-xs max-w-md mx-auto">
-              Pega cualquier enlace arriba o haz clic en cualquier canción de ejemplo para iniciar tu descarga.
+              Escribe el nombre de cualquier canción arriba o pega un enlace para iniciar tu descarga.
             </p>
           </div>
         ) : (
@@ -447,7 +553,7 @@ export default function DownloadsView({
                   </button>
 
                   <button
-                    onClick={() => handleSelectExample(track)}
+                    onClick={() => handleSelectTrack(track)}
                     className="p-2 text-gray-400 hover:text-red-400 rounded-full hover:bg-white/10 transition-colors cursor-pointer"
                     title="Cargar en descargador"
                   >
@@ -467,6 +573,19 @@ export default function DownloadsView({
           </div>
         )}
       </div>
+
+      {/* Modales extras */}
+      {ringtoneTrack && (
+        <RingtoneModal track={ringtoneTrack} onClose={() => setRingtoneTrack(null)} />
+      )}
+
+      {lyricsTrack && (
+        <LyricsModal track={lyricsTrack} onClose={() => setLyricsTrack(null)} />
+      )}
+
+      {shareTrack && (
+        <ShareModal track={shareTrack} onClose={() => setShareTrack(null)} />
+      )}
 
     </div>
   );
