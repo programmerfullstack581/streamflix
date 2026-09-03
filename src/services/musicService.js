@@ -350,6 +350,14 @@ export async function searchMusicOnline(query) {
 }
 
 // ── Storage Local (Liked Songs, Custom Playlists, Descargas) ───────────────────
+// Helper para validar si un texto o enlace es una URL de música/video válida
+export function isValidMusicUrl(urlOrQuery) {
+  if (!urlOrQuery || typeof urlOrQuery !== 'string') return false;
+  const str = urlOrQuery.trim();
+  const videoId = extractVideoId(str);
+  return videoId !== null;
+}
+
 export const MusicStorage = {
   getLikedTracks() {
     try {
@@ -397,13 +405,16 @@ export const MusicStorage = {
 
   getDownloads() {
     try {
-      return JSON.parse(localStorage.getItem('redstream_downloads') || '[]');
+      const items = JSON.parse(localStorage.getItem('redstream_downloads') || '[]');
+      // Filtrar descargas inválidas o mocks viejos
+      return items.filter(t => t && t.videoId && !t.videoId.startsWith('custom_') && t.artist !== 'Audio Enlace Web');
     } catch {
       return [];
     }
   },
 
   recordDownload(track, format = 'MP3 (320 kbps)') {
+    if (!track || !track.videoId || track.videoId.startsWith('custom_')) return this.getDownloads();
     const current = this.getDownloads();
     const newEntry = {
       ...track,

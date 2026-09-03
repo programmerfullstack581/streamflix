@@ -44,11 +44,25 @@ export default function DownloadsView({
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Analizar enlace URL y resolver canción real
+  // Analizar enlace URL y resolver canción real con validación estricta
   const handleAnalyzeUrl = async (e) => {
     if (e) e.preventDefault();
-    if (!urlInput.trim()) {
-      setErrorMessage('Por favor ingresa o pega un enlace de YouTube, TikTok o video musical.');
+    const cleanInput = urlInput.trim();
+    if (!cleanInput) {
+      setErrorMessage('⚠️ Por favor ingresa o pega un enlace de YouTube o video musical.');
+      setResolvedTrack(null);
+      return;
+    }
+
+    // 1. Extraer videoId de la URL
+    const videoId = extractVideoId(cleanInput);
+
+    // 2. Validar que tenga formato de URL o video ID válido
+    const isUrl = /^(https?:\/\/|www\.|youtu\.be|youtube\.com)/i.test(cleanInput);
+
+    if (!videoId || (!isUrl && cleanInput.length !== 11)) {
+      setErrorMessage('⚠️ Enlace no válido. Debes pegar una URL real de YouTube (ej: https://youtu.be/... o https://www.youtube.com/watch?v=...)');
+      setResolvedTrack(null);
       return;
     }
 
@@ -56,28 +70,15 @@ export default function DownloadsView({
     setIsResolving(true);
     setResolvedTrack(null);
 
-    const videoId = extractVideoId(urlInput);
-
-    if (videoId) {
-      const details = await getTrackDetailsById(videoId);
+    const details = await getTrackDetailsById(videoId);
+    if (details) {
       setResolvedTrack(details);
       setIsResolving(false);
       MusicStorage.recordDownload(details, `MP3 (320 kbps)`);
       if (onRefreshDownloads) onRefreshDownloads();
     } else {
-      const searchUrl = urlInput.trim();
-      const mockTrack = {
-        videoId: 'custom_' + Date.now(),
-        title: searchUrl.length > 50 ? searchUrl.substring(0, 50) + '...' : searchUrl,
-        artist: 'Audio Enlace Web',
-        album: 'MP3 Descarga',
-        duration: '3:30',
-        thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60'
-      };
-      setResolvedTrack(mockTrack);
       setIsResolving(false);
-      MusicStorage.recordDownload(mockTrack, 'MP3 (320 kbps)');
-      if (onRefreshDownloads) onRefreshDownloads();
+      setErrorMessage('❌ No se pudo encontrar el video con esa URL. Verifica que el enlace sea público y válido.');
     }
   };
 
