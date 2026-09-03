@@ -1,0 +1,17 @@
+{
+  "short_name": "StreamFlix",
+  "name": "StreamFlix PRO — Películas & TV en Vivo",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23E50914'><path d='M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z'/></svg>",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#141414",
+  "theme_color": "#E50914",
+  "display": "standalone",
+  "orientation": "any",
+  "description": "Plataforma de streaming de películas reales y televisión en vivo de Colombia y el mundo."
+}
