@@ -34,7 +34,7 @@ export const CURATED_TOP_HITS = [
     album: 'Un Verano Sin Ti',
     duration: '4:04',
     seconds: 244,
-    thumbnail: 'https://i.ytimg.com/vi/CHuq9r4HJOE/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/CHuq9r4HJOE/hqdefault.jpg',
     views: '890M',
     genre: 'Reggaetón'
   },
@@ -45,7 +45,7 @@ export const CURATED_TOP_HITS = [
     album: 'Papi Juancho',
     duration: '3:05',
     seconds: 185,
-    thumbnail: 'https://i.ytimg.com/vi/T3Auu0f-Z6M/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/T3Auu0f-Z6M/hqdefault.jpg',
     views: '1.2B',
     genre: 'Pop Urbano'
   },
@@ -56,7 +56,7 @@ export const CURATED_TOP_HITS = [
     album: 'FERXXOCALIPSIS',
     duration: '3:16',
     seconds: 196,
-    thumbnail: 'https://i.ytimg.com/vi/yU_E3O9q2e0/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/yU_E3O9q2e0/hqdefault.jpg',
     views: '350M',
     genre: 'Reggaetón'
   },
@@ -67,7 +67,7 @@ export const CURATED_TOP_HITS = [
     album: 'Vibras',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/xqeR5F4mRaE/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/xqeR5F4mRaE/hqdefault.jpg',
     views: '4.5B',
     genre: 'Urbano'
   },
@@ -78,7 +78,7 @@ export const CURATED_TOP_HITS = [
     album: 'MAÑANA SERÁ BONITO',
     duration: '2:52',
     seconds: 172,
-    thumbnail: 'https://i.ytimg.com/vi/739Cvd4fJ5Q/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/739Cvd4fJ5Q/hqdefault.jpg',
     views: '480M',
     genre: 'Reggaetón'
   },
@@ -89,7 +89,7 @@ export const CURATED_TOP_HITS = [
     album: 'Con Calma',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/K4DyBUG242c/mqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/K4DyBUG242c/hqdefault.jpg',
     views: '2.1B',
     genre: 'Reggaetón'
   },

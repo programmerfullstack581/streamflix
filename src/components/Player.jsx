@@ -173,7 +173,7 @@ export default function Player({
             key={currentTrack.videoId}
             width="1"
             height="1"
-            src={`https://www.youtube.com/embed/${currentTrack.videoId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1`}
+            src={`https://www.youtube.com/embed/${currentTrack.videoId}?autoplay=${isPlaying ? 1 : 0}&mute=${isMuted ? 1 : 0}&controls=0&loop=1&playsinline=1&modestbranding=1&rel=0`}
             allow="autoplay; encrypted-media"
             title="audio-stream"
           />
