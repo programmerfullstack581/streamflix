@@ -7,16 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        netflix: {
-          red: '#E50914',
-          dark: '#141414',
+        spotify: {
+          green: '#1DB954',
+          'green-bright': '#1ed760',
+          black: '#121212',
+          dark: '#000000',
+          base: '#121212',
           card: '#181818',
           hover: '#282828',
-          gray: '#808080'
+          subdued: '#a7a7a7',
+          highlight: '#333333'
         }
       },
       fontFamily: {
-        sans: ['Netflix Sans', 'Helvetica Neue', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['CircularSp', 'Circular', '-apple-system', 'BlinkMacSystemFont', 'Roboto', 'Helvetica Neue', 'sans-serif'],
       }
     },
   },
