@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import DownloadsView from './components/DownloadsView';
-import Player from './components/Player';
 import DownloadModal from './components/DownloadModal';
 import { 
   MusicStorage, 
@@ -9,28 +8,22 @@ import {
 import { 
   Radio, 
   Smartphone, 
-  Sparkles, 
   Zap,
-  HardDrive
+  HardDrive,
+  FileAudio,
+  Film
 } from 'lucide-react';
 
 export default function App() {
-  // Audio state
-  const [currentTrack, setCurrentTrack] = useState(CURATED_TOP_HITS[0]);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [queue, setQueue] = useState(CURATED_TOP_HITS);
-  
   // Download Modal state
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
 
   // Storage states
-  const [likedTracks, setLikedTracks] = useState([]);
   const [downloads, setDownloads] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
-    setLikedTracks(MusicStorage.getLikedTracks());
     setDownloads(MusicStorage.getDownloads());
 
     const handlePrompt = (e) => {
@@ -55,38 +48,6 @@ export default function App() {
     }
   };
 
-  const handlePlayTrack = (track) => {
-    setCurrentTrack(track);
-    setIsPlaying(true);
-  };
-
-  const handleNextTrack = (isShuffle = false) => {
-    if (!queue || queue.length === 0) return;
-    if (isShuffle) {
-      const randomIdx = Math.floor(Math.random() * queue.length);
-      setCurrentTrack(queue[randomIdx]);
-    } else {
-      const idx = queue.findIndex(t => t.videoId === currentTrack.videoId);
-      const nextIdx = (idx + 1) % queue.length;
-      setCurrentTrack(queue[nextIdx]);
-    }
-    setIsPlaying(true);
-  };
-
-  const handlePrevTrack = () => {
-    if (!queue || queue.length === 0) return;
-    const idx = queue.findIndex(t => t.videoId === currentTrack.videoId);
-    const prevIdx = (idx - 1 + queue.length) % queue.length;
-    setCurrentTrack(queue[prevIdx]);
-    setIsPlaying(true);
-  };
-
-  const handleToggleLike = (track) => {
-    const { updated, isLiked } = MusicStorage.toggleLikeTrack(track);
-    setLikedTracks(updated);
-    showToast(isLiked ? '❤️ Canción guardada en favoritos' : 'Eliminada de favoritos');
-  };
-
   const handleOpenDownload = (track) => {
     setDownloadModalTrack(track);
   };
@@ -94,8 +55,6 @@ export default function App() {
   const handleRefreshDownloads = () => {
     setDownloads(MusicStorage.getDownloads());
   };
-
-  const likedTrackIds = likedTracks.map(t => t.videoId);
 
   return (
     <div className="min-h-screen bg-[#070707] text-white flex flex-col font-sans selection:bg-red-600 selection:text-white">
@@ -115,7 +74,7 @@ export default function App() {
                 <span className="text-xl font-black text-red-600 tracking-tight">BEAT</span>
               </div>
               <span className="text-[9px] font-black uppercase tracking-widest text-red-400 bg-red-600/20 px-2 py-0.2 rounded-full border border-red-500/40">
-                DESCARGADOR MP3 RED EDITION
+                DESCARGADOR DE AUDIO (MP3) & VIDEO (MP4)
               </span>
             </div>
           </div>
@@ -129,8 +88,8 @@ export default function App() {
 
             <button
               onClick={handleInstallApp}
-              className="flex items-center space-x-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all border border-white/10"
-              title="Instalar App en tu dispositivo"
+              className="flex items-center space-x-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all border border-white/10 cursor-pointer"
+              title="Instalar App en tu celular o PC"
             >
               <Smartphone className="w-3.5 h-3.5 text-red-400" />
               <span>Instalar App</span>
@@ -140,30 +99,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Single-Page Content: Descargador Directo con URL o Nombre */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-8">
+      {/* Main Single-Page Content: Descargador de Audio y Video */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 sm:py-8 pb-20">
         <DownloadsView
           downloads={downloads}
-          onPlayTrack={handlePlayTrack}
           onOpenDownloadModal={handleOpenDownload}
           onRefreshDownloads={handleRefreshDownloads}
-          isPlaying={isPlaying}
         />
       </main>
-
-      {/* Persistent Bottom Player Bar */}
-      <Player
-        currentTrack={currentTrack}
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        onNext={handleNextTrack}
-        onPrev={handlePrevTrack}
-        onToggleLike={handleToggleLike}
-        isLiked={likedTrackIds.includes(currentTrack?.videoId)}
-        onOpenDownload={handleOpenDownload}
-        queue={queue}
-        onSelectQueueTrack={handlePlayTrack}
-      />
 
       {/* Multi-Format Download Modal */}
       {downloadModalTrack && (
@@ -176,7 +119,7 @@ export default function App() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white font-black px-5 py-3 rounded-full shadow-red-neon flex items-center space-x-2 animate-fadeIn border border-white/20">
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-red-600 text-white font-black px-5 py-3 rounded-full shadow-red-neon flex items-center space-x-2 animate-fadeIn border border-white/20">
           <Zap className="w-4 h-4 fill-white" />
           <span className="text-xs sm:text-sm">{toastMessage}</span>
         </div>
