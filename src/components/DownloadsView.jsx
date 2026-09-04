@@ -200,12 +200,11 @@ export default function DownloadsView({
         setDownloadSuccess(`⬇️ Descargando "${track.title}"...`);
 
         // ══════════════════════════════════════════════════════════
-        // EN PC (Chrome, Edge): Abrir explorador de archivos
-        // para que el usuario elija DÓNDE guardar el archivo
+        // 1. EN PC (Chrome, Edge, Brave): Explorador "Guardar como..."
         // ══════════════════════════════════════════════════════════
         if ('showSaveFilePicker' in window) {
           try {
-            // Abrir diálogo nativo "Guardar como..." del explorador de archivos
+            // Abrir diálogo nativo "Guardar como..." de Windows / Mac
             const fileHandle = await window.showSaveFilePicker({
               suggestedName: finalFilename,
               types: [{
@@ -214,53 +213,56 @@ export default function DownloadsView({
               }]
             });
 
-            setDownloadSuccess(`📥 Descargando archivo a la ubicación seleccionada...`);
+            setDownloadSuccess(`📥 Guardando "${track.title}" en la carpeta seleccionada...`);
 
-            // Descargar el archivo a través de nuestro proxy (evita errores CORS)
-            const streamUrl = `/api/stream?url=${encodeURIComponent(data.downloadUrl)}&filename=${encodeURIComponent(finalFilename)}&format=${formatType}`;
-            const fileResponse = await fetch(streamUrl);
+            // Descargar el archivo directamente desde la URL de conversión (CORS abierto)
+            const fileResponse = await fetch(data.downloadUrl, {
+              headers: { 'Accept': '*/*' }
+            });
 
-            if (!fileResponse.ok) throw new Error('Stream failed');
+            if (!fileResponse.ok) throw new Error('Download stream failed');
 
             const blob = await fileResponse.blob();
 
-            // Escribir el archivo en la ubicación elegida por el usuario
+            // Escribir el archivo físico directamente en la ruta elegida por el usuario
             const writable = await fileHandle.createWritable();
             await writable.write(blob);
             await writable.close();
 
-            setDownloadSuccess(`✅ ¡"${track.title}" guardado exitosamente en la ubicación que elegiste!`);
+            setDownloadSuccess(`✅ ¡"${finalFilename}" se guardó correctamente en tu carpeta!`);
             setDownloadingId(null);
             setTimeout(() => setDownloadSuccess(''), 10000);
             return;
 
           } catch (pickerErr) {
-            // Si el usuario canceló el diálogo, no hacer nada
             if (pickerErr.name === 'AbortError') {
+              // El usuario canceló el diálogo voluntariamente
               setDownloadingId(null);
               setDownloadSuccess('');
               return;
             }
-            // Si showSaveFilePicker falla por otro motivo, usar fallback
-            console.warn('File picker failed, using fallback:', pickerErr.message);
+            console.warn('File picker fallback triggered:', pickerErr.message);
           }
         }
 
         // ══════════════════════════════════════════════════════════
-        // FALLBACK (Móvil / Firefox / Safari): Descarga directa
-        // Se guarda automáticamente en la carpeta Descargas
+        // 2. DESCARGA NATIVA DIRECTA (Móvil / Fallback PC)
         // ══════════════════════════════════════════════════════════
-        const streamUrl = `/api/stream?url=${encodeURIComponent(data.downloadUrl)}&filename=${encodeURIComponent(finalFilename)}&format=${formatType}`;
-        
+        setDownloadSuccess(`⬇️ Descargando "${finalFilename}"...`);
+
         const link = document.createElement('a');
-        link.href = streamUrl;
+        link.href = data.downloadUrl;
         link.download = finalFilename;
+        link.target = '_self';
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
-        setTimeout(() => document.body.removeChild(link), 2000);
 
-        setDownloadSuccess(`✅ ¡"${track.title}" descargado! Revisa tu carpeta de Descargas.`);
+        setTimeout(() => {
+          document.body.removeChild(link);
+        }, 2000);
+
+        setDownloadSuccess(`✅ ¡Descarga iniciada! El archivo se guardó en tu carpeta de Descargas.`);
         setDownloadingId(null);
         setTimeout(() => setDownloadSuccess(''), 10000);
         return;
