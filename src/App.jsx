@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DownloadsView from './components/DownloadsView';
 import DownloadModal from './components/DownloadModal';
+import InstallModal from './components/InstallModal';
 import { 
   MusicStorage, 
   CURATED_TOP_HITS 
@@ -17,6 +18,7 @@ import {
 export default function App() {
   // Download Modal state
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
 
   // Storage states
   const [downloads, setDownloads] = useState([]);
@@ -40,11 +42,16 @@ export default function App() {
   };
 
   const handleInstallApp = () => {
+    setIsInstallModalOpen(true);
+  };
+
+  const handleDirectInstall = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => setDeferredPrompt(null));
-    } else {
-      alert('Para instalar StreamBeat como App en tu teléfono o PC, abre el menú de tu navegador y selecciona "Instalar aplicación" o "Agregar a pantalla principal".');
+      deferredPrompt.userChoice.then(() => {
+        setDeferredPrompt(null);
+        setIsInstallModalOpen(false);
+      });
     }
   };
 
@@ -116,6 +123,14 @@ export default function App() {
           onDownloadRecorded={handleRefreshDownloads}
         />
       )}
+
+      {/* PWA Install Modal */}
+      <InstallModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        deferredPrompt={deferredPrompt}
+        onDirectInstall={handleDirectInstall}
+      />
 
       {/* Toast Notification */}
       {toastMessage && (
