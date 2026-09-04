@@ -12,15 +12,13 @@
 
 ## 📸 Galería y Capturas de Pantalla
 
-> *A continuación se presentan las vistas principales de la aplicación. Puedes reemplazar las rutas con tus capturas locales o remotas.*
+### 🖥️ Interfaz Principal - Descargador de Audio y Video
+![Vista Principal del Descargador](./docs/images/screenshot-home.png)
 
-| 🖥️ Vista Principal / Descargador | 📱 Modal de Descarga Multiformato |
-| :---: | :---: |
-| ![Vista Principal](./public/screenshot-home.png) | ![Modal de Descarga](./public/screenshot-download.png) |
-
-| 📲 Instalación PWA (Móvil / Desktop) | 📂 Historial de Descargas Guardadas |
-| :---: | :---: |
-| ![Instalación PWA](./public/screenshot-install.png) | ![Historial de Descargas](./public/screenshot-downloads.png) |
+### 📲 Modal de Instalación PWA (Multiplataforma)
+<p align="center">
+  <img src="./docs/images/screenshot-install.png" alt="Instalación PWA StreamBeat" width="500"/>
+</p>
 
 ---
 
