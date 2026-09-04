@@ -101,6 +101,16 @@ export default function Player({
 
   return (
     <>
+      {/* Background YouTube Audio Streamer (Reproducción Continua de Audio) */}
+      {isPlaying && !isVideoPopupOpen && (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${currentTrack.videoId}?autoplay=1`}
+          className="w-0 h-0 opacity-0 pointer-events-none absolute"
+          allow="autoplay"
+          title="youtube-audio-stream"
+        />
+      )}
+
       {/* Mini Video / Lyrics Popup (Only when user explicitly opens it) */}
       {isVideoPopupOpen && (
         <div className="fixed bottom-24 right-2 sm:right-8 z-50 w-[95vw] sm:w-96 bg-[#141414] border border-red-500/40 rounded-3xl shadow-red-neon overflow-hidden animate-fadeIn">
