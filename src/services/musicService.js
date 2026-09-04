@@ -348,33 +348,13 @@ export async function getPlaylistTracks(playlistId) {
   return null;
 }
 export async function getTrackDetailsById(videoId) {
-  // 1. Intento con noembed.com (CORS libre, ultra rápido y confiable)
-  try {
-    const noembedRes = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal: AbortSignal.timeout(3500) });
-    if (noembedRes.ok) {
-      const data = await noembedRes.json();
-      if (data && data.title && !data.error) {
-        return {
-          videoId: videoId,
-          title: data.title,
-          artist: data.author_name || 'Artista Oficial',
-          album: 'MP3 HD 320kbps',
-          duration: '3:30',
-          seconds: 210,
-          thumbnail: data.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-          views: 'HD'
-        };
-      }
-    }
-  } catch (_) {}
-
-  // 2. Intento con instancias Invidious
+  // 1. Intento con instancias Invidious / Piped para obtener duración y metadatos exactos
   const instances = [
     'https://inv.nadeko.net',
     'https://invidious.nerdvpn.de',
+    'https://vid.priv.au',
     'https://invidious.privacyredirect.com',
-    'https://invidious.jing.rocks',
-    'https://vid.priv.au'
+    'https://invidious.jing.rocks'
   ];
 
   for (const base of instances) {
@@ -385,18 +365,19 @@ export async function getTrackDetailsById(videoId) {
       const v = await res.json();
       if (!v || !v.title) continue;
 
-      const sec = v.lengthSeconds || 180;
+      const sec = v.lengthSeconds || (v.duration ? parseInt(v.duration, 10) : 0);
       const mins = Math.floor(sec / 60);
       const remaining = String(sec % 60).padStart(2, '0');
+      const durationFormatted = sec > 0 ? `${mins}:${remaining}` : 'YouTube';
 
       return {
         videoId: v.videoId || videoId,
         title: v.title,
-        artist: v.author || 'Artista Oficial',
-        album: 'Audio / Official',
-        duration: `${mins}:${remaining}`,
-        seconds: sec,
-        thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+        artist: v.author || 'Canal Oficial',
+        album: 'YouTube Music',
+        duration: durationFormatted,
+        seconds: sec || 210,
+        thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
         views: v.viewCount ? (v.viewCount > 1e6 ? (v.viewCount / 1e6).toFixed(1) + 'M' : String(v.viewCount)) : 'Oficial',
       };
     } catch (_) {
@@ -404,15 +385,35 @@ export async function getTrackDetailsById(videoId) {
     }
   }
 
+  // 2. Intento con noembed.com
+  try {
+    const noembedRes = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal: AbortSignal.timeout(3500) });
+    if (noembedRes.ok) {
+      const data = await noembedRes.json();
+      if (data && data.title && !data.error) {
+        return {
+          videoId: videoId,
+          title: data.title,
+          artist: data.author_name || 'Artista Oficial',
+          album: 'YouTube Music',
+          duration: 'YouTube Video',
+          seconds: 210,
+          thumbnail: data.thumbnail_url || `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+          views: 'HD'
+        };
+      }
+    }
+  } catch (_) {}
+
   // Fallback
   return {
     videoId: videoId,
-    title: 'Canción Enlace Directo',
-    artist: 'Audio Oficial',
-    album: 'MP3 HD',
-    duration: '3:30',
+    title: 'Canción de YouTube',
+    artist: 'Canal Oficial',
+    album: 'YouTube Music',
+    duration: 'YouTube Video',
     seconds: 210,
-    thumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+    thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
     views: 'HD'
   };
 }
