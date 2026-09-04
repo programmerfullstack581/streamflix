@@ -417,39 +417,55 @@ export async function getTrackDetailsById(videoId) {
   };
 }
 
-// ── Búsqueda en API Invidious / Piped con fallback ─────────────────────────────
+// ── Búsqueda en Vivo en YouTube (100% Real Time) ─────────────────────────────
 export async function searchMusicOnline(query) {
   if (!query || query.trim() === '') return [];
 
-  // Verificar si el usuario pegó una URL directa
-  const extractedId = extractVideoId(query);
+  const cleanQuery = query.trim();
+
+  // 1. Verificar si el usuario pegó una URL directa de YouTube
+  const extractedId = extractVideoId(cleanQuery);
   if (extractedId) {
     const directTrack = await getTrackDetailsById(extractedId);
-    return [directTrack];
+    return directTrack ? [directTrack] : [];
   }
 
+  // 2. Intentar primero con el endpoint serverless /api/search
+  try {
+    const apiRes = await fetch(`/api/search?q=${encodeURIComponent(cleanQuery)}`, {
+      signal: AbortSignal.timeout(6000)
+    });
+    if (apiRes.ok) {
+      const data = await apiRes.json();
+      if (data.success && Array.isArray(data.results) && data.results.length > 0) {
+        return data.results;
+      }
+    }
+  } catch (_) {}
+
+  // 3. Fallback directo a instancias de YouTube públicas (Invidious / Piped)
   const instances = [
     'https://inv.nadeko.net',
     'https://invidious.nerdvpn.de',
+    'https://vid.priv.au',
     'https://invidious.privacyredirect.com',
-    'https://invidious.jing.rocks',
-    'https://vid.priv.au'
+    'https://invidious.jing.rocks'
   ];
 
   for (const base of instances) {
     try {
-      const url = `${base}/api/v1/search?q=${encodeURIComponent(query + ' audio')}&type=video&sort_by=relevance`;
+      const url = `${base}/api/v1/search?q=${encodeURIComponent(cleanQuery)}&type=video&sort_by=relevance`;
       const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
       if (!res.ok) continue;
       const data = await res.json();
       if (!Array.isArray(data) || data.length === 0) continue;
 
-      return data.slice(0, 30).map(v => {
+      return data.slice(0, 24).map((v) => {
         const sec = v.lengthSeconds || 180;
         const mins = Math.floor(sec / 60);
         const remaining = String(sec % 60).padStart(2, '0');
-        
-        let viewsFormatted = '';
+
+        let viewsFormatted = 'YouTube';
         if (v.viewCount) {
           viewsFormatted = v.viewCount > 1e9 
             ? (v.viewCount / 1e9).toFixed(1) + 'B' 
@@ -458,15 +474,17 @@ export async function searchMusicOnline(query) {
               : (v.viewCount / 1e3).toFixed(0) + 'K';
         }
 
+        const videoId = v.videoId;
         return {
-          videoId: v.videoId,
-          title: v.title,
-          artist: v.author || 'Artista',
-          album: 'Audio / Official',
+          videoId: videoId,
+          title: v.title || cleanQuery,
+          artist: v.author || 'Canal Oficial',
+          album: 'YouTube Music',
           duration: `${mins}:${remaining}`,
           seconds: sec,
-          thumbnail: `https://i.ytimg.com/vi/${v.videoId}/mqdefault.jpg`,
+          thumbnail: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
           views: viewsFormatted,
+          youtubeUrl: `https://www.youtube.com/watch?v=${videoId}`
         };
       });
     } catch (_) {
@@ -474,15 +492,7 @@ export async function searchMusicOnline(query) {
     }
   }
 
-  // Fallback a filtrado de canciones locales si falla la red
-  const q = query.toLowerCase();
-  const localMatched = CURATED_TOP_HITS.filter(
-    t => t.title.toLowerCase().includes(q) || 
-         t.artist.toLowerCase().includes(q) || 
-         (t.genre && t.genre.toLowerCase().includes(q))
-  );
-
-  return localMatched.length > 0 ? localMatched : CURATED_TOP_HITS.slice(0, 8);
+  return [];
 }
 
 // ── Storage Local (Liked Songs, Custom Playlists, Descargas) ───────────────────
