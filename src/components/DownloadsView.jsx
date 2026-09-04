@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Download, 
   Play, 
@@ -28,7 +28,8 @@ import {
   Mic2,
   Share2,
   FolderDown,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Square
 } from 'lucide-react';
 import { 
   MusicStorage, 
@@ -58,6 +59,11 @@ export default function DownloadsView({
   const [errorMessage, setErrorMessage] = useState('');
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Batch Playlist state
+  const [batchProgress, setBatchProgress] = useState(null); // { current, total, trackTitle, format, isRunning }
+  const [completedPlaylistTracks, setCompletedPlaylistTracks] = useState([]);
+  const cancelBatchRef = useRef(false);
 
   // Preview player state inside card
   const [previewTrack, setPreviewTrack] = useState(null);
@@ -166,6 +172,90 @@ export default function DownloadsView({
         }
       }
     } catch (_) {}
+  };
+
+  // Descarga en lote de toda una Playlist / Álbum completo
+  const handleDownloadAllPlaylist = async (playlist, formatType = 'audio') => {
+    if (!playlist || !playlist.tracks || playlist.tracks.length === 0) return;
+
+    cancelBatchRef.current = false;
+    setCompletedPlaylistTracks([]);
+    setErrorMessage('');
+
+    const tracks = playlist.tracks;
+    setBatchProgress({
+      current: 1,
+      total: tracks.length,
+      trackTitle: tracks[0].title,
+      format: formatType,
+      isRunning: true
+    });
+
+    for (let i = 0; i < tracks.length; i++) {
+      if (cancelBatchRef.current) {
+        setDownloadSuccess('⏹️ Descarga en lote detenida.');
+        break;
+      }
+
+      const track = tracks[i];
+      setBatchProgress({
+        current: i + 1,
+        total: tracks.length,
+        trackTitle: track.title,
+        format: formatType,
+        isRunning: true
+      });
+
+      try {
+        const ytUrl = `https://www.youtube.com/watch?v=${track.videoId}`;
+        const res = await fetch('/api/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: ytUrl, format: formatType })
+        });
+
+        const data = await res.json();
+        if (data.success && data.downloadUrl) {
+          const ext = formatType === 'audio' ? 'mp3' : 'mp4';
+          const cleanName = `${track.title} - ${track.artist}`.replace(/[<>:"/\\|?*]/g, '').substring(0, 150);
+          const finalFilename = `${cleanName}.${ext}`;
+
+          const link = document.createElement('a');
+          link.href = data.downloadUrl;
+          link.download = finalFilename;
+          link.target = '_self';
+          link.style.display = 'none';
+          document.body.appendChild(link);
+          link.click();
+          setTimeout(() => document.body.removeChild(link), 1500);
+
+          setCompletedPlaylistTracks(prev => [...prev, track.videoId]);
+          MusicStorage.recordDownload(track, formatType === 'audio' ? 'Audio MP3 (Batch)' : 'Video MP4 (Batch)');
+          if (onRefreshDownloads) onRefreshDownloads();
+        }
+      } catch (err) {
+        console.error('Batch item error:', err);
+      }
+
+      // Pausa de 2.5 segundos entre canciones para que el navegador procese cada descarga limpiamente
+      if (i < tracks.length - 1 && !cancelBatchRef.current) {
+        await new Promise(r => setTimeout(r, 2500));
+      }
+    }
+
+    if (!cancelBatchRef.current) {
+      setDownloadSuccess(`🎉 ¡Toda la playlist "${playlist.title}" ha sido descargada! Revisa tu carpeta de Descargas.`);
+    }
+
+    setBatchProgress(null);
+    setTimeout(() => setDownloadSuccess(''), 10000);
+  };
+
+  const handleCancelBatch = () => {
+    cancelBatchRef.current = true;
+    setBatchProgress(null);
+    setDownloadSuccess('⏹️ Cola de descarga de playlist cancelada.');
+    setTimeout(() => setDownloadSuccess(''), 4000);
   };
 
   // Descarga directa: en PC abre explorador de archivos, en móvil guarda en Descargas
@@ -419,53 +509,147 @@ export default function DownloadsView({
         {/* Detector de Playlists y Álbumes Completos */}
         {resolvedPlaylist && (
           <div className="p-5 sm:p-7 bg-gradient-to-br from-red-950/70 via-[#181818] to-[#0a0a0a] rounded-3xl border border-red-500/60 space-y-5 animate-fadeIn shadow-2xl">
-            <div className="flex items-center space-x-3 pb-3 border-b border-white/10">
-              <div className="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-lg">
-                <FolderDown className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-[10px] bg-red-600 px-2 py-0.5 rounded text-white font-black">PLAYLIST / ÁLBUM</span>
-                  <span className="text-xs text-gray-400 font-bold">{resolvedPlaylist.itemCount} canciones</span>
+            
+            {/* Header de la Playlist */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-white/10">
+              <div className="flex items-center space-x-3 min-w-0">
+                <div className="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+                  <FolderDown className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-black text-white">{resolvedPlaylist.title}</h3>
-                <p className="text-xs text-gray-400">{resolvedPlaylist.author}</p>
+                <div className="min-w-0">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[10px] bg-red-600 px-2 py-0.5 rounded text-white font-black">PLAYLIST / ÁLBUM</span>
+                    <span className="text-xs text-gray-400 font-bold">{resolvedPlaylist.tracks.length} canciones</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-white truncate">{resolvedPlaylist.title}</h3>
+                  <p className="text-xs text-gray-400 truncate">{resolvedPlaylist.author}</p>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-1">
-              {resolvedPlaylist.tracks.map((track, i) => (
-                <div 
-                  key={track.videoId + i}
-                  className="p-3 bg-[#111] hover:bg-[#1a1a1a] rounded-2xl border border-white/5 flex items-center justify-between gap-3 transition-colors"
+            {/* BARRA DE PROGRESO DE DESCARGA EN LOTE (Activa cuando se descarga la playlist) */}
+            {batchProgress && (
+              <div className="p-4 bg-black/80 border border-red-500/50 rounded-2xl space-y-3 animate-fadeIn shadow-red-neon">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center space-x-2 text-white font-bold min-w-0 truncate">
+                    <Loader2 className="w-4 h-4 text-red-500 animate-spin flex-shrink-0" />
+                    <span className="truncate">
+                      Descargando {batchProgress.current} de {batchProgress.total}: <em>"{batchProgress.trackTitle}"</em>
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleCancelBatch}
+                    className="px-3 py-1 bg-white/10 hover:bg-red-600/40 text-red-400 hover:text-white rounded-lg font-bold flex items-center space-x-1 flex-shrink-0 ml-2"
+                  >
+                    <Square className="w-3 h-3 fill-current" />
+                    <span>Detener</span>
+                  </button>
+                </div>
+
+                <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-red-600 to-rose-500 h-full rounded-full transition-all duration-300 shadow-red-neon"
+                    style={{ width: `${Math.round((batchProgress.current / batchProgress.total) * 100)}%` }}
+                  />
+                </div>
+
+                <div className="flex justify-between text-[11px] text-gray-400 font-mono">
+                  <span>Formato: {batchProgress.format === 'audio' ? 'Audio MP3' : 'Video MP4'}</span>
+                  <span>{Math.round((batchProgress.current / batchProgress.total) * 100)}% completado</span>
+                </div>
+              </div>
+            )}
+
+            {/* BOTONES MAESTROS: DESCARGAR TODA LA PLAYLIST */}
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase tracking-wider text-gray-300 flex items-center space-x-1.5">
+                <Zap className="w-3.5 h-3.5 text-red-500" />
+                <span>Descarga automática de todas las canciones:</span>
+              </label>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  onClick={() => handleDownloadAllPlaylist(resolvedPlaylist, 'audio')}
+                  disabled={batchProgress?.isRunning}
+                  className="p-4 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white rounded-2xl font-black text-xs sm:text-sm shadow-red-neon transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
                 >
-                  <div className="flex items-center space-x-3 min-w-0 flex-1">
-                    <span className="text-xs font-bold text-gray-500 w-5 text-center">{i + 1}</span>
-                    <div className="min-w-0 flex-1">
-                      <h4 className="text-xs sm:text-sm font-bold text-white truncate">{track.title}</h4>
-                      <p className="text-[11px] text-gray-400 truncate">{track.artist} • {track.duration}</p>
+                  <FileAudio className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>⚡ DESCARGAR TODAS EN AUDIO (MP3)</span>
+                </button>
+
+                <button
+                  onClick={() => handleDownloadAllPlaylist(resolvedPlaylist, 'video')}
+                  disabled={batchProgress?.isRunning}
+                  className="p-4 bg-[#1e1e1e] hover:bg-[#282828] border border-red-500/40 text-white rounded-2xl font-black text-xs sm:text-sm transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-2 cursor-pointer shadow-lg disabled:opacity-50"
+                >
+                  <Film className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
+                  <span>🎬 DESCARGAR TODAS EN VIDEO (MP4)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* LISTA DE CANCIONES DE LA PLAYLIST */}
+            <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                O descarga canciones individuales de la lista:
+              </p>
+              {resolvedPlaylist.tracks.map((track, i) => {
+                const isDownloaded = completedPlaylistTracks.includes(track.videoId);
+                const isCurrentDownloading = batchProgress?.trackTitle === track.title;
+
+                return (
+                  <div 
+                    key={track.videoId + i}
+                    className={`p-3 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                      isCurrentDownloading 
+                        ? 'bg-red-950/60 border-red-500 shadow-md' 
+                        : isDownloaded 
+                          ? 'bg-[#102012] border-green-500/30' 
+                          : 'bg-[#111] hover:bg-[#1a1a1a] border-white/5'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3 min-w-0 flex-1">
+                      <span className="text-xs font-bold text-gray-500 w-6 text-center">
+                        {isDownloaded ? '✅' : i + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs sm:text-sm font-bold text-white truncate">{track.title}</h4>
+                        <p className="text-[11px] text-gray-400 truncate">{track.artist} • {track.duration}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-1.5 flex-shrink-0">
+                      {isCurrentDownloading ? (
+                        <span className="text-xs font-bold text-red-400 animate-pulse flex items-center space-x-1 px-2 py-1 bg-red-950/80 rounded-lg">
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Descargando...</span>
+                        </span>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => triggerDownloadAction(track, 'audio')}
+                            className="px-2.5 sm:px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                            title="Descargar MP3"
+                          >
+                            <FileAudio className="w-3.5 h-3.5" />
+                            <span>MP3</span>
+                          </button>
+                          <button
+                            onClick={() => triggerDownloadAction(track, 'video')}
+                            className="px-2.5 sm:px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                            title="Descargar MP4"
+                          >
+                            <Film className="w-3.5 h-3.5 text-red-400" />
+                            <span>MP4</span>
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
-
-                  <div className="flex items-center space-x-2 flex-shrink-0">
-                    <button
-                      onClick={() => triggerDownloadAction(track, 'audio')}
-                      className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center space-x-1"
-                    >
-                      <FileAudio className="w-3.5 h-3.5" />
-                      <span>MP3</span>
-                    </button>
-                    <button
-                      onClick={() => triggerDownloadAction(track, 'video')}
-                      className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold flex items-center space-x-1"
-                    >
-                      <Film className="w-3.5 h-3.5 text-red-400" />
-                      <span>MP4</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
+
           </div>
         )}
 
