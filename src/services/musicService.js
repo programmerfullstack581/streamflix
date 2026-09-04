@@ -26,6 +26,12 @@ export const TOP_ARTISTS = [
   { name: 'The Weeknd', genre: 'R&B / Synth Pop', image: 'https://i.scdn.co/image/ab6761610000e5eb214f3cf1cbe7139c1e26ffbb', query: 'The Weeknd official audio' },
 ];
 
+// Helper universal para obtener miniaturas de YouTube 100% compatibles y estables
+export function getYoutubeThumbnail(videoId, quality = 'mqdefault') {
+  if (!videoId) return 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&auto=format&fit=crop&q=80';
+  return `https://img.youtube.com/vi/${videoId}/${quality}.jpg`;
+}
+
 export const CURATED_TOP_HITS = [
   {
     videoId: 'k85mRPqvMbE',
@@ -34,18 +40,18 @@ export const CURATED_TOP_HITS = [
     album: 'Un Verano Sin Ti',
     duration: '4:04',
     seconds: 244,
-    thumbnail: 'https://i.ytimg.com/vi/k85mRPqvMbE/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/k85mRPqvMbE/mqdefault.jpg',
     views: '890M',
     genre: 'Reggaetón'
   },
   {
-    videoId: '739Cvd4fJ5Q',
+    videoId: 'A_1fVpt18Zg',
     title: 'Qlona',
     artist: 'Karol G ft. Peso Pluma',
     album: 'MAÑANA SERÁ BONITO',
     duration: '2:52',
     seconds: 172,
-    thumbnail: 'https://i.ytimg.com/vi/739Cvd4fJ5Q/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/A_1fVpt18Zg/mqdefault.jpg',
     views: '480M',
     genre: 'Reggaetón'
   },
@@ -56,19 +62,19 @@ export const CURATED_TOP_HITS = [
     album: 'FERXXOCALIPSIS',
     duration: '3:16',
     seconds: 196,
-    thumbnail: 'https://i.ytimg.com/vi/vla02RzL1uM/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/vla02RzL1uM/mqdefault.jpg',
     views: '350M',
     genre: 'Reggaetón'
   },
   {
-    videoId: 'T3Auu0f-Z6M',
+    videoId: 'pK060iUFWXg',
     title: 'Hawái',
     artist: 'Maluma',
     album: 'Papi Juancho',
-    duration: '3:05',
-    seconds: 185,
-    thumbnail: 'https://i.ytimg.com/vi/T3Auu0f-Z6M/hqdefault.jpg',
-    views: '1.2B',
+    duration: '3:20',
+    seconds: 200,
+    thumbnail: 'https://img.youtube.com/vi/pK060iUFWXg/mqdefault.jpg',
+    views: '1.1B',
     genre: 'Pop Urbano'
   },
   {
@@ -78,7 +84,7 @@ export const CURATED_TOP_HITS = [
     album: 'Desvelado',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/lZiaYp1Z_60/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/lZiaYp1Z_60/mqdefault.jpg',
     views: '540M',
     genre: 'Regional Mexicano'
   },
@@ -89,7 +95,7 @@ export const CURATED_TOP_HITS = [
     album: 'El Comienzo',
     duration: '3:15',
     seconds: 195,
-    thumbnail: 'https://i.ytimg.com/vi/dZ0fwJojhrs/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/dZ0fwJojhrs/mqdefault.jpg',
     views: '800M',
     genre: 'Regional Mexicano'
   },
@@ -100,7 +106,7 @@ export const CURATED_TOP_HITS = [
     album: 'Single',
     duration: '3:33',
     seconds: 213,
-    thumbnail: 'https://i.ytimg.com/vi/CocEMWJ79Hs/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/CocEMWJ79Hs/mqdefault.jpg',
     views: '710M',
     genre: 'Pop Urbano'
   },
@@ -111,7 +117,7 @@ export const CURATED_TOP_HITS = [
     album: 'Single',
     duration: '3:19',
     seconds: 199,
-    thumbnail: 'https://i.ytimg.com/vi/A_g3lMcWVy0/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/A_g3lMcWVy0/mqdefault.jpg',
     views: '650M',
     genre: 'Trap Latino'
   },
@@ -122,7 +128,7 @@ export const CURATED_TOP_HITS = [
     album: 'Con Calma',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/DiItGE3eAyQ/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/DiItGE3eAyQ/mqdefault.jpg',
     views: '2.1B',
     genre: 'Reggaetón'
   },
@@ -133,7 +139,7 @@ export const CURATED_TOP_HITS = [
     album: 'La 167',
     duration: '3:17',
     seconds: 197,
-    thumbnail: 'https://i.ytimg.com/vi/y83x7Wg2f1U/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/y83x7Wg2f1U/mqdefault.jpg',
     views: '900M',
     genre: 'Guaracha / Dance'
   },
@@ -144,7 +150,7 @@ export const CURATED_TOP_HITS = [
     album: 'Vibras',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://i.ytimg.com/vi/wnJ6LuUFpMo/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/wnJ6LuUFpMo/mqdefault.jpg',
     views: '4.5B',
     genre: 'Reggaetón'
   },
@@ -155,7 +161,7 @@ export const CURATED_TOP_HITS = [
     album: 'Meet The Orphans',
     duration: '3:41',
     seconds: 221,
-    thumbnail: 'https://i.ytimg.com/vi/7zp1TbLFPp8/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/7zp1TbLFPp8/mqdefault.jpg',
     views: '3.2B',
     genre: 'Reggaetón'
   },
@@ -166,7 +172,7 @@ export const CURATED_TOP_HITS = [
     album: 'Título de Amor',
     duration: '4:12',
     seconds: 252,
-    thumbnail: 'https://i.ytimg.com/vi/nKjP_H74qU8/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/nKjP_H74qU8/mqdefault.jpg',
     views: '110M',
     genre: 'Vallenato'
   },
@@ -177,7 +183,7 @@ export const CURATED_TOP_HITS = [
     album: 'Sigo Invicto',
     duration: '3:40',
     seconds: 220,
-    thumbnail: 'https://i.ytimg.com/vi/f7mQf36f6xI/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/f7mQf36f6xI/mqdefault.jpg',
     views: '95M',
     genre: 'Vallenato'
   },
@@ -188,7 +194,7 @@ export const CURATED_TOP_HITS = [
     album: 'Musa Original',
     duration: '4:45',
     seconds: 285,
-    thumbnail: 'https://i.ytimg.com/vi/_5w4e7uM2w8/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/_5w4e7uM2w8/mqdefault.jpg',
     views: '150M',
     genre: 'Salsa'
   },
@@ -199,7 +205,7 @@ export const CURATED_TOP_HITS = [
     album: 'Canción Animal',
     duration: '3:32',
     seconds: 212,
-    thumbnail: 'https://i.ytimg.com/vi/-7K7wVeqq5U/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/-7K7wVeqq5U/mqdefault.jpg',
     views: '290M',
     genre: 'Rock'
   },
@@ -210,7 +216,7 @@ export const CURATED_TOP_HITS = [
     album: 'Big Yangu',
     duration: '3:43',
     seconds: 223,
-    thumbnail: 'https://i.ytimg.com/vi/kXyG4rL0dC4/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/kXyG4rL0dC4/mqdefault.jpg',
     views: '420M',
     genre: 'Rock'
   },
@@ -221,7 +227,7 @@ export const CURATED_TOP_HITS = [
     album: 'After Hours',
     duration: '3:20',
     seconds: 200,
-    thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/4NRXx6U8ABQ/mqdefault.jpg',
     views: '1.9B',
     genre: 'Pop'
   },
@@ -232,7 +238,7 @@ export const CURATED_TOP_HITS = [
     album: '÷ (Divide)',
     duration: '3:53',
     seconds: 233,
-    thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg',
     views: '6.1B',
     genre: 'Pop'
   }

@@ -40,6 +40,7 @@ import {
   getPlaylistTracks,
   getTrackDetailsById,
   searchMusicOnline,
+  getYoutubeThumbnail,
   CURATED_TOP_HITS 
 } from '../services/musicService';
 import RingtoneModal from './RingtoneModal';
@@ -679,8 +680,12 @@ export default function DownloadsView({
             {/* Detalles de la Canción */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-white/10">
               <img
-                src={resolvedTrack.thumbnail}
+                src={resolvedTrack.thumbnail || getYoutubeThumbnail(resolvedTrack.videoId)}
                 alt={resolvedTrack.title}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://img.youtube.com/vi/${resolvedTrack.videoId}/0.jpg`;
+                }}
                 className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl object-cover shadow-2xl ring-2 ring-red-600/70 flex-shrink-0"
               />
 
@@ -881,7 +886,15 @@ export default function DownloadsView({
                   className="p-4 bg-[#171717] hover:bg-[#202020] rounded-2xl border border-white/5 hover:border-red-500/40 transition-all flex flex-col justify-between space-y-3 group shadow-md"
                 >
                   <div className="flex items-center space-x-3">
-                    <img src={track.thumbnail} alt="" className="w-14 h-14 rounded-xl object-cover flex-shrink-0 shadow ring-1 ring-white/10" />
+                    <img 
+                      src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
+                      alt={track.title} 
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
+                      }}
+                      className="w-14 h-14 rounded-xl object-cover flex-shrink-0 shadow ring-1 ring-white/10" 
+                    />
                     
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs sm:text-sm font-bold text-white truncate">{track.title}</h4>
@@ -1034,8 +1047,12 @@ export default function DownloadsView({
                           title="Clic para escuchar preview"
                         >
                           <img
-                            src={track.thumbnail}
+                            src={track.thumbnail || getYoutubeThumbnail(track.videoId)}
                             alt={track.title}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
+                            }}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -1170,8 +1187,12 @@ export default function DownloadsView({
                 className="p-3.5 sm:p-4 bg-[#141414] hover:bg-[#1f1f1f] rounded-2xl border border-white/5 hover:border-red-500/30 transition-all flex items-center space-x-3 group shadow-lg"
               >
                 <img 
-                  src={track.thumbnail} 
+                  src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
                   alt={track.title} 
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
+                  }}
                   className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover flex-shrink-0 shadow-md ring-1 ring-white/10"
                 />
                 
@@ -1228,8 +1249,12 @@ export default function DownloadsView({
           />
           <div className="flex items-center space-x-3 min-w-0">
             <img
-              src={previewTrack.thumbnail}
-              alt=""
+              src={previewTrack.thumbnail || getYoutubeThumbnail(previewTrack.videoId)}
+              alt={previewTrack.title}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `https://img.youtube.com/vi/${previewTrack.videoId}/0.jpg`;
+              }}
               className="w-11 h-11 rounded-xl object-cover ring-1 ring-red-500/50 flex-shrink-0"
             />
             <div className="min-w-0">
