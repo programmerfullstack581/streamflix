@@ -159,31 +159,35 @@ export default function DownloadsView({
     } catch (_) {}
   };
 
-  // Descarga directa desde la misma página (NUNCA redirige a otra web)
+  // Descarga directa: en PC abre explorador de archivos, en móvil guarda en Descargas
   const [downloadingId, setDownloadingId] = useState(null);
 
   const triggerDownloadAction = async (track, formatType = 'audio', retryCount = 0) => {
     if (!track) return;
     
     const label = formatType === 'audio' ? `Audio MP3 (${audioBitrate})` : `Video MP4 (${videoQuality})`;
+    const ext = formatType === 'audio' ? 'mp3' : 'mp4';
+    const mimeType = formatType === 'audio' ? 'audio/mpeg' : 'video/mp4';
+    const cleanName = `${track.title} - ${track.artist}`.replace(/[<>:"/\\|?*]/g, '').substring(0, 150);
+    const finalFilename = `${cleanName}.${ext}`;
+
     if (retryCount === 0) {
       MusicStorage.recordDownload(track, label);
       if (onRefreshDownloads) onRefreshDownloads();
     }
 
-    // Mostrar estado de "procesando descarga"
     setDownloadingId(track.videoId + formatType);
     setErrorMessage('');
     setDownloadSuccess(
       retryCount > 0
         ? `🔄 Reintentando descarga (intento ${retryCount + 1})...`
-        : `⏳ Preparando descarga de "${track.title}" en ${formatType === 'audio' ? 'Audio MP3' : 'Video MP4'}...`
+        : `⏳ Preparando "${track.title}" en ${formatType === 'audio' ? 'Audio MP3' : 'Video MP4'}...`
     );
 
     try {
       const ytUrl = `https://www.youtube.com/watch?v=${track.videoId}`;
 
-      // Llamar a nuestro propio servidor API en Vercel (NUNCA abre otra página)
+      // Paso 1: Obtener URL directa del archivo desde nuestro servidor
       const response = await fetch('/api/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -193,38 +197,81 @@ export default function DownloadsView({
       const data = await response.json();
 
       if (data.success && data.downloadUrl) {
-        // Descargar directamente sin salir de la página
-        setDownloadSuccess(`⬇️ Descargando "${track.title}"... Guardando en tu carpeta de Descargas.`);
+        setDownloadSuccess(`⬇️ Descargando "${track.title}"...`);
 
-        // Método 1: Crear enlace invisible y hacer clic
+        // ══════════════════════════════════════════════════════════
+        // EN PC (Chrome, Edge): Abrir explorador de archivos
+        // para que el usuario elija DÓNDE guardar el archivo
+        // ══════════════════════════════════════════════════════════
+        if ('showSaveFilePicker' in window) {
+          try {
+            // Abrir diálogo nativo "Guardar como..." del explorador de archivos
+            const fileHandle = await window.showSaveFilePicker({
+              suggestedName: finalFilename,
+              types: [{
+                description: formatType === 'audio' ? 'Archivo de Audio MP3' : 'Archivo de Video MP4',
+                accept: { [mimeType]: [`.${ext}`] }
+              }]
+            });
+
+            setDownloadSuccess(`📥 Descargando archivo a la ubicación seleccionada...`);
+
+            // Descargar el archivo a través de nuestro proxy (evita errores CORS)
+            const streamUrl = `/api/stream?url=${encodeURIComponent(data.downloadUrl)}&filename=${encodeURIComponent(finalFilename)}&format=${formatType}`;
+            const fileResponse = await fetch(streamUrl);
+
+            if (!fileResponse.ok) throw new Error('Stream failed');
+
+            const blob = await fileResponse.blob();
+
+            // Escribir el archivo en la ubicación elegida por el usuario
+            const writable = await fileHandle.createWritable();
+            await writable.write(blob);
+            await writable.close();
+
+            setDownloadSuccess(`✅ ¡"${track.title}" guardado exitosamente en la ubicación que elegiste!`);
+            setDownloadingId(null);
+            setTimeout(() => setDownloadSuccess(''), 10000);
+            return;
+
+          } catch (pickerErr) {
+            // Si el usuario canceló el diálogo, no hacer nada
+            if (pickerErr.name === 'AbortError') {
+              setDownloadingId(null);
+              setDownloadSuccess('');
+              return;
+            }
+            // Si showSaveFilePicker falla por otro motivo, usar fallback
+            console.warn('File picker failed, using fallback:', pickerErr.message);
+          }
+        }
+
+        // ══════════════════════════════════════════════════════════
+        // FALLBACK (Móvil / Firefox / Safari): Descarga directa
+        // Se guarda automáticamente en la carpeta Descargas
+        // ══════════════════════════════════════════════════════════
+        const streamUrl = `/api/stream?url=${encodeURIComponent(data.downloadUrl)}&filename=${encodeURIComponent(finalFilename)}&format=${formatType}`;
+        
         const link = document.createElement('a');
-        link.href = data.downloadUrl;
-        link.download = data.filename || `${track.title} - ${track.artist}.${formatType === 'audio' ? 'mp3' : 'mp4'}`;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
+        link.href = streamUrl;
+        link.download = finalFilename;
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
+        setTimeout(() => document.body.removeChild(link), 2000);
 
-        // Limpieza
-        setTimeout(() => {
-          document.body.removeChild(link);
-        }, 1000);
-
-        setDownloadSuccess(`✅ ¡"${track.title}" descargado exitosamente! Revisa tu carpeta de Descargas.`);
+        setDownloadSuccess(`✅ ¡"${track.title}" descargado! Revisa tu carpeta de Descargas.`);
         setDownloadingId(null);
         setTimeout(() => setDownloadSuccess(''), 10000);
         return;
       }
 
-      // Si el servidor dice que está saturado y se puede reintentar
+      // Si el servidor está saturado, reintentar
       if (data.retryable && retryCount < 2) {
-        // Esperar 2 segundos y reintentar automáticamente
         await new Promise(resolve => setTimeout(resolve, 2000));
         return triggerDownloadAction(track, formatType, retryCount + 1);
       }
 
-      // Si no se pudo después de reintentos, mostrar error amigable
       setDownloadingId(null);
       setDownloadSuccess('');
       setErrorMessage(`⚠️ ${data.error || 'Los servidores de descarga están saturados.'} Intenta de nuevo en unos segundos.`);
