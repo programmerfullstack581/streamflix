@@ -141,6 +141,15 @@ export default function DownloadsView({
     if (onRefreshDownloads) onRefreshDownloads();
   };
 
+  const handleClearInput = () => {
+    setUrlInput('');
+    setResolvedTrack(null);
+    setResolvedPlaylist(null);
+    setSearchResults([]);
+    setErrorMessage('');
+    setDownloadSuccess('');
+  };
+
   const handlePasteClipboard = async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -335,18 +344,30 @@ export default function DownloadsView({
       {/* Input de Búsqueda y Enlaces */}
       <div className="bg-[#121212] p-4 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-red-600/30 shadow-2xl space-y-5">
         
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-          <h2 className="text-sm sm:text-base md:text-lg font-black text-white flex items-center space-x-2">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914]" />
-            <span>Busca por Nombre o pega la URL (Canción o Playlist):</span>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <h2 className="text-xs sm:text-base md:text-lg font-black text-white flex items-center space-x-2">
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914] flex-shrink-0" />
+            <span className="truncate">Busca por Nombre o pega la URL:</span>
           </h2>
-          <button
-            type="button"
-            onClick={handlePasteClipboard}
-            className="text-xs font-bold text-red-400 hover:text-white px-3 py-1.5 bg-red-950/50 border border-red-500/30 rounded-xl transition-all flex items-center space-x-1.5 hover:scale-105 cursor-pointer"
-          >
-            <span>📋 Pegar del Portapapeles</span>
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={handlePasteClipboard}
+              className="flex-1 sm:flex-none text-xs font-bold text-red-400 hover:text-white px-3.5 py-2 bg-red-950/50 hover:bg-red-900/60 border border-red-500/30 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+              title="Pegar enlace copiado"
+            >
+              <span>📋 Pegar</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleClearInput}
+              className="flex-1 sm:flex-none text-xs font-bold text-gray-300 hover:text-white px-3.5 py-2 bg-[#1c1c1c] hover:bg-red-950/60 border border-white/10 hover:border-red-500/50 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+              title="Limpiar campo y resultados"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-red-500" />
+              <span>Limpiar</span>
+            </button>
+          </div>
         </div>
 
         <form onSubmit={handleAnalyzeOrSearch} className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
