@@ -159,25 +159,61 @@ export default function DownloadsView({
     } catch (_) {}
   };
 
-  // Descarga directa en formato Audio o Video
-  const triggerDownloadAction = (track, formatType = 'audio') => {
+  // Descarga directa desde la misma página (sin redirigir a otra web)
+  const [downloadingId, setDownloadingId] = useState(null);
+
+  const triggerDownloadAction = async (track, formatType = 'audio') => {
     if (!track) return;
     
     const label = formatType === 'audio' ? `Audio MP3 (${audioBitrate})` : `Video MP4 (${videoQuality})`;
     MusicStorage.recordDownload(track, label);
     if (onRefreshDownloads) onRefreshDownloads();
 
-    setDownloadSuccess(`🚀 ¡Descargando "${track.title}" en formato ${formatType === 'audio' ? 'AUDIO (MP3)' : 'VIDEO (MP4)'}!`);
-    setTimeout(() => setDownloadSuccess(''), 6000);
+    // Mostrar estado de "procesando descarga"
+    setDownloadingId(track.videoId + formatType);
+    setDownloadSuccess(`⏳ Preparando descarga de "${track.title}" en ${formatType === 'audio' ? 'Audio MP3' : 'Video MP4'}...`);
 
-    let targetUrl = '';
-    if (formatType === 'audio') {
-      targetUrl = `https://www.y2mate.com/youtube-mp3/${track.videoId}`;
-    } else {
-      targetUrl = `https://www.y2mate.com/youtube/${track.videoId}`;
+    try {
+      const ytUrl = `https://www.youtube.com/watch?v=${track.videoId}`;
+
+      // Llamar a nuestro propio servidor API en Vercel
+      const response = await fetch('/api/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: ytUrl, format: formatType })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.downloadUrl) {
+        // Descargar directamente sin salir de la página
+        const link = document.createElement('a');
+        link.href = data.downloadUrl;
+        link.download = data.filename || `${track.title} - ${track.artist}.${formatType === 'audio' ? 'mp3' : 'mp4'}`;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setDownloadSuccess(`✅ ¡"${track.title}" descargado! Revisa tu carpeta de Descargas.`);
+      } else if (data.fallbackUrl) {
+        // Si el servidor directo no está disponible, usar fallback
+        window.open(data.fallbackUrl, '_blank');
+        setDownloadSuccess(`🚀 Descarga iniciada para "${track.title}".`);
+      } else {
+        throw new Error('No download URL returned');
+      }
+    } catch (err) {
+      // Fallback final: abrir Y2Mate directamente
+      const fallback = formatType === 'audio'
+        ? `https://www.y2mate.com/youtube-mp3/${track.videoId}`
+        : `https://www.y2mate.com/youtube/${track.videoId}`;
+      window.open(fallback, '_blank');
+      setDownloadSuccess(`🚀 Descarga iniciada para "${track.title}".`);
+    } finally {
+      setDownloadingId(null);
+      setTimeout(() => setDownloadSuccess(''), 8000);
     }
-
-    window.open(targetUrl, '_blank');
   };
 
   const togglePreview = (track) => {
@@ -450,41 +486,71 @@ export default function DownloadsView({
                 {/* FORMATO 1: DESCARGAR EN AUDIO MP3 (320 KBPS) */}
                 <button
                   onClick={() => triggerDownloadAction(resolvedTrack, 'audio')}
-                  className="p-5 sm:p-6 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white rounded-3xl font-black shadow-red-neon transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer border border-red-400/40"
+                  disabled={downloadingId === resolvedTrack.videoId + 'audio'}
+                  className="p-5 sm:p-6 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white rounded-3xl font-black shadow-red-neon transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer border border-red-400/40 disabled:opacity-70 disabled:cursor-wait"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-red-600 rounded-2xl flex items-center justify-center shadow-xl flex-shrink-0">
-                      <FileAudio className="w-7 h-7 fill-current" />
+                      {downloadingId === resolvedTrack.videoId + 'audio' ? (
+                        <Loader2 className="w-7 h-7 animate-spin" />
+                      ) : (
+                        <FileAudio className="w-7 h-7 fill-current" />
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-black text-base sm:text-lg">DESCARGAR AUDIO (MP3)</span>
+                        <span className="font-black text-base sm:text-lg">
+                          {downloadingId === resolvedTrack.videoId + 'audio' ? 'DESCARGANDO...' : 'DESCARGAR AUDIO (MP3)'}
+                        </span>
                         <span className="text-[9px] bg-black/60 px-2 py-0.5 rounded text-white font-bold">{audioBitrate.toUpperCase()}</span>
                       </div>
-                      <p className="text-xs text-red-100 font-medium mt-1">Guarda solo el archivo de música en tu celular o PC</p>
+                      <p className="text-xs text-red-100 font-medium mt-1">
+                        {downloadingId === resolvedTrack.videoId + 'audio' 
+                          ? 'Procesando tu archivo de audio...' 
+                          : 'Se guarda directo en tu celular o PC'}
+                      </p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
+                  {downloadingId === resolvedTrack.videoId + 'audio' ? (
+                    <Loader2 className="w-5 h-5 animate-spin flex-shrink-0 ml-2" />
+                  ) : (
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform flex-shrink-0 ml-2" />
+                  )}
                 </button>
 
                 {/* FORMATO 2: DESCARGAR EN VIDEO MP4 (HD 1080P) */}
                 <button
                   onClick={() => triggerDownloadAction(resolvedTrack, 'video')}
-                  className="p-5 sm:p-6 bg-[#161616] hover:bg-[#202020] border-2 border-red-500/50 hover:border-red-500 text-white rounded-3xl font-black transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer shadow-xl"
+                  disabled={downloadingId === resolvedTrack.videoId + 'video'}
+                  className="p-5 sm:p-6 bg-[#161616] hover:bg-[#202020] border-2 border-red-500/50 hover:border-red-500 text-white rounded-3xl font-black transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer shadow-xl disabled:opacity-70 disabled:cursor-wait"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-red-600/20 text-red-400 rounded-2xl flex items-center justify-center flex-shrink-0 border border-red-500/30">
-                      <Film className="w-7 h-7" />
+                      {downloadingId === resolvedTrack.videoId + 'video' ? (
+                        <Loader2 className="w-7 h-7 animate-spin" />
+                      ) : (
+                        <Film className="w-7 h-7" />
+                      )}
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="font-black text-base sm:text-lg">DESCARGAR VIDEO (MP4)</span>
+                        <span className="font-black text-base sm:text-lg">
+                          {downloadingId === resolvedTrack.videoId + 'video' ? 'DESCARGANDO...' : 'DESCARGAR VIDEO (MP4)'}
+                        </span>
                         <span className="text-[9px] bg-red-600/30 border border-red-500/40 text-red-300 px-2 py-0.5 rounded font-bold">{videoQuality.toUpperCase()}</span>
                       </div>
-                      <p className="text-xs text-gray-400 font-medium mt-1">Guarda el video musical completo en tu celular o PC</p>
+                      <p className="text-xs text-gray-400 font-medium mt-1">
+                        {downloadingId === resolvedTrack.videoId + 'video'
+                          ? 'Procesando tu archivo de video...'
+                          : 'Se guarda directo en tu celular o PC'}
+                      </p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
+                  {downloadingId === resolvedTrack.videoId + 'video' ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-gray-400 flex-shrink-0 ml-2" />
+                  ) : (
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
+                  )}
                 </button>
 
               </div>
