@@ -29,7 +29,9 @@ import {
   Share2,
   FolderDown,
   SlidersHorizontal,
-  Square
+  Square,
+  Flame,
+  Filter
 } from 'lucide-react';
 import { 
   MusicStorage, 
@@ -43,6 +45,19 @@ import {
 import RingtoneModal from './RingtoneModal';
 import LyricsModal from './LyricsModal';
 import ShareModal from './ShareModal';
+
+const POPULAR_CATEGORIES = [
+  { id: 'all', name: '🔥 Todos los Éxitos' },
+  { id: 'Reggaetón', name: '🌴 Reggaetón' },
+  { id: 'Regional Mexicano', name: '🤠 Regional Mexicano' },
+  { id: 'Trap Latino', name: '⚡ Trap Latino' },
+  { id: 'Pop Urbano', name: '✨ Pop Urbano' },
+  { id: 'Pop', name: '🌟 Pop Global' },
+  { id: 'Vallenato', name: '🪗 Vallenato' },
+  { id: 'Salsa', name: '🎺 Salsa' },
+  { id: 'Rock', name: '🎸 Rock' },
+  { id: 'Guaracha / Dance', name: '🎉 Guaracha / Dance' },
+];
 
 export default function DownloadsView({
   downloads = [],
@@ -59,6 +74,10 @@ export default function DownloadsView({
   const [errorMessage, setErrorMessage] = useState('');
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
+
+  // Estados del Buscador y Filtro de Canciones Populares
+  const [popularSearch, setPopularSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Batch Playlist state
   const [batchProgress, setBatchProgress] = useState(null); // { current, total, trackTitle, format, isRunning }
@@ -902,24 +921,226 @@ export default function DownloadsView({
           </div>
         )}
 
-        {/* Ejemplos Rápidos de Prueba con 1 Clic */}
-        <div className="pt-2">
-          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2.5">
-            O descarga una canción popular con 1 clic:
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {CURATED_TOP_HITS.slice(0, 8).map((track) => (
-              <button
-                key={track.videoId}
-                type="button"
-                onClick={() => handleSelectTrack(track)}
-                className="text-xs px-3 py-1.5 sm:px-3.5 sm:py-2 bg-[#171717] hover:bg-red-950/40 border border-white/5 hover:border-red-500/50 rounded-xl text-gray-300 hover:text-white transition-all font-medium flex items-center space-x-1.5 cursor-pointer"
-              >
-                <span>🎵</span>
-                <span>{track.title} — {track.artist}</span>
-              </button>
-            ))}
+        {/* Catálogo Visual Interactivo de Éxitos Populares con Mini-Buscador y Descarga Directa */}
+        <div className="pt-6 sm:pt-8 border-t border-white/10 space-y-4 sm:space-y-5">
+          
+          {/* Encabezado de la Sección */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-2">
+                <Flame className="w-5 h-5 text-red-500 animate-pulse flex-shrink-0" />
+                <h3 className="text-sm sm:text-base md:text-lg font-black text-white tracking-tight">
+                  Éxitos & Canciones Populares del Momento
+                </h3>
+                <span className="text-[10px] bg-red-600/30 text-red-300 font-bold px-2 py-0.5 rounded-full border border-red-500/40">
+                  {CURATED_TOP_HITS.length} Hits
+                </span>
+              </div>
+              <p className="text-xs text-gray-400">
+                Filtra por género, busca por artista o descarga directo en <strong className="text-white">Audio MP3</strong> o <strong className="text-white">Video MP4</strong> con 1 solo clic.
+              </p>
+            </div>
           </div>
+
+          {/* Mini-Buscador Rápido de Canciones Populares */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="🔍 Filtrar entre populares (ej: Bad Bunny, Karol G, Vallenato, Rock, Shakira...)"
+              value={popularSearch}
+              onChange={(e) => setPopularSearch(e.target.value)}
+              className="w-full bg-[#0a0a0a] border border-white/10 focus:border-red-500 text-white placeholder-gray-500 rounded-xl py-2.5 sm:py-3 pl-10 pr-10 text-xs sm:text-sm font-medium outline-none transition-all shadow-inner focus:ring-1 focus:ring-red-500"
+            />
+            {popularSearch && (
+              <button
+                type="button"
+                onClick={() => setPopularSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 text-xs"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Filtros de Categorías / Géneros */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+            {POPULAR_CATEGORIES.map((cat) => {
+              const isActive = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`text-xs px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer flex-shrink-0 flex items-center space-x-1 ${
+                    isActive
+                      ? 'bg-red-600 text-white shadow-red-neon border border-red-400 scale-105'
+                      : 'bg-[#181818] hover:bg-[#252525] text-gray-300 hover:text-white border border-white/5'
+                  }`}
+                >
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Cuadrícula de Canciones Populares con Acciones Directas */}
+          {(() => {
+            const filteredPopularHits = CURATED_TOP_HITS.filter((track) => {
+              const matchesCategory = selectedCategory === 'all' || track.genre === selectedCategory;
+              const query = popularSearch.toLowerCase().trim();
+              const matchesSearch = !query || 
+                track.title.toLowerCase().includes(query) || 
+                track.artist.toLowerCase().includes(query) || 
+                (track.genre && track.genre.toLowerCase().includes(query)) ||
+                (track.album && track.album.toLowerCase().includes(query));
+              return matchesCategory && matchesSearch;
+            });
+
+            if (filteredPopularHits.length === 0) {
+              return (
+                <div className="p-6 text-center bg-[#0d0d0d] rounded-2xl border border-white/5 space-y-2">
+                  <p className="text-xs sm:text-sm text-gray-400">
+                    No se encontraron canciones populares para "<strong className="text-white">{popularSearch}</strong>".
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => { setPopularSearch(''); setSelectedCategory('all'); }}
+                    className="text-xs font-bold text-red-400 hover:underline"
+                  >
+                    Restablecer filtros
+                  </button>
+                </div>
+              );
+            }
+
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 max-h-[550px] overflow-y-auto pr-1">
+                {filteredPopularHits.map((track) => {
+                  const isCurrentAudioDownloading = downloadingId === track.videoId + 'audio';
+                  const isCurrentVideoDownloading = downloadingId === track.videoId + 'video';
+                  const isThisPreviewPlaying = previewTrack?.videoId === track.videoId && isPreviewPlaying;
+
+                  return (
+                    <div
+                      key={track.videoId}
+                      className="p-3.5 bg-[#171717] hover:bg-[#202020] rounded-2xl border border-white/5 hover:border-red-500/40 transition-all flex flex-col justify-between space-y-3 group shadow-lg"
+                    >
+                      {/* Carátula y Metadatos */}
+                      <div className="flex items-start space-x-3">
+                        <div 
+                          className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 cursor-pointer shadow ring-1 ring-white/10"
+                          onClick={() => togglePreview(track)}
+                          title="Clic para escuchar preview"
+                        >
+                          <img
+                            src={track.thumbnail}
+                            alt={track.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            {isThisPreviewPlaying ? (
+                              <Pause className="w-5 h-5 text-white fill-white" />
+                            ) : (
+                              <Play className="w-5 h-5 text-white fill-white" />
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <h4 
+                            onClick={() => handleSelectTrack(track)}
+                            className="text-xs sm:text-sm font-bold text-white truncate hover:text-red-400 cursor-pointer transition-colors"
+                            title={track.title}
+                          >
+                            {track.title}
+                          </h4>
+                          <p className="text-[11px] text-gray-400 truncate mt-0.5">{track.artist}</p>
+                          
+                          <div className="flex items-center space-x-2 mt-1.5">
+                            <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-950/80 text-red-400 border border-red-500/30 truncate">
+                              {track.genre || 'Éxito'}
+                            </span>
+                            <span className="text-[10px] text-gray-500 font-mono">{track.duration}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Botones de Descarga Directa en 1 Clic y Preview */}
+                      <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/5">
+                        {/* Botón Audio MP3 */}
+                        <button
+                          type="button"
+                          onClick={() => triggerDownloadAction(track, 'audio')}
+                          disabled={isCurrentAudioDownloading}
+                          className="py-2 px-2.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-red-600 text-white font-black text-xs rounded-xl shadow-red-neon transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60"
+                          title="Descargar Audio en MP3 (320kbps)"
+                        >
+                          {isCurrentAudioDownloading ? (
+                            <>
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              <span className="text-[11px]">Guardando...</span>
+                            </>
+                          ) : (
+                            <>
+                              <FileAudio className="w-3.5 h-3.5 fill-current" />
+                              <span>Audio MP3</span>
+                            </>
+                          )}
+                        </button>
+
+                        {/* Botón Video MP4 */}
+                        <button
+                          type="button"
+                          onClick={() => triggerDownloadAction(track, 'video')}
+                          disabled={isCurrentVideoDownloading}
+                          className="py-2 px-2.5 bg-[#252525] hover:bg-[#333] border border-white/10 hover:border-red-500/40 text-white font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60"
+                          title="Descargar Video en MP4 (HD)"
+                        >
+                          {isCurrentVideoDownloading ? (
+                            <>
+                              <Loader2 className="w-3.5 h-3.5 animate-spin text-red-400" />
+                              <span className="text-[11px]">Guardando...</span>
+                            </>
+                          ) : (
+                            <>
+                              <Film className="w-3.5 h-3.5 text-red-400" />
+                              <span>Video MP4</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Barra de Reproducción Rápida de Preview */}
+                      <button
+                        type="button"
+                        onClick={() => togglePreview(track)}
+                        className={`w-full py-1 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
+                          isThisPreviewPlaying
+                            ? 'bg-red-600/30 text-red-300 border border-red-500/40'
+                            : 'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'
+                        }`}
+                      >
+                        {isThisPreviewPlaying ? (
+                          <>
+                            <Pause className="w-3 h-3 text-red-400" />
+                            <span>Pausar Preview</span>
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-3 h-3" />
+                            <span>Escuchar Preview</span>
+                          </>
+                        )}
+                      </button>
+
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
+
         </div>
 
       </div>
@@ -995,6 +1216,50 @@ export default function DownloadsView({
           </div>
         )}
       </div>
+
+      {/* Barra Flotante de Reproducción de Preview */}
+      {previewTrack && isPreviewPlaying && (
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 bg-[#121212]/95 backdrop-blur-xl border border-red-500/60 p-3.5 rounded-2xl shadow-red-neon flex items-center justify-between gap-3 animate-slideUp">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${previewTrack.videoId}?autoplay=1`}
+            className="w-0 h-0 opacity-0 pointer-events-none absolute"
+            allow="autoplay"
+            title="preview-audio"
+          />
+          <div className="flex items-center space-x-3 min-w-0">
+            <img
+              src={previewTrack.thumbnail}
+              alt=""
+              className="w-11 h-11 rounded-xl object-cover ring-1 ring-red-500/50 flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <div className="flex items-center space-x-1.5">
+                <Radio className="w-3.5 h-3.5 text-red-500 animate-pulse flex-shrink-0" />
+                <span className="text-[10px] font-black uppercase text-red-400">Escuchando Previa</span>
+              </div>
+              <h5 className="text-xs font-black text-white truncate">{previewTrack.title}</h5>
+              <p className="text-[10px] text-gray-400 truncate">{previewTrack.artist}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-1.5 flex-shrink-0">
+            <button
+              onClick={() => triggerDownloadAction(previewTrack, 'audio')}
+              className="p-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition-transform hover:scale-105 cursor-pointer shadow-md"
+              title="Descargar MP3"
+            >
+              <FileAudio className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => setIsPreviewPlaying(false)}
+              className="p-2 bg-white/10 hover:bg-white/20 text-gray-300 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              title="Detener Previa"
+            >
+              <Pause className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Modales extras */}
       {ringtoneTrack && (

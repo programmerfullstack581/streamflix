@@ -34,8 +34,30 @@ export const CURATED_TOP_HITS = [
     album: 'Un Verano Sin Ti',
     duration: '4:04',
     seconds: 244,
-    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/k85mRPqvMbE/hqdefault.jpg',
     views: '890M',
+    genre: 'Reggaetón'
+  },
+  {
+    videoId: '739Cvd4fJ5Q',
+    title: 'Qlona',
+    artist: 'Karol G ft. Peso Pluma',
+    album: 'MAÑANA SERÁ BONITO',
+    duration: '2:52',
+    seconds: 172,
+    thumbnail: 'https://i.ytimg.com/vi/739Cvd4fJ5Q/hqdefault.jpg',
+    views: '480M',
+    genre: 'Reggaetón'
+  },
+  {
+    videoId: 'vla02RzL1uM',
+    title: 'LUNA',
+    artist: 'Feid ft. ATL Jacob',
+    album: 'FERXXOCALIPSIS',
+    duration: '3:16',
+    seconds: 196,
+    thumbnail: 'https://i.ytimg.com/vi/vla02RzL1uM/hqdefault.jpg',
+    views: '350M',
     genre: 'Reggaetón'
   },
   {
@@ -45,42 +67,53 @@ export const CURATED_TOP_HITS = [
     album: 'Papi Juancho',
     duration: '3:05',
     seconds: 185,
-    thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/T3Auu0f-Z6M/hqdefault.jpg',
     views: '1.2B',
     genre: 'Pop Urbano'
   },
   {
-    videoId: 'vla02RzL1uM',
-    title: 'LUNA',
-    artist: 'Feid ft. ATL Jacob',
-    album: 'FERXXOCALIPSIS',
-    duration: '3:16',
-    seconds: 196,
-    thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=80',
-    views: '350M',
-    genre: 'Reggaetón'
-  },
-  {
-    videoId: 'wnJ6LuUFpMo',
-    title: 'Mi Gente',
-    artist: 'J Balvin, Willy William',
-    album: 'Vibras',
+    videoId: 'lZiaYp1Z_60',
+    title: 'Ella Baila Sola',
+    artist: 'Eslabon Armado & Peso Pluma',
+    album: 'Desvelado',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
-    views: '4.5B',
-    genre: 'Urbano'
+    thumbnail: 'https://i.ytimg.com/vi/lZiaYp1Z_60/hqdefault.jpg',
+    views: '540M',
+    genre: 'Regional Mexicano'
   },
   {
-    videoId: '739Cvd4fJ5Q',
-    title: 'Qlona',
-    artist: 'Karol G ft. Peso Pluma',
-    album: 'MAÑANA SERÁ BONITO',
-    duration: '2:52',
-    seconds: 172,
-    thumbnail: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=500&auto=format&fit=crop&q=80',
-    views: '480M',
-    genre: 'Reggaetón'
+    videoId: 'dZ0fwJojhrs',
+    title: 'un X100to',
+    artist: 'Grupo Frontera ft. Bad Bunny',
+    album: 'El Comienzo',
+    duration: '3:15',
+    seconds: 195,
+    thumbnail: 'https://i.ytimg.com/vi/dZ0fwJojhrs/hqdefault.jpg',
+    views: '800M',
+    genre: 'Regional Mexicano'
+  },
+  {
+    videoId: 'CocEMWJ79Hs',
+    title: 'BZRP Music Sessions #53',
+    artist: 'Bizarrap & Shakira',
+    album: 'Single',
+    duration: '3:33',
+    seconds: 213,
+    thumbnail: 'https://i.ytimg.com/vi/CocEMWJ79Hs/hqdefault.jpg',
+    views: '710M',
+    genre: 'Pop Urbano'
+  },
+  {
+    videoId: 'A_g3lMcWVy0',
+    title: 'Quevedo: BZRP Music Sessions #52 (Quédate)',
+    artist: 'Bizarrap & Quevedo',
+    album: 'Single',
+    duration: '3:19',
+    seconds: 199,
+    thumbnail: 'https://i.ytimg.com/vi/A_g3lMcWVy0/hqdefault.jpg',
+    views: '650M',
+    genre: 'Trap Latino'
   },
   {
     videoId: 'DiItGE3eAyQ',
@@ -89,7 +122,7 @@ export const CURATED_TOP_HITS = [
     album: 'Con Calma',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/DiItGE3eAyQ/hqdefault.jpg',
     views: '2.1B',
     genre: 'Reggaetón'
   },
@@ -100,20 +133,20 @@ export const CURATED_TOP_HITS = [
     album: 'La 167',
     duration: '3:17',
     seconds: 197,
-    thumbnail: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/y83x7Wg2f1U/hqdefault.jpg',
     views: '900M',
     genre: 'Guaracha / Dance'
   },
   {
-    videoId: 't_jHrUE5IOk',
-    title: 'Felices los 4',
-    artist: 'Maluma',
-    album: 'F.A.M.E.',
-    duration: '3:25',
-    seconds: 205,
-    thumbnail: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=80',
-    views: '1.8B',
-    genre: 'Pop Urbano'
+    videoId: 'wnJ6LuUFpMo',
+    title: 'Mi Gente',
+    artist: 'J Balvin, Willy William',
+    album: 'Vibras',
+    duration: '3:14',
+    seconds: 194,
+    thumbnail: 'https://i.ytimg.com/vi/wnJ6LuUFpMo/hqdefault.jpg',
+    views: '4.5B',
+    genre: 'Reggaetón'
   },
   {
     videoId: '7zp1TbLFPp8',
@@ -122,20 +155,75 @@ export const CURATED_TOP_HITS = [
     album: 'Meet The Orphans',
     duration: '3:41',
     seconds: 221,
-    thumbnail: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/7zp1TbLFPp8/hqdefault.jpg',
     views: '3.2B',
-    genre: 'Mambo / Reggaetón'
+    genre: 'Reggaetón'
   },
   {
-    videoId: 'YqeW9_5kURI',
-    title: 'Lean On',
-    artist: 'Major Lazer ft. MØ & DJ Snake',
-    album: 'Peace Is the Mission',
-    duration: '2:56',
-    seconds: 176,
-    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
-    views: '3.2B',
-    genre: 'Electronic'
+    videoId: 'nKjP_H74qU8',
+    title: 'Tú Eres la Reina',
+    artist: 'Diomedes Díaz',
+    album: 'Título de Amor',
+    duration: '4:12',
+    seconds: 252,
+    thumbnail: 'https://i.ytimg.com/vi/nKjP_H74qU8/hqdefault.jpg',
+    views: '110M',
+    genre: 'Vallenato'
+  },
+  {
+    videoId: 'f7mQf36f6xI',
+    title: 'Materialista',
+    artist: 'Silvestre Dangond ft. Nicky Jam',
+    album: 'Sigo Invicto',
+    duration: '3:40',
+    seconds: 220,
+    thumbnail: 'https://i.ytimg.com/vi/f7mQf36f6xI/hqdefault.jpg',
+    views: '95M',
+    genre: 'Vallenato'
+  },
+  {
+    videoId: '_5w4e7uM2w8',
+    title: 'La Rebelión (No Le Pegue a la Negra)',
+    artist: 'Joe Arroyo',
+    album: 'Musa Original',
+    duration: '4:45',
+    seconds: 285,
+    thumbnail: 'https://i.ytimg.com/vi/_5w4e7uM2w8/hqdefault.jpg',
+    views: '150M',
+    genre: 'Salsa'
+  },
+  {
+    videoId: '-7K7wVeqq5U',
+    title: 'De Música Ligera',
+    artist: 'Soda Stereo',
+    album: 'Canción Animal',
+    duration: '3:32',
+    seconds: 212,
+    thumbnail: 'https://i.ytimg.com/vi/-7K7wVeqq5U/hqdefault.jpg',
+    views: '290M',
+    genre: 'Rock'
+  },
+  {
+    videoId: 'kXyG4rL0dC4',
+    title: 'Lamento Boliviano',
+    artist: 'Los Enanitos Verdes',
+    album: 'Big Yangu',
+    duration: '3:43',
+    seconds: 223,
+    thumbnail: 'https://i.ytimg.com/vi/kXyG4rL0dC4/hqdefault.jpg',
+    views: '420M',
+    genre: 'Rock'
+  },
+  {
+    videoId: '4NRXx6U8ABQ',
+    title: 'Blinding Lights',
+    artist: 'The Weeknd',
+    album: 'After Hours',
+    duration: '3:20',
+    seconds: 200,
+    thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/hqdefault.jpg',
+    views: '1.9B',
+    genre: 'Pop'
   },
   {
     videoId: 'JGwWNGJdvx8',
@@ -144,7 +232,7 @@ export const CURATED_TOP_HITS = [
     album: '÷ (Divide)',
     duration: '3:53',
     seconds: 233,
-    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
+    thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg',
     views: '6.1B',
     genre: 'Pop'
   }
