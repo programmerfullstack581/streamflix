@@ -40,7 +40,7 @@ export const CURATED_TOP_HITS = [
     album: 'Un Verano Sin Ti',
     duration: '4:04',
     seconds: 244,
-    thumbnail: 'https://img.youtube.com/vi/k85mRPqvMbE/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa70',
     views: '890M',
     genre: 'Reggaetón'
   },
@@ -51,7 +51,7 @@ export const CURATED_TOP_HITS = [
     album: 'MAÑANA SERÁ BONITO',
     duration: '2:52',
     seconds: 172,
-    thumbnail: 'https://img.youtube.com/vi/A_1fVpt18Zg/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b27382d24d262d1a3c75f56b9c9f',
     views: '480M',
     genre: 'Reggaetón'
   },
@@ -62,7 +62,7 @@ export const CURATED_TOP_HITS = [
     album: 'FERXXOCALIPSIS',
     duration: '3:16',
     seconds: 196,
-    thumbnail: 'https://img.youtube.com/vi/vla02RzL1uM/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b2739e52a818c8b185fa78484e5a',
     views: '350M',
     genre: 'Reggaetón'
   },
@@ -73,7 +73,7 @@ export const CURATED_TOP_HITS = [
     album: 'Papi Juancho',
     duration: '3:20',
     seconds: 200,
-    thumbnail: 'https://img.youtube.com/vi/pK060iUFWXg/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b2739343ee6dfeb098e6c75c0836',
     views: '1.1B',
     genre: 'Pop Urbano'
   },
@@ -84,7 +84,7 @@ export const CURATED_TOP_HITS = [
     album: 'Desvelado',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://img.youtube.com/vi/lZiaYp1Z_60/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b2737279313a96cd84411175653b',
     views: '540M',
     genre: 'Regional Mexicano'
   },
@@ -95,7 +95,7 @@ export const CURATED_TOP_HITS = [
     album: 'El Comienzo',
     duration: '3:15',
     seconds: 195,
-    thumbnail: 'https://img.youtube.com/vi/dZ0fwJojhrs/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b27316fc1cb475b871c89f532a21',
     views: '800M',
     genre: 'Regional Mexicano'
   },
@@ -106,7 +106,7 @@ export const CURATED_TOP_HITS = [
     album: 'Single',
     duration: '3:33',
     seconds: 213,
-    thumbnail: 'https://img.youtube.com/vi/CocEMWJ79Hs/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273928e08ec073ac97e03eb158a',
     views: '710M',
     genre: 'Pop Urbano'
   },
@@ -117,7 +117,7 @@ export const CURATED_TOP_HITS = [
     album: 'Single',
     duration: '3:19',
     seconds: 199,
-    thumbnail: 'https://img.youtube.com/vi/A_g3lMcWVy0/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273b52d9a3b68f9a9c7b9148d8a',
     views: '650M',
     genre: 'Trap Latino'
   },
@@ -128,7 +128,7 @@ export const CURATED_TOP_HITS = [
     album: 'Con Calma',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://img.youtube.com/vi/DiItGE3eAyQ/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273ef4bcde4023c0cfcb12999e0',
     views: '2.1B',
     genre: 'Reggaetón'
   },
@@ -139,7 +139,7 @@ export const CURATED_TOP_HITS = [
     album: 'La 167',
     duration: '3:17',
     seconds: 197,
-    thumbnail: 'https://img.youtube.com/vi/y83x7Wg2f1U/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273f3fb6151776ceeeec4653551',
     views: '900M',
     genre: 'Guaracha / Dance'
   },
@@ -150,7 +150,7 @@ export const CURATED_TOP_HITS = [
     album: 'Vibras',
     duration: '3:14',
     seconds: 194,
-    thumbnail: 'https://img.youtube.com/vi/wnJ6LuUFpMo/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273cfb3fcb5c77e68fae6396f4a',
     views: '4.5B',
     genre: 'Reggaetón'
   },
@@ -161,7 +161,7 @@ export const CURATED_TOP_HITS = [
     album: 'Meet The Orphans',
     duration: '3:41',
     seconds: 221,
-    thumbnail: 'https://img.youtube.com/vi/7zp1TbLFPp8/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b2738ff91d17d5494d4d6211eb90',
     views: '3.2B',
     genre: 'Reggaetón'
   },
@@ -172,7 +172,7 @@ export const CURATED_TOP_HITS = [
     album: 'Título de Amor',
     duration: '4:12',
     seconds: 252,
-    thumbnail: 'https://img.youtube.com/vi/nKjP_H74qU8/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b27306bb2720d20d575775f0f35a',
     views: '110M',
     genre: 'Vallenato'
   },
@@ -183,7 +183,7 @@ export const CURATED_TOP_HITS = [
     album: 'Sigo Invicto',
     duration: '3:40',
     seconds: 220,
-    thumbnail: 'https://img.youtube.com/vi/f7mQf36f6xI/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273d2a7c413e1744cb89d3ea6ee',
     views: '95M',
     genre: 'Vallenato'
   },
@@ -194,7 +194,7 @@ export const CURATED_TOP_HITS = [
     album: 'Musa Original',
     duration: '4:45',
     seconds: 285,
-    thumbnail: 'https://img.youtube.com/vi/_5w4e7uM2w8/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273a0a3fead0790757790cf2c12',
     views: '150M',
     genre: 'Salsa'
   },
@@ -205,7 +205,7 @@ export const CURATED_TOP_HITS = [
     album: 'Canción Animal',
     duration: '3:32',
     seconds: 212,
-    thumbnail: 'https://img.youtube.com/vi/-7K7wVeqq5U/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273bbcf584a778b02c8c6c9a3d4',
     views: '290M',
     genre: 'Rock'
   },
@@ -216,7 +216,7 @@ export const CURATED_TOP_HITS = [
     album: 'Big Yangu',
     duration: '3:43',
     seconds: 223,
-    thumbnail: 'https://img.youtube.com/vi/kXyG4rL0dC4/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273e913a890ea0dfb841a1a9e8f',
     views: '420M',
     genre: 'Rock'
   },
@@ -227,7 +227,7 @@ export const CURATED_TOP_HITS = [
     album: 'After Hours',
     duration: '3:20',
     seconds: 200,
-    thumbnail: 'https://img.youtube.com/vi/4NRXx6U8ABQ/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36',
     views: '1.9B',
     genre: 'Pop'
   },
@@ -238,7 +238,7 @@ export const CURATED_TOP_HITS = [
     album: '÷ (Divide)',
     duration: '3:53',
     seconds: 233,
-    thumbnail: 'https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg',
+    thumbnail: 'https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96',
     views: '6.1B',
     genre: 'Pop'
   }

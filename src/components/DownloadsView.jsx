@@ -682,6 +682,8 @@ export default function DownloadsView({
               <img
                 src={resolvedTrack.thumbnail || getYoutubeThumbnail(resolvedTrack.videoId)}
                 alt={resolvedTrack.title}
+                referrerPolicy="no-referrer"
+                loading="eager"
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = `https://img.youtube.com/vi/${resolvedTrack.videoId}/0.jpg`;
@@ -889,6 +891,8 @@ export default function DownloadsView({
                     <img 
                       src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
                       alt={track.title} 
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
@@ -1049,6 +1053,8 @@ export default function DownloadsView({
                           <img
                             src={track.thumbnail || getYoutubeThumbnail(track.videoId)}
                             alt={track.title}
+                            referrerPolicy="no-referrer"
+                            loading="lazy"
                             onError={(e) => {
                               e.target.onerror = null;
                               e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
@@ -1189,6 +1195,8 @@ export default function DownloadsView({
                 <img 
                   src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
                   alt={track.title} 
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
@@ -1251,6 +1259,8 @@ export default function DownloadsView({
             <img
               src={previewTrack.thumbnail || getYoutubeThumbnail(previewTrack.videoId)}
               alt={previewTrack.title}
+              referrerPolicy="no-referrer"
+              loading="lazy"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = `https://img.youtube.com/vi/${previewTrack.videoId}/0.jpg`;
