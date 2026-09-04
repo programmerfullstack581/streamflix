@@ -159,24 +159,31 @@ export default function DownloadsView({
     } catch (_) {}
   };
 
-  // Descarga directa desde la misma página (sin redirigir a otra web)
+  // Descarga directa desde la misma página (NUNCA redirige a otra web)
   const [downloadingId, setDownloadingId] = useState(null);
 
-  const triggerDownloadAction = async (track, formatType = 'audio') => {
+  const triggerDownloadAction = async (track, formatType = 'audio', retryCount = 0) => {
     if (!track) return;
     
     const label = formatType === 'audio' ? `Audio MP3 (${audioBitrate})` : `Video MP4 (${videoQuality})`;
-    MusicStorage.recordDownload(track, label);
-    if (onRefreshDownloads) onRefreshDownloads();
+    if (retryCount === 0) {
+      MusicStorage.recordDownload(track, label);
+      if (onRefreshDownloads) onRefreshDownloads();
+    }
 
     // Mostrar estado de "procesando descarga"
     setDownloadingId(track.videoId + formatType);
-    setDownloadSuccess(`⏳ Preparando descarga de "${track.title}" en ${formatType === 'audio' ? 'Audio MP3' : 'Video MP4'}...`);
+    setErrorMessage('');
+    setDownloadSuccess(
+      retryCount > 0
+        ? `🔄 Reintentando descarga (intento ${retryCount + 1})...`
+        : `⏳ Preparando descarga de "${track.title}" en ${formatType === 'audio' ? 'Audio MP3' : 'Video MP4'}...`
+    );
 
     try {
       const ytUrl = `https://www.youtube.com/watch?v=${track.videoId}`;
 
-      // Llamar a nuestro propio servidor API en Vercel
+      // Llamar a nuestro propio servidor API en Vercel (NUNCA abre otra página)
       const response = await fetch('/api/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -187,32 +194,47 @@ export default function DownloadsView({
 
       if (data.success && data.downloadUrl) {
         // Descargar directamente sin salir de la página
+        setDownloadSuccess(`⬇️ Descargando "${track.title}"... Guardando en tu carpeta de Descargas.`);
+
+        // Método 1: Crear enlace invisible y hacer clic
         const link = document.createElement('a');
         link.href = data.downloadUrl;
         link.download = data.filename || `${track.title} - ${track.artist}.${formatType === 'audio' ? 'mp3' : 'mp4'}`;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
         link.style.display = 'none';
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
 
-        setDownloadSuccess(`✅ ¡"${track.title}" descargado! Revisa tu carpeta de Descargas.`);
-      } else if (data.fallbackUrl) {
-        // Si el servidor directo no está disponible, usar fallback
-        window.open(data.fallbackUrl, '_blank');
-        setDownloadSuccess(`🚀 Descarga iniciada para "${track.title}".`);
-      } else {
-        throw new Error('No download URL returned');
+        // Limpieza
+        setTimeout(() => {
+          document.body.removeChild(link);
+        }, 1000);
+
+        setDownloadSuccess(`✅ ¡"${track.title}" descargado exitosamente! Revisa tu carpeta de Descargas.`);
+        setDownloadingId(null);
+        setTimeout(() => setDownloadSuccess(''), 10000);
+        return;
       }
-    } catch (err) {
-      // Fallback final: abrir Y2Mate directamente
-      const fallback = formatType === 'audio'
-        ? `https://www.y2mate.com/youtube-mp3/${track.videoId}`
-        : `https://www.y2mate.com/youtube/${track.videoId}`;
-      window.open(fallback, '_blank');
-      setDownloadSuccess(`🚀 Descarga iniciada para "${track.title}".`);
-    } finally {
+
+      // Si el servidor dice que está saturado y se puede reintentar
+      if (data.retryable && retryCount < 2) {
+        // Esperar 2 segundos y reintentar automáticamente
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return triggerDownloadAction(track, formatType, retryCount + 1);
+      }
+
+      // Si no se pudo después de reintentos, mostrar error amigable
       setDownloadingId(null);
-      setTimeout(() => setDownloadSuccess(''), 8000);
+      setDownloadSuccess('');
+      setErrorMessage(`⚠️ ${data.error || 'Los servidores de descarga están saturados.'} Intenta de nuevo en unos segundos.`);
+      setTimeout(() => setErrorMessage(''), 10000);
+
+    } catch (err) {
+      setDownloadingId(null);
+      setDownloadSuccess('');
+      setErrorMessage('⚠️ Error de conexión al servidor de descarga. Revisa tu conexión a internet e intenta de nuevo.');
+      setTimeout(() => setErrorMessage(''), 10000);
     }
   };
 

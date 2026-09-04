@@ -1,32 +1,42 @@
-// Vercel Serverless Function — Proxy de descarga directa usando Cobalt API
+// Vercel Serverless Function — Descarga directa usando múltiples APIs de conversión
 // Ruta: /api/download
 
 export default async function handler(req, res) {
-  // Solo permitir POST
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { url, format } = req.body; // format: 'audio' | 'video'
+  const { url, format } = req.body;
 
   if (!url) {
     return res.status(400).json({ error: 'Missing url parameter' });
   }
 
-  // Construir la YouTube URL completa si solo es un videoId
+  // Asegurar URL completa de YouTube
   let fullUrl = url;
   if (!url.startsWith('http')) {
     fullUrl = `https://www.youtube.com/watch?v=${url}`;
   }
 
-  // Lista de instancias de Cobalt API (público, sin anuncios, open source)
+  // ═══════════════════════════════════════════════════════════════
+  // INTENTO 1: Cobalt API (instancias públicas activas)
+  // ═══════════════════════════════════════════════════════════════
   const cobaltInstances = [
     'https://api.cobalt.tools',
     'https://cobalt-api.kwiatekmiki.com',
-    'https://cobalt.api.timelessnesses.me'
+    'https://cobalt.api.timelessnesses.me',
+    'https://api.cobalt.best'
   ];
 
-  // Intentar con cada instancia de Cobalt
   for (const instance of cobaltInstances) {
     try {
       const cobaltBody = {
@@ -45,48 +55,78 @@ export default async function handler(req, res) {
           'Accept': 'application/json'
         },
         body: JSON.stringify(cobaltBody),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(12000)
       });
 
       if (!response.ok) continue;
 
       const data = await response.json();
 
-      // Cobalt devuelve status: "tunnel" | "redirect" | "picker" con una URL directa
-      if (data.status === 'tunnel' || data.status === 'redirect') {
+      if ((data.status === 'tunnel' || data.status === 'redirect') && data.url) {
         return res.status(200).json({
           success: true,
           downloadUrl: data.url,
-          filename: data.filename || null
+          filename: data.filename || null,
+          source: 'cobalt'
         });
       }
 
-      // Si devuelve "picker" (múltiples opciones), tomar la primera
       if (data.status === 'picker' && data.picker && data.picker.length > 0) {
         return res.status(200).json({
           success: true,
           downloadUrl: data.picker[0].url,
-          filename: data.picker[0].filename || null
+          filename: data.picker[0].filename || null,
+          source: 'cobalt-picker'
         });
       }
-
     } catch (err) {
-      console.error(`Cobalt instance ${instance} failed:`, err.message);
       continue;
     }
   }
 
-  // Fallback: devolver URL de Y2Mate para que el frontend abra externamente
-  const videoId = fullUrl.match(/[?&]v=([a-zA-Z0-9_-]{11})/)?.[1] || 
-                   fullUrl.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/)?.[1] || '';
-  
-  const fallbackUrl = format === 'audio'
-    ? `https://www.y2mate.com/youtube-mp3/${videoId}`
-    : `https://www.y2mate.com/youtube/${videoId}`;
+  // ═══════════════════════════════════════════════════════════════
+  // INTENTO 2: API alternativa con youtube-dl compatible
+  // ═══════════════════════════════════════════════════════════════
+  const altApis = [
+    {
+      name: 'savefrom-style',
+      buildUrl: (ytUrl, fmt) => {
+        const encodedUrl = encodeURIComponent(ytUrl);
+        return `https://co.wuk.sh/api/json?url=${encodedUrl}&aFormat=mp3&filenamePattern=pretty&isAudioOnly=${fmt === 'audio'}&dubLang=false&vQuality=1080`;
+      }
+    }
+  ];
 
+  for (const api of altApis) {
+    try {
+      const apiUrl = api.buildUrl(fullUrl, format);
+      const response = await fetch(apiUrl, {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(10000)
+      });
+
+      if (!response.ok) continue;
+      const data = await response.json();
+
+      if (data.url) {
+        return res.status(200).json({
+          success: true,
+          downloadUrl: data.url,
+          filename: data.filename || null,
+          source: api.name
+        });
+      }
+    } catch (err) {
+      continue;
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // NO HAY FALLBACK EXTERNO — Devolver error limpio
+  // ═══════════════════════════════════════════════════════════════
   return res.status(200).json({
     success: false,
-    fallbackUrl: fallbackUrl,
-    message: 'Direct download unavailable, using fallback'
+    error: 'Los servidores de descarga están temporalmente saturados. Intenta de nuevo en unos segundos.',
+    retryable: true
   });
 }
