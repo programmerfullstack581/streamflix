@@ -210,7 +210,49 @@ export function extractVideoId(urlOrQuery) {
   return null;
 }
 
-// Obtener detalles de una canción por su Video ID
+// Extraer ID de Playlist de YouTube
+export function extractPlaylistId(url) {
+  if (!url) return null;
+  const match = url.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
+}
+
+// Obtener canciones de una playlist
+export async function getPlaylistTracks(playlistId) {
+  const instances = [
+    'https://inv.nadeko.net',
+    'https://invidious.nerdvpn.de',
+    'https://invidious.privacyredirect.com',
+    'https://invidious.jing.rocks',
+    'https://vid.priv.au'
+  ];
+
+  for (const base of instances) {
+    try {
+      const res = await fetch(`${base}/api/v1/playlists/${playlistId}`, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data && data.videos && Array.isArray(data.videos)) {
+        return {
+          title: data.title || 'Lista de Reproducción',
+          author: data.author || 'YouTube Playlist',
+          itemCount: data.videoCount || data.videos.length,
+          tracks: data.videos.slice(0, 30).map(v => ({
+            videoId: v.videoId,
+            title: v.title,
+            artist: v.author || data.author || 'Artista',
+            duration: v.lengthSeconds ? `${Math.floor(v.lengthSeconds / 60)}:${String(v.lengthSeconds % 60).padStart(2, '0')}` : '3:30',
+            seconds: v.lengthSeconds || 210,
+            thumbnail: `https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80`
+          }))
+        };
+      }
+    } catch (_) {
+      continue;
+    }
+  }
+  return null;
+}
 export async function getTrackDetailsById(videoId) {
   // 1. Intento con noembed.com (CORS libre, ultra rápido y confiable)
   try {

@@ -27,11 +27,14 @@ import {
   Scissors,
   Mic2,
   Share2,
-  Video
+  FolderDown,
+  SlidersHorizontal
 } from 'lucide-react';
 import { 
   MusicStorage, 
   extractVideoId, 
+  extractPlaylistId,
+  getPlaylistTracks,
   getTrackDetailsById,
   searchMusicOnline,
   CURATED_TOP_HITS 
@@ -48,7 +51,10 @@ export default function DownloadsView({
   const [urlInput, setUrlInput] = useState('');
   const [isResolving, setIsResolving] = useState(false);
   const [resolvedTrack, setResolvedTrack] = useState(null);
+  const [resolvedPlaylist, setResolvedPlaylist] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
+  const [audioBitrate, setAudioBitrate] = useState('320k'); // 320k, 192k, 128k
+  const [videoQuality, setVideoQuality] = useState('1080p'); // 1080p, 720p
   const [errorMessage, setErrorMessage] = useState('');
   const [downloadSuccess, setDownloadSuccess] = useState('');
   const [copiedLink, setCopiedLink] = useState(false);
@@ -69,6 +75,7 @@ export default function DownloadsView({
     if (!cleanInput) {
       setErrorMessage('⚠️ Ingresa el nombre de una canción/artista o pega un enlace de YouTube.');
       setResolvedTrack(null);
+      setResolvedPlaylist(null);
       setSearchResults([]);
       return;
     }
@@ -76,12 +83,24 @@ export default function DownloadsView({
     setErrorMessage('');
     setIsResolving(true);
     setResolvedTrack(null);
+    setResolvedPlaylist(null);
     setSearchResults([]);
 
+    // 1. Verificar si es una PLAYLIST de YouTube
+    const playlistId = extractPlaylistId(cleanInput);
+    if (playlistId) {
+      const playlistData = await getPlaylistTracks(playlistId);
+      setIsResolving(false);
+      if (playlistData && playlistData.tracks && playlistData.tracks.length > 0) {
+        setResolvedPlaylist(playlistData);
+        return;
+      }
+    }
+
+    // 2. Verificar si es un video de YouTube directo
     const videoId = extractVideoId(cleanInput);
     const isUrl = /^(https?:\/\/|www\.|youtu\.be|youtube\.com)/i.test(cleanInput);
 
-    // Si es un enlace de YouTube directo
     if (videoId || isUrl) {
       const targetId = videoId || extractVideoId(cleanInput);
       if (targetId) {
@@ -89,7 +108,7 @@ export default function DownloadsView({
         if (details) {
           setResolvedTrack(details);
           setIsResolving(false);
-          MusicStorage.recordDownload(details, `Audio (MP3 320k)`);
+          MusicStorage.recordDownload(details, `Audio (MP3 ${audioBitrate})`);
           if (onRefreshDownloads) onRefreshDownloads();
           return;
         }
@@ -99,7 +118,7 @@ export default function DownloadsView({
       return;
     }
 
-    // Búsqueda por Nombre de Canción
+    // 3. Búsqueda por Nombre de Canción
     const results = await searchMusicOnline(cleanInput);
     setIsResolving(false);
     if (results && results.length > 0) {
@@ -111,8 +130,9 @@ export default function DownloadsView({
 
   const handleSelectTrack = (track) => {
     setResolvedTrack(track);
+    setResolvedPlaylist(null);
     setUrlInput(`https://www.youtube.com/watch?v=${track.videoId}`);
-    MusicStorage.recordDownload(track, 'Audio (MP3 320k)');
+    MusicStorage.recordDownload(track, `Audio (MP3 ${audioBitrate})`);
     if (onRefreshDownloads) onRefreshDownloads();
   };
 
@@ -132,7 +152,7 @@ export default function DownloadsView({
           const details = await getTrackDetailsById(videoId);
           setResolvedTrack(details);
           setIsResolving(false);
-          MusicStorage.recordDownload(details, 'Audio (MP3 320k)');
+          MusicStorage.recordDownload(details, `Audio (MP3 ${audioBitrate})`);
           if (onRefreshDownloads) onRefreshDownloads();
         }
       }
@@ -143,10 +163,7 @@ export default function DownloadsView({
   const triggerDownloadAction = (track, formatType = 'audio') => {
     if (!track) return;
     
-    const ytUrl = `https://www.youtube.com/watch?v=${track.videoId}`;
-    const ytShort = `https://youtu.be/${track.videoId}`;
-
-    const label = formatType === 'audio' ? 'Audio MP3 (320 kbps)' : 'Video MP4 (HD 1080p)';
+    const label = formatType === 'audio' ? `Audio MP3 (${audioBitrate})` : `Video MP4 (${videoQuality})`;
     MusicStorage.recordDownload(track, label);
     if (onRefreshDownloads) onRefreshDownloads();
 
@@ -172,8 +189,6 @@ export default function DownloadsView({
     }
   };
 
-  const currentYtUrl = resolvedTrack ? `https://www.youtube.com/watch?v=${resolvedTrack.videoId}` : '';
-
   return (
     <div className="space-y-6 sm:space-y-8 animate-fadeIn w-full overflow-x-hidden">
       
@@ -185,7 +200,7 @@ export default function DownloadsView({
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 bg-red-600/20 border border-red-500/40 rounded-full">
             <Zap className="w-4 h-4 text-red-500 animate-bounce" />
             <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase text-red-400">
-              Descargador de Audio (MP3) y Video (MP4)
+              Descargador MP3 & MP4 Pro Edition
             </span>
           </div>
 
@@ -194,17 +209,17 @@ export default function DownloadsView({
           </h1>
 
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Escribe el nombre de la canción o pega el enlace de YouTube. Guarda tus canciones directamente en la memoria de tu <strong className="text-white">Teléfono Celular o PC</strong> en los 2 formatos principales.
+            Escribe el nombre de la canción o pega un enlace de <strong className="text-white">YouTube o Playlist</strong>. Guarda canciones y videos directamente en tu <strong className="text-white">Celular o PC</strong>.
           </p>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1">
             <span className="text-xs font-bold bg-red-950/80 border border-red-500/40 text-red-300 px-3 py-1 rounded-xl flex items-center space-x-1.5">
               <FileAudio className="w-4 h-4 text-red-400" />
-              <span>Formato 1: Audio MP3 (320 kbps)</span>
+              <span>Audio MP3 ({audioBitrate})</span>
             </span>
             <span className="text-xs font-bold bg-neutral-900 border border-white/10 text-gray-300 px-3 py-1 rounded-xl flex items-center space-x-1.5">
               <Film className="w-4 h-4 text-red-400" />
-              <span>Formato 2: Video MP4 (HD 1080p)</span>
+              <span>Video MP4 ({videoQuality})</span>
             </span>
           </div>
         </div>
@@ -216,7 +231,7 @@ export default function DownloadsView({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <h2 className="text-sm sm:text-base md:text-lg font-black text-white flex items-center space-x-2">
             <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914]" />
-            <span>Busca por Nombre o pega la URL:</span>
+            <span>Busca por Nombre o pega la URL (Canción o Playlist):</span>
           </h2>
           <button
             type="button"
@@ -231,7 +246,7 @@ export default function DownloadsView({
           <div className="relative flex-1">
             <input
               type="text"
-              placeholder="Escribe: Martin Elias, Karol G, o pega https://youtu.be/..."
+              placeholder="Escribe: Martin Elias, Karol G, o pega https://youtu.be/... o playlist"
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               className="w-full bg-[#0a0a0a] border border-white/10 focus:border-[#E50914] text-white placeholder-gray-500 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-4 pr-10 text-xs sm:text-sm font-medium outline-none transition-all shadow-inner focus:ring-1 focus:ring-[#E50914]"
@@ -239,7 +254,7 @@ export default function DownloadsView({
             {urlInput && (
               <button
                 type="button"
-                onClick={() => { setUrlInput(''); setResolvedTrack(null); setSearchResults([]); }}
+                onClick={() => { setUrlInput(''); setResolvedTrack(null); setResolvedPlaylist(null); setSearchResults([]); }}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 text-xs"
               >
                 ✕
@@ -270,6 +285,59 @@ export default function DownloadsView({
           <div className="p-3 bg-red-950/40 border border-red-600/40 rounded-xl flex items-center space-x-2 text-xs text-red-300">
             <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
             <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {/* Detector de Playlists y Álbumes Completos */}
+        {resolvedPlaylist && (
+          <div className="p-5 sm:p-7 bg-gradient-to-br from-red-950/70 via-[#181818] to-[#0a0a0a] rounded-3xl border border-red-500/60 space-y-5 animate-fadeIn shadow-2xl">
+            <div className="flex items-center space-x-3 pb-3 border-b border-white/10">
+              <div className="w-12 h-12 bg-red-600 text-white rounded-2xl flex items-center justify-center shadow-lg">
+                <FolderDown className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-[10px] bg-red-600 px-2 py-0.5 rounded text-white font-black">PLAYLIST / ÁLBUM</span>
+                  <span className="text-xs text-gray-400 font-bold">{resolvedPlaylist.itemCount} canciones</span>
+                </div>
+                <h3 className="text-lg sm:text-xl font-black text-white">{resolvedPlaylist.title}</h3>
+                <p className="text-xs text-gray-400">{resolvedPlaylist.author}</p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5 max-h-[400px] overflow-y-auto pr-1">
+              {resolvedPlaylist.tracks.map((track, i) => (
+                <div 
+                  key={track.videoId + i}
+                  className="p-3 bg-[#111] hover:bg-[#1a1a1a] rounded-2xl border border-white/5 flex items-center justify-between gap-3 transition-colors"
+                >
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    <span className="text-xs font-bold text-gray-500 w-5 text-center">{i + 1}</span>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-xs sm:text-sm font-bold text-white truncate">{track.title}</h4>
+                      <p className="text-[11px] text-gray-400 truncate">{track.artist} • {track.duration}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2 flex-shrink-0">
+                    <button
+                      onClick={() => triggerDownloadAction(track, 'audio')}
+                      className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold shadow-md flex items-center space-x-1"
+                    >
+                      <FileAudio className="w-3.5 h-3.5" />
+                      <span>MP3</span>
+                    </button>
+                    <button
+                      onClick={() => triggerDownloadAction(track, 'video')}
+                      className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold flex items-center space-x-1"
+                    >
+                      <Film className="w-3.5 h-3.5 text-red-400" />
+                      <span>MP4</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
@@ -348,7 +416,7 @@ export default function DownloadsView({
               </div>
             </div>
 
-            {/* Preview player embebido cuando se activa preview */}
+            {/* Preview player embebido */}
             {previewTrack?.videoId === resolvedTrack.videoId && isPreviewPlaying && (
               <div className="p-3 bg-black/60 rounded-2xl border border-red-500/30 flex items-center justify-between">
                 <div className="flex items-center space-x-2 text-xs text-red-400 font-bold">
@@ -391,7 +459,7 @@ export default function DownloadsView({
                     <div>
                       <div className="flex items-center space-x-2">
                         <span className="font-black text-base sm:text-lg">DESCARGAR AUDIO (MP3)</span>
-                        <span className="text-[9px] bg-black/60 px-2 py-0.5 rounded text-white font-bold">320 KBPS</span>
+                        <span className="text-[9px] bg-black/60 px-2 py-0.5 rounded text-white font-bold">{audioBitrate.toUpperCase()}</span>
                       </div>
                       <p className="text-xs text-red-100 font-medium mt-1">Guarda solo el archivo de música en tu celular o PC</p>
                     </div>
@@ -411,7 +479,7 @@ export default function DownloadsView({
                     <div>
                       <div className="flex items-center space-x-2">
                         <span className="font-black text-base sm:text-lg">DESCARGAR VIDEO (MP4)</span>
-                        <span className="text-[9px] bg-red-600/30 border border-red-500/40 text-red-300 px-2 py-0.5 rounded font-bold">FULL HD</span>
+                        <span className="text-[9px] bg-red-600/30 border border-red-500/40 text-red-300 px-2 py-0.5 rounded font-bold">{videoQuality.toUpperCase()}</span>
                       </div>
                       <p className="text-xs text-gray-400 font-medium mt-1">Guarda el video musical completo en tu celular o PC</p>
                     </div>
@@ -437,8 +505,8 @@ export default function DownloadsView({
           </div>
         )}
 
-        {/* Resultados de Búsqueda por Nombre (Grid con botones directos de Audio y Video) */}
-        {searchResults.length > 0 && !resolvedTrack && (
+        {/* Resultados de Búsqueda por Nombre */}
+        {searchResults.length > 0 && !resolvedTrack && !resolvedPlaylist && (
           <div className="space-y-4 pt-2">
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center space-x-2">
               <Music className="w-4 h-4 text-red-500" />
