@@ -15,7 +15,8 @@ import {
   Menu, 
   X,
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function App() {
@@ -30,27 +31,57 @@ export default function App() {
   useEffect(() => {
     setDownloads(MusicStorage.getDownloads());
 
+    // Capturar evento de instalación nativa PWA
     const handlePrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
+
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null);
+      setIsInstallModalOpen(false);
+      showToast('🎉 ¡StreamBeat se agregó exitosamente a tu pantalla de inicio!');
+    };
+
     window.addEventListener('beforeinstallprompt', handlePrompt);
-    return () => window.removeEventListener('beforeinstallprompt', handlePrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handlePrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
   }, []);
 
   const showToast = (msg) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
+    setTimeout(() => setToastMessage(null), 4000);
   };
 
+  // Función inteligente para instalar la App
   const handleInstallApp = () => {
-    setIsInstallModalOpen(true);
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          showToast('🎉 ¡Instalando StreamBeat en tu dispositivo!');
+        }
+        setDeferredPrompt(null);
+        setIsInstallModalOpen(false);
+      }).catch(() => {
+        setIsInstallModalOpen(true);
+      });
+    } else {
+      setIsInstallModalOpen(true);
+    }
   };
 
   const handleDirectInstall = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => {
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          showToast('🎉 ¡StreamBeat instalada en tu pantalla de inicio!');
+        }
         setDeferredPrompt(null);
         setIsInstallModalOpen(false);
       });
@@ -152,8 +183,8 @@ export default function App() {
                 title="Instalar App en tu celular o PC"
               >
                 <Smartphone className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">Instalar</span>
-                <span className="xs:hidden">App</span>
+                <span className="hidden xs:inline">Instalar App</span>
+                <span className="xs:hidden">Instalar</span>
               </button>
             </div>
 
@@ -192,7 +223,7 @@ export default function App() {
               </button>
 
               <button
-                onClick={() => { setIsInstallModalOpen(true); setIsMobileMenuOpen(false); }}
+                onClick={() => { handleInstallApp(); setIsMobileMenuOpen(false); }}
                 className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all"
               >
                 <Smartphone className="w-4 h-4 text-sky-500" />
@@ -298,8 +329,8 @@ export default function App() {
 
       {/* Notificación Toast */}
       {toastMessage && (
-        <div className="fixed bottom-16 sm:bottom-10 left-1/2 -translate-x-1/2 z-50 bg-sky-500 text-white font-bold px-5 py-3 rounded-full shadow-lg shadow-sky-400/25 flex items-center space-x-2 animate-fadeIn border border-white/30">
-          <Zap className="w-4 h-4 fill-white" />
+        <div className="fixed bottom-16 sm:bottom-10 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold px-5 py-3 rounded-full shadow-lg shadow-sky-400/25 flex items-center space-x-2 animate-fadeIn border border-white/30">
+          <CheckCircle2 className="w-4 h-4 text-white" />
           <span className="text-xs sm:text-sm">{toastMessage}</span>
         </div>
       )}

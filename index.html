@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <!-- SEO & Title -->
   <title>StreamBeat — Descargador de Música (MP3 320k) y Videos (MP4 HD)</title>
@@ -32,18 +32,17 @@
   <meta name="twitter:image"
     content="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80" />
 
-  <!-- PWA / Mobile Web App -->
+  <!-- PWA / Mobile Web App Meta -->
   <meta name="theme-color" content="#0284C7" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="StreamBeat" />
+  <meta name="application-name" content="StreamBeat" />
 
-  <!-- Favicon & PWA Manifest (Sky Blue Theme) -->
-  <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230284C7'/><path d='M35 68 A12 12 0 1 1 47 56 L47 28 L72 20 L72 48 A12 12 0 1 1 60 60' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
-  <link rel="apple-touch-icon"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230284C7'/><path d='M35 68 A12 12 0 1 1 47 56 L47 28 L72 20 L72 48 A12 12 0 1 1 60 60' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  <!-- Favicon & PWA Icons -->
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <link rel="apple-touch-icon" href="/icon.svg" />
   <link rel="manifest" href="/manifest.json" />
 
   <!-- Preconnect -->
@@ -51,7 +50,7 @@
   <link rel="preconnect" href="https://images.unsplash.com" />
 </head>
 
-<body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-[#0284C7] selection:text-white font-sans">
+<body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-sky-400 selection:text-white font-sans">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
