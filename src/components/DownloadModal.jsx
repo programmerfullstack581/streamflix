@@ -11,7 +11,8 @@ import {
   HardDrive, 
   FileAudio, 
   Film,
-  Zap
+  Zap,
+  CheckCircle2
 } from 'lucide-react';
 import { MusicStorage } from '../services/musicService';
 
@@ -34,7 +35,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           id: 'mp3-320',
           name: 'MP3 — 320 kbps (Directo)',
           tag: 'MÁXIMA CALIDAD ⭐',
-          badgeColor: 'bg-red-600/20 text-red-400 border-red-500/40',
+          badgeColor: 'bg-sky-50 text-sky-800 border-sky-200',
           size: '~8.5 MB',
           desc: 'Audio en la más alta fidelidad estéreo MP3 disponible.',
           icon: Zap,
@@ -49,7 +50,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           id: 'mp3-128',
           name: 'MP3 — 128 kbps (Ligero)',
           tag: 'LIVIANO',
-          badgeColor: 'bg-neutral-800 text-gray-300 border-neutral-700',
+          badgeColor: 'bg-slate-100 text-slate-700 border-slate-200',
           size: '~3.4 MB',
           desc: 'Formato estándar ligero ideal para ahorrar espacio en el teléfono.',
           icon: Music,
@@ -63,7 +64,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           id: 'flac',
           name: 'FLAC — Lossless',
           tag: 'HI-FI SIN PÉRDIDA',
-          badgeColor: 'bg-red-950 text-red-300 border-red-700',
+          badgeColor: 'bg-sky-100 text-sky-900 border-sky-300',
           size: '~25 MB',
           desc: 'Formato de estudio sin pérdida para audiófilos y sonido Hi-Fi.',
           icon: FileAudio,
@@ -76,7 +77,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           id: 'wav',
           name: 'WAV — PCM Audio',
           tag: 'AUDIO PURO',
-          badgeColor: 'bg-neutral-800 text-gray-300 border-neutral-700',
+          badgeColor: 'bg-slate-100 text-slate-700 border-slate-200',
           size: '~35 MB',
           desc: 'Audio PCM puro sin compresión.',
           icon: Radio,
@@ -95,7 +96,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
           id: 'mp4-1080',
           name: 'MP4 — Full HD 1080p',
           tag: 'VIDEO FULL HD',
-          badgeColor: 'bg-rose-950 text-rose-300 border-rose-800',
+          badgeColor: 'bg-sky-50 text-sky-800 border-sky-200',
           size: '~60 MB',
           desc: 'Video musical oficial con la máxima resolución.',
           icon: Film,
@@ -127,172 +128,156 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-3 sm:p-6 overflow-y-auto animate-fadeIn"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto animate-fadeIn"
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-2xl bg-[#141414] border border-red-600/40 rounded-2xl sm:rounded-3xl shadow-red-neon overflow-hidden flex flex-col max-h-[92vh]"
+        className="w-full max-w-2xl bg-white border border-sky-100 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]"
         onClick={e => e.stopPropagation()}
       >
-        {/* Header Track info Red & Black */}
-        <div className="bg-gradient-to-r from-red-950 via-[#1a1a1a] to-[#141414] p-5 sm:p-6 border-b border-red-600/30 flex items-center justify-between">
+        {/* Header Track info Sky Blue */}
+        <div className="bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 p-5 sm:p-6 border-b border-sky-200 flex items-center justify-between text-white">
           <div className="flex items-center space-x-4 min-w-0">
             <img 
               src={track.thumbnail} 
               alt={track.title} 
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-2xl ring-2 ring-red-600/70 flex-shrink-0"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-lg ring-2 ring-white/60 flex-shrink-0"
             />
             <div className="min-w-0">
-              <span className="text-[10px] font-black uppercase tracking-widest text-red-400 bg-red-600/20 px-2 py-0.5 rounded-full border border-red-500/30">
-                Descargador Directo MP3
+              <span className="text-[10px] font-black uppercase tracking-widest text-white bg-white/20 px-2.5 py-0.5 rounded-full border border-white/30">
+                Descargador Multiformato
               </span>
               <h2 className="text-lg sm:text-xl font-black text-white truncate mt-1">{track.title}</h2>
-              <p className="text-sm text-gray-300 font-medium truncate">{track.artist}</p>
-              <p className="text-xs text-gray-500 font-mono mt-0.5">Duración: {track.duration} • Audio Alta Calidad</p>
+              <p className="text-sm text-sky-100 font-medium truncate">{track.artist}</p>
             </div>
           </div>
           <button 
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white rounded-full hover:bg-white/10 transition-colors flex-shrink-0"
+            onClick={onClose} 
+            className="p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10 cursor-pointer flex-shrink-0"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1">
+        {/* Content Body */}
+        <div className="p-5 sm:p-7 overflow-y-auto space-y-6 flex-1 bg-white">
           
-          {/* Action Copy Link */}
-          <div className="bg-[#0d0d0d] p-3.5 rounded-2xl border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="min-w-0 w-full">
-              <p className="text-xs text-gray-400 font-medium truncate">Enlace directo de la canción:</p>
-              <p className="text-xs text-red-400 font-mono truncate">{ytUrl}</p>
+          {/* Direct URL copy bar */}
+          <div className="flex items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+            <div className="flex items-center space-x-2 min-w-0 text-xs text-slate-600 font-mono truncate">
+              <span className="text-slate-400">URL:</span>
+              <span className="truncate">{ytUrl}</span>
             </div>
             <button
               onClick={handleCopyLink}
-              className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 flex-shrink-0 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 flex-shrink-0 cursor-pointer shadow-sm ${
                 copied 
-                  ? 'bg-red-600 text-white shadow-lg' 
-                  : 'bg-white/10 hover:bg-white/20 text-white'
+                  ? 'bg-emerald-600 text-white' 
+                  : 'bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200'
               }`}
             >
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? '¡Enlace Copiado!' : 'Copiar Enlace'}</span>
+              {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? '¡Copiado!' : 'Copiar'}</span>
             </button>
           </div>
 
-          {/* Format Selector */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 flex items-center space-x-2">
-              <Sparkles className="w-4 h-4 text-[#E50914]" />
-              <span>1. Elige el formato para descargar:</span>
-            </h3>
-
-            <div className="space-y-4">
-              {FORMAT_GROUPS.map((group, gIdx) => (
-                <div key={gIdx} className="space-y-2">
-                  <span className="text-[11px] font-bold text-gray-500 uppercase">{group.title}</span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {group.formats.map((fmt) => {
-                      const Icon = fmt.icon;
-                      const isSelected = selectedFormatId === fmt.id;
-                      return (
-                        <button
-                          key={fmt.id}
-                          onClick={() => setSelectedFormatId(fmt.id)}
-                          className={`p-3 rounded-xl border text-left transition-all flex items-start space-x-3 ${
-                            isSelected 
-                              ? 'bg-red-950/50 border-red-500 shadow-lg ring-1 ring-red-500' 
-                              : 'bg-[#0d0d0d] border-white/5 hover:border-white/20 hover:bg-white/5'
-                          }`}
-                        >
-                          <div className={`p-2 rounded-lg ${isSelected ? 'bg-red-600 text-white' : 'bg-white/5 text-gray-400'}`}>
-                            <Icon className="w-4 h-4" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <span className={`text-sm font-bold truncate block ${isSelected ? 'text-white' : 'text-gray-200'}`}>
-                              {fmt.name}
-                            </span>
-                            <div className="flex items-center space-x-2 mt-1">
-                              <span className={`text-[9px] font-black uppercase px-1.5 py-0.2 rounded border ${fmt.badgeColor}`}>
-                                {fmt.tag}
-                              </span>
-                              <span className="text-[10px] text-gray-500 font-mono">{fmt.size}</span>
-                            </div>
-                            <p className="text-[11px] text-gray-400 mt-1 leading-snug">{fmt.desc}</p>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+          {statusMessage && (
+            <div className="p-3 bg-sky-50 border border-sky-300 text-sky-900 rounded-xl text-xs font-bold text-center animate-fadeIn">
+              {statusMessage}
             </div>
+          )}
+
+          {/* Formats Grid */}
+          <div className="space-y-4">
+            {FORMAT_GROUPS.map((group) => (
+              <div key={group.type} className="space-y-2.5">
+                <h4 className="text-xs font-black uppercase tracking-wider text-slate-500">
+                  {group.title}
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {group.formats.map((fmt) => {
+                    const isSelected = selectedFormatId === fmt.id;
+                    const IconComp = fmt.icon;
+                    return (
+                      <div
+                        key={fmt.id}
+                        onClick={() => setSelectedFormatId(fmt.id)}
+                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-start justify-between gap-3 ${
+                          isSelected
+                            ? 'bg-sky-50/80 border-sky-400 shadow-md ring-1 ring-sky-300'
+                            : 'bg-white hover:bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-start space-x-3 min-w-0">
+                          <div className={`p-2 rounded-xl flex-shrink-0 ${
+                            isSelected ? 'bg-gradient-to-tr from-sky-500 to-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            <IconComp className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="flex items-center space-x-1.5 flex-wrap gap-1">
+                              <h5 className="text-xs font-bold text-slate-900 truncate">{fmt.name}</h5>
+                            </div>
+                            <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-2">{fmt.desc}</p>
+                            <span className="text-[10px] text-slate-400 font-mono mt-1 inline-block">{fmt.size}</span>
+                          </div>
+                        </div>
+                        <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-md border flex-shrink-0 ${fmt.badgeColor}`}>
+                          {fmt.tag}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Server Providers */}
-          <div className="pt-2 border-t border-white/10">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-white mb-3 flex items-center space-x-2">
-              <Download className="w-4 h-4 text-[#E50914]" />
-              <span>Opciones de Descarga Directa en <strong className="text-red-400">{selectedFormat.name}</strong>:</span>
-            </h3>
+          {/* Providers for Selected Format */}
+          <div className="p-4 bg-sky-50/60 rounded-2xl border border-sky-100 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">
+                Servidores para {selectedFormat.name}:
+              </h4>
+              <span className="text-[10px] text-slate-500">Selecciona uno para abrir</span>
+            </div>
 
-            <div className="space-y-2.5">
-              {selectedFormat.providers.map((p, idx) => (
+            <div className="space-y-2">
+              {selectedFormat.providers.map((provider) => (
                 <a
-                  key={idx}
-                  href={p.url}
+                  key={provider.name}
+                  href={provider.url}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => handleProviderClick(p)}
-                  className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all group ${
-                    p.best 
-                      ? 'bg-gradient-to-r from-red-950/80 to-[#121212] border-red-500/60 hover:border-red-400 shadow-red-neon' 
-                      : 'bg-[#0d0d0d] border-white/5 hover:border-white/20 hover:bg-white/5'
+                  rel="noreferrer"
+                  onClick={() => handleProviderClick(provider)}
+                  className={`p-3 rounded-xl flex items-center justify-between border transition-all ${
+                    provider.best
+                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white border-sky-400 shadow-md shadow-sky-500/20 hover:scale-[1.01]'
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200'
                   }`}
                 >
-                  <div className="flex items-center space-x-3 min-w-0">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                      p.best ? 'bg-red-600 text-white font-black shadow-md' : 'bg-white/10 text-white'
-                    }`}>
-                      <Download className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm font-bold text-white group-hover:text-red-400 transition-colors truncate">
-                          {p.name}
-                        </span>
-                        {p.best && (
-                          <span className="text-[9px] font-black bg-red-600 text-white px-2 py-0.2 rounded-full">
-                            DIRECTO MP3
-                          </span>
-                        )}
-                      </div>
-                      {p.note && <p className="text-[11px] text-gray-400 mt-0.5">{p.note}</p>}
-                    </div>
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold truncate block">{provider.name}</span>
+                    {provider.note && (
+                      <span className={`text-[10px] block ${provider.best ? 'text-sky-100' : 'text-slate-500'}`}>
+                        {provider.note}
+                      </span>
+                    )}
                   </div>
-
-                  <div className="flex items-center space-x-2 flex-shrink-0 pl-2">
-                    <span className="text-xs font-bold text-red-400 hidden sm:inline">Descargar ahora</span>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-red-400 transition-colors" />
-                  </div>
+                  <ExternalLink className="w-4 h-4 flex-shrink-0 ml-2" />
                 </a>
               ))}
             </div>
-
-            {statusMessage && (
-              <p className="text-xs font-bold text-red-400 text-center mt-3 animate-fadeIn">{statusMessage}</p>
-            )}
           </div>
 
         </div>
 
         {/* Footer */}
-        <div className="bg-[#0d0d0d] px-6 py-3.5 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
-          <span>Formato: <strong className="text-white">{selectedFormat.name}</strong></span>
-          <button 
+        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+          <span className="text-xs text-slate-500 font-medium">StreamBeat © Descargador Profesional</span>
+          <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold transition-colors"
+            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
           >
             Cerrar
           </button>

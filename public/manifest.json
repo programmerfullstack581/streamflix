@@ -1,16 +1,16 @@
 {
   "short_name": "StreamBeat",
-  "name": "StreamBeat Red — Descargador MP3 & MP4",
+  "name": "StreamBeat — Descargador MP3 & MP4",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23E50914'/><path d='M35 68 A12 12 0 1 1 47 56 L47 28 L72 20 L72 48 A12 12 0 1 1 60 60' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230284C7'/><path d='M35 68 A12 12 0 1 1 47 56 L47 28 L72 20 L72 48 A12 12 0 1 1 60 60' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>",
       "type": "image/svg+xml",
       "sizes": "512x512 192x192"
     }
   ],
   "start_url": "/",
-  "background_color": "#070707",
-  "theme_color": "#E50914",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0284C7",
   "display": "standalone",
   "orientation": "portrait-primary",
   "description": "Descarga canciones en Audio MP3 (320 kbps) y Videos en MP4 HD directamente a tu teléfono celular o PC."
