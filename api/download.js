@@ -1,4 +1,5 @@
-// Vercel Serverless Function — Conversión y Descarga Directa de Audio y Video
+// Vercel Serverless Function — Conversión y Descarga Directa Multi-Plataforma
+// Soporta: YouTube, Shorts, TikTok, Instagram Reels, Facebook, Twitter/X
 // Ruta: /api/download
 
 export default async function handler(req, res) {
@@ -15,13 +16,56 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing url parameter' });
   }
 
-  let fullUrl = url;
-  if (!url.startsWith('http')) {
-    fullUrl = `https://www.youtube.com/watch?v=${url}`;
+  let fullUrl = url.trim();
+  if (!fullUrl.startsWith('http')) {
+    fullUrl = `https://www.youtube.com/watch?v=${fullUrl}`;
+  }
+
+  const isTikTokOrInstagram = /tiktok\.com|instagram\.com|facebook\.com|fb\.watch|twitter\.com|x\.com/i.test(fullUrl);
+
+  // ═══════════════════════════════════════════════════════════════
+  // MOTOR 1: Cobalt API (Especialista en TikTok, Instagram, Twitter y Fallback YouTube)
+  // ═══════════════════════════════════════════════════════════════
+  const cobaltInstances = [
+    'https://api.cobalt.tools',
+    'https://cobalt-api.kwiatekmiki.com',
+    'https://cobalt.api.timelessnesses.me'
+  ];
+
+  if (isTikTokOrInstagram) {
+    for (const instance of cobaltInstances) {
+      try {
+        const response = await fetch(`${instance}/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            url: fullUrl,
+            downloadMode: format === 'audio' ? 'audio' : 'auto',
+            audioFormat: 'mp3',
+            videoQuality: '1080'
+          }),
+          signal: AbortSignal.timeout(12000)
+        });
+
+        if (!response.ok) continue;
+        const data = await response.json();
+
+        if ((data.status === 'tunnel' || data.status === 'redirect') && data.url) {
+          return res.status(200).json({
+            success: true,
+            downloadUrl: data.url,
+            filename: data.filename || 'media_descarga',
+            format: format
+          });
+        }
+      } catch (_) {
+        continue;
+      }
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // MOTOR PRINCIPAL: Loader.to API (Alta velocidad y 100% garantizado)
+  // MOTOR 2: Loader.to API (Para YouTube y Shorts)
   // ═══════════════════════════════════════════════════════════════
   try {
     const targetFormat = format === 'video' ? '720' : 'mp3';
@@ -41,7 +85,7 @@ export default async function handler(req, res) {
       const title = initData.title || initData.info?.title || 'musica';
 
       if (progressUrl) {
-        // Polling hasta que el archivo esté listo (máximo 20 intentos = ~25 seg)
+        // Polling hasta que el archivo esté listo
         for (let i = 0; i < 20; i++) {
           await new Promise(r => setTimeout(r, 1200));
           try {
@@ -71,15 +115,7 @@ export default async function handler(req, res) {
     console.error('Loader API error:', err.message);
   }
 
-  // ═══════════════════════════════════════════════════════════════
-  // MOTOR SECUNDARIO: Cobalt API (Fallback)
-  // ═══════════════════════════════════════════════════════════════
-  const cobaltInstances = [
-    'https://api.cobalt.tools',
-    'https://cobalt-api.kwiatekmiki.com',
-    'https://cobalt.api.timelessnesses.me'
-  ];
-
+  // Fallback a Cobalt para YouTube si Loader.to está lento
   for (const instance of cobaltInstances) {
     try {
       const response = await fetch(`${instance}/`, {
@@ -101,7 +137,8 @@ export default async function handler(req, res) {
         return res.status(200).json({
           success: true,
           downloadUrl: data.url,
-          filename: data.filename || null
+          filename: data.filename || null,
+          format: format
         });
       }
     } catch (_) {

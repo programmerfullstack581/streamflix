@@ -34,7 +34,10 @@ import {
   Youtube,
   ShieldCheck,
   Music2,
-  TrendingUp
+  TrendingUp,
+  QrCode,
+  Sliders,
+  Volume2
 } from 'lucide-react';
 import { 
   MusicStorage, 
@@ -50,6 +53,8 @@ import {
 import RingtoneModal from './RingtoneModal';
 import LyricsModal from './LyricsModal';
 import ShareModal from './ShareModal';
+import QRCodeModal from './QRCodeModal';
+import AudioEffectsModal from './AudioEffectsModal';
 
 // Sugerencias de tendencias en YouTube en vivo
 const YOUTUBE_TRENDING_TOPICS = [
@@ -102,6 +107,10 @@ export default function DownloadsView({
   const [ringtoneTrack, setRingtoneTrack] = useState(null);
   const [lyricsTrack, setLyricsTrack] = useState(null);
   const [shareTrack, setShareTrack] = useState(null);
+  const [qrTrack, setQrTrack] = useState(null);
+  const [effectsTrack, setEffectsTrack] = useState(null);
+  const [appliedEffect, setAppliedEffect] = useState(null);
+  const [relatedTracks, setRelatedTracks] = useState([]);
 
   const topSectionRef = useRef(null);
 
@@ -715,15 +724,15 @@ export default function DownloadsView({
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2">
                   <button
                     onClick={() => handleCopyUrlAndPrepareDownload(resolvedTrack)}
-                    className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer"
+                    className="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95"
                   >
                     <Copy className="w-3.5 h-3.5" />
-                    <span>Copiar Enlace de YouTube</span>
+                    <span>Copiar Enlace</span>
                   </button>
 
                   <button
                     onClick={() => togglePreview(resolvedTrack)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 ${
                       previewTrack?.videoId === resolvedTrack.videoId && isPreviewPlaying
                         ? 'bg-red-600 text-white shadow-red-neon'
                         : 'bg-white/10 hover:bg-white/20 text-white'
@@ -742,6 +751,40 @@ export default function DownloadsView({
                     )}
                   </button>
 
+                  <button
+                    onClick={() => setEffectsTrack(resolvedTrack)}
+                    className="px-2.5 py-1.5 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95"
+                    title="Ajustar graves y potencia"
+                  >
+                    <Sliders className="w-3.5 h-3.5 text-red-400" />
+                    <span>Bass Booster / EQ</span>
+                  </button>
+
+                  <button
+                    onClick={() => setQrTrack(resolvedTrack)}
+                    className="px-2.5 py-1.5 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95"
+                    title="Generar código QR para celular"
+                  >
+                    <QrCode className="w-3.5 h-3.5 text-red-400" />
+                    <span>Código QR</span>
+                  </button>
+
+                  <button
+                    onClick={() => setLyricsTrack(resolvedTrack)}
+                    className="px-2.5 py-1.5 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95"
+                  >
+                    <Mic2 className="w-3.5 h-3.5" />
+                    <span>Letra</span>
+                  </button>
+
+                  <button
+                    onClick={() => setRingtoneTrack(resolvedTrack)}
+                    className="px-2.5 py-1.5 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 hover:border-red-500/40 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95"
+                  >
+                    <Scissors className="w-3.5 h-3.5" />
+                    <span>Ringtone</span>
+                  </button>
+
                   <a
                     href={`https://www.youtube.com/watch?v=${resolvedTrack.videoId}`}
                     target="_blank"
@@ -749,16 +792,8 @@ export default function DownloadsView({
                     className="px-2.5 py-1.5 bg-white/5 hover:bg-white/15 text-gray-300 hover:text-white border border-white/10 rounded-xl text-xs font-bold transition-all flex items-center space-x-1"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Ver en YouTube</span>
+                    <span>YouTube</span>
                   </a>
-
-                  <button
-                    onClick={() => setRingtoneTrack(resolvedTrack)}
-                    className="px-2.5 py-1.5 bg-white/5 hover:bg-red-600/20 text-gray-300 hover:text-red-400 border border-white/10 rounded-xl text-xs font-bold transition-all flex items-center space-x-1"
-                  >
-                    <Scissors className="w-3.5 h-3.5" />
-                    <span>Crear Ringtone</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -1193,6 +1228,23 @@ export default function DownloadsView({
 
       {shareTrack && (
         <ShareModal track={shareTrack} onClose={() => setShareTrack(null)} />
+      )}
+
+      {qrTrack && (
+        <QRCodeModal track={qrTrack} onClose={() => setQrTrack(null)} />
+      )}
+
+      {effectsTrack && (
+        <AudioEffectsModal 
+          track={effectsTrack} 
+          onClose={() => setEffectsTrack(null)} 
+          onApplyEffect={(eff) => {
+            setAppliedEffect(eff);
+            setDownloadSuccess(`🎛️ Perfil "${eff.preset}" activado. Descargando con ecualización...`);
+            setTimeout(() => setDownloadSuccess(''), 6000);
+            triggerDownloadAction(effectsTrack, 'audio');
+          }}
+        />
       )}
 
     </div>
