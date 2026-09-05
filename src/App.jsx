@@ -51,23 +51,23 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F7FF] text-slate-800 flex flex-col font-sans selection:bg-[#0284C7] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-col font-sans selection:bg-sky-400 selection:text-white">
       
-      {/* Barra Superior Limpia y Moderna (Modo Claro Azul Cielo & Blanco) */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-8 py-3.5 border-b border-sky-100 select-none shadow-sm">
+      {/* Barra Superior Limpia y Elegante en Modo Claro Pastel */}
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-4 sm:px-8 py-3.5 border-b border-sky-100/80 select-none shadow-xs">
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
           
           {/* Logo / Marca */}
           <div className="flex items-center space-x-3 cursor-pointer">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/20 text-white">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 to-sky-600 flex items-center justify-center shadow-md shadow-sky-400/20 text-white">
               <Radio className="w-5 h-5 font-black" />
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
                 <span className="text-xl font-black text-slate-900 tracking-tight">STREAM</span>
-                <span className="text-xl font-black text-[#0284C7] tracking-tight">BEAT</span>
+                <span className="text-xl font-black text-sky-500 tracking-tight">BEAT</span>
               </div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
+              <span className="text-[9px] font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
                 DESCARGADOR DE AUDIO (MP3) & VIDEO (MP4)
               </span>
             </div>
@@ -75,14 +75,14 @@ export default function App() {
 
           {/* Acciones Superiores: Contador de Descargas e Instalación PWA */}
           <div className="flex items-center space-x-3">
-            <div className="hidden sm:flex items-center space-x-1.5 text-xs text-slate-600 font-bold bg-sky-50 px-3 py-1.5 rounded-xl border border-sky-100">
-              <HardDrive className="w-3.5 h-3.5 text-[#0284C7]" />
-              <span>Descargas guardadas: <strong className="text-slate-900">{downloads.length}</strong></span>
+            <div className="hidden sm:flex items-center space-x-1.5 text-xs text-slate-600 font-semibold bg-sky-50/80 px-3 py-1.5 rounded-xl border border-sky-100">
+              <HardDrive className="w-3.5 h-3.5 text-sky-500" />
+              <span>Descargas guardadas: <strong className="text-slate-900 font-bold">{downloads.length}</strong></span>
             </div>
 
             <button
               onClick={handleInstallApp}
-              className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-500/20 cursor-pointer active:scale-95"
+              className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-400/20 cursor-pointer active:scale-95"
               title="Instalar App en tu celular o PC"
             >
               <Smartphone className="w-3.5 h-3.5" />
@@ -121,7 +121,7 @@ export default function App() {
 
       {/* Notificación Toast */}
       {toastMessage && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#0284C7] text-white font-black px-5 py-3 rounded-full shadow-xl shadow-sky-500/30 flex items-center space-x-2 animate-fadeIn border border-white/30">
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-sky-500 text-white font-bold px-5 py-3 rounded-full shadow-lg shadow-sky-400/25 flex items-center space-x-2 animate-fadeIn border border-white/30">
           <Zap className="w-4 h-4 fill-white" />
           <span className="text-xs sm:text-sm">{toastMessage}</span>
         </div>

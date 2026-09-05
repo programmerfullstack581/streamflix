@@ -497,33 +497,33 @@ export default function DownloadsView({
   return (
     <div ref={topSectionRef} className="space-y-6 sm:space-y-8 animate-fadeIn w-full overflow-x-hidden">
       
-      {/* Header Banner - Ultra Profesional Modo Claro Azul Cielo & Blanco */}
-      <div className="p-6 sm:p-9 md:p-11 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 rounded-2xl sm:rounded-3xl shadow-xl shadow-sky-500/15 relative overflow-hidden text-center sm:text-left text-white">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-sky-300/15 rounded-full blur-2xl pointer-events-none"></div>
+      {/* Header Banner - Azul Cielo Suave & Blanco Elegante */}
+      <div className="p-6 sm:p-9 md:p-10 bg-gradient-to-r from-sky-500 via-sky-400 to-blue-500 rounded-3xl shadow-lg shadow-sky-400/15 relative overflow-hidden text-center sm:text-left text-white">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/15 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-sky-200/20 rounded-full blur-2xl pointer-events-none"></div>
         
-        <div className="relative z-10 max-w-3xl space-y-3.5 sm:space-y-4">
+        <div className="relative z-10 max-w-3xl space-y-3.5">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white">
             <Youtube className="w-4 h-4 text-white fill-white" />
-            <span className="text-[10px] sm:text-xs font-black tracking-wider uppercase">
-              Conexión en Vivo con YouTube & Descargas Directas
+            <span className="text-[10px] sm:text-xs font-bold tracking-wider uppercase">
+              Descargador Directo de YouTube • MP3 & MP4
             </span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Descargar Música en <span className="text-sky-100 underline decoration-white/70">Audio (MP3)</span> o <span className="text-white underline decoration-sky-200">Video (MP4)</span>
+            Descargar Música en <span className="text-sky-100 underline decoration-white/60">Audio (MP3)</span> o <span className="text-white underline decoration-sky-100">Video (MP4)</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-sky-50 leading-relaxed max-w-2xl">
-            Busca cualquier canción en vivo en <strong className="text-white font-bold">YouTube</strong>, copia su enlace con 1 clic y descárgala en la más alta calidad en tu <strong className="text-white font-bold">Celular o PC</strong>.
+            Busca cualquier canción en vivo en <strong className="text-white font-bold">YouTube</strong>, copia su enlace con 1 clic y guárdala gratis en tu <strong className="text-white font-bold">Celular o PC</strong>.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1">
-            <span className="text-xs font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3.5 py-1.5 rounded-xl flex items-center space-x-2 shadow-sm">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 pt-1">
+            <span className="text-xs font-semibold bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3.5 py-1.5 rounded-xl flex items-center space-x-2 shadow-xs">
               <FileAudio className="w-4 h-4 text-white" />
               <span>Audio MP3 ({audioBitrate})</span>
             </span>
-            <span className="text-xs font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3.5 py-1.5 rounded-xl flex items-center space-x-2 shadow-sm">
+            <span className="text-xs font-semibold bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3.5 py-1.5 rounded-xl flex items-center space-x-2 shadow-xs">
               <Film className="w-4 h-4 text-white" />
               <span>Video MP4 ({videoQuality})</span>
             </span>
@@ -531,62 +531,62 @@ export default function DownloadsView({
         </div>
       </div>
 
-      {/* Barra de Calidad Profesional & Confianza (Tarjetas Blancas con Acentos Azul Cielo) */}
+      {/* Barra de Calidad Profesional (Tarjetas Blancas con Acentos Azul Cielo Suave) */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
-        <div className="p-4 bg-white rounded-2xl border border-sky-100 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-sm hover:shadow-md group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+        <div className="p-4 bg-white rounded-2xl border border-sky-100/80 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-xs hover:shadow-sm group">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-400 to-sky-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm shadow-sky-400/20 group-hover:scale-105 transition-transform">
             <FileAudio className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-xs sm:text-sm font-black text-slate-900 truncate">MP3 320 kbps</h4>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">MP3 320 kbps</h4>
             <p className="text-[10px] sm:text-[11px] text-slate-500 truncate">Audio HD de estudio</p>
           </div>
         </div>
 
-        <div className="p-4 bg-white rounded-2xl border border-sky-100 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-sm hover:shadow-md group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+        <div className="p-4 bg-white rounded-2xl border border-sky-100/80 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-xs hover:shadow-sm group">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-400 to-sky-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm shadow-sky-400/20 group-hover:scale-105 transition-transform">
             <Film className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-xs sm:text-sm font-black text-slate-900 truncate">Video MP4 1080p</h4>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">Video MP4 1080p</h4>
             <p className="text-[10px] sm:text-[11px] text-slate-500 truncate">Full HD sin cortes</p>
           </div>
         </div>
 
-        <div className="p-4 bg-white rounded-2xl border border-sky-100 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-sm hover:shadow-md group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+        <div className="p-4 bg-white rounded-2xl border border-sky-100/80 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-xs hover:shadow-sm group">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-400 to-sky-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm shadow-sky-400/20 group-hover:scale-105 transition-transform">
             <Smartphone className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-xs sm:text-sm font-black text-slate-900 truncate">Carátula & Auto</h4>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">Carátula & Auto</h4>
             <p className="text-[10px] sm:text-[11px] text-slate-500 truncate">Listo para Celular & BT</p>
           </div>
         </div>
 
-        <div className="p-4 bg-white rounded-2xl border border-sky-100 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-sm hover:shadow-md group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white flex-shrink-0 shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
+        <div className="p-4 bg-white rounded-2xl border border-sky-100/80 hover:border-sky-300 transition-all flex items-center space-x-3.5 shadow-xs hover:shadow-sm group">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-sky-400 to-sky-500 flex items-center justify-center text-white flex-shrink-0 shadow-sm shadow-sky-400/20 group-hover:scale-105 transition-transform">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-xs sm:text-sm font-black text-slate-900 truncate">100% Gratis</h4>
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">100% Gratis</h4>
             <p className="text-[10px] sm:text-[11px] text-slate-500 truncate">Sin límites ni registro</p>
           </div>
         </div>
       </div>
 
       {/* Panel Principal: Input de Búsqueda y Enlaces de YouTube */}
-      <div className="bg-white p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-sky-100 shadow-xl shadow-sky-900/5 space-y-6">
+      <div className="bg-white p-5 sm:p-8 rounded-3xl border border-sky-100 shadow-sm space-y-6">
         
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <h2 className="text-xs sm:text-base md:text-lg font-black text-slate-900 flex items-center space-x-2">
-            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[#0284C7] flex-shrink-0" />
+          <h2 className="text-xs sm:text-base md:text-lg font-bold text-slate-900 flex items-center space-x-2">
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-sky-500 flex-shrink-0" />
             <span className="truncate">Busca una canción en YouTube o pega su enlace:</span>
           </h2>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={handlePasteClipboard}
-              className="flex-1 sm:flex-none text-xs font-bold text-sky-700 hover:text-sky-800 px-3.5 py-2 bg-sky-50 hover:bg-sky-100 border border-sky-200 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+              className="flex-1 sm:flex-none text-xs font-semibold text-sky-700 hover:text-sky-800 px-3.5 py-2 bg-sky-50/80 hover:bg-sky-100 border border-sky-200/80 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
               title="Pegar enlace copiado"
             >
               <span>📋 Pegar Enlace</span>
@@ -594,7 +594,7 @@ export default function DownloadsView({
             <button
               type="button"
               onClick={handleClearInput}
-              className="flex-1 sm:flex-none text-xs font-bold text-slate-600 hover:text-slate-900 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+              className="flex-1 sm:flex-none text-xs font-semibold text-slate-600 hover:text-slate-900 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition-all flex items-center justify-center space-x-1.5 hover:scale-105 active:scale-95 cursor-pointer shadow-xs"
               title="Limpiar campo y resultados"
             >
               <Trash2 className="w-3.5 h-3.5 text-rose-500" />
@@ -611,7 +611,7 @@ export default function DownloadsView({
               placeholder="Escribe el nombre de la canción o pega un enlace de YouTube (https://youtu.be/...)"
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 focus:border-sky-500 text-slate-900 placeholder-slate-400 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-4 pr-10 text-xs sm:text-sm font-medium outline-none transition-all shadow-inner focus:ring-2 focus:ring-sky-500/20"
+              className="w-full bg-slate-50/80 border border-slate-200 focus:border-sky-400 text-slate-900 placeholder-slate-400 rounded-xl sm:rounded-2xl py-3.5 sm:py-4 pl-4 pr-10 text-xs sm:text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-sky-100"
             />
             {urlInput && (
               <button
@@ -627,7 +627,7 @@ export default function DownloadsView({
           <button
             type="submit"
             disabled={isResolving}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-black text-xs sm:text-sm rounded-xl sm:rounded-2xl transition-all hover:scale-105 shadow-md shadow-sky-500/20 flex items-center justify-center space-x-2 flex-shrink-0 disabled:opacity-50 cursor-pointer"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-bold text-xs sm:text-sm rounded-xl sm:rounded-2xl transition-all hover:scale-105 shadow-md shadow-sky-400/20 flex items-center justify-center space-x-2 flex-shrink-0 disabled:opacity-50 cursor-pointer"
           >
             {isResolving ? (
               <>
@@ -645,7 +645,7 @@ export default function DownloadsView({
 
         {/* Chips de Búsqueda Rápida en YouTube */}
         <div className="space-y-2 pt-1">
-          <div className="flex items-center space-x-2 text-xs text-slate-600 font-bold">
+          <div className="flex items-center space-x-2 text-xs text-slate-500 font-semibold">
             <Flame className="w-4 h-4 text-amber-500" />
             <span>Tendencias en YouTube (haz clic para buscar):</span>
           </div>
@@ -660,10 +660,10 @@ export default function DownloadsView({
                     fetchTrendingFromYoutube(topic.query);
                     handleAnalyzeOrSearch(null, topic.query);
                   }}
-                  className={`text-xs px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer flex-shrink-0 flex items-center space-x-1 ${
+                  className={`text-xs px-3 py-1.5 rounded-xl font-semibold whitespace-nowrap transition-all cursor-pointer flex-shrink-0 flex items-center space-x-1 ${
                     isActive
-                      ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20 scale-105'
-                      : 'bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-800 border border-slate-200 hover:border-sky-200'
+                      ? 'bg-gradient-to-r from-sky-400 to-sky-500 text-white shadow-sm scale-105'
+                      : 'bg-slate-100 hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200/60 hover:border-sky-200'
                   }`}
                 >
                   <span>{topic.label}</span>
@@ -681,15 +681,15 @@ export default function DownloadsView({
         )}
 
         {downloadSuccess && (
-          <div className="p-4 bg-sky-50 border border-sky-300 text-sky-900 rounded-2xl text-xs font-black text-center animate-fadeIn shadow-md flex items-center justify-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-sky-600 flex-shrink-0" />
+          <div className="p-4 bg-sky-50 border border-sky-200 text-sky-900 rounded-2xl text-xs font-bold text-center animate-fadeIn shadow-xs flex items-center justify-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 text-sky-500 flex-shrink-0" />
             <span>{downloadSuccess}</span>
           </div>
         )}
 
         {/* Panel de Descarga de Canción Seleccionada (Audio MP3 & Video MP4 Grandes) */}
         {resolvedTrack && (
-          <div className="p-5 sm:p-7 md:p-8 bg-gradient-to-br from-sky-50/80 via-white to-blue-50/70 rounded-2xl sm:rounded-3xl border-2 border-sky-300 space-y-6 animate-fadeIn shadow-xl">
+          <div className="p-5 sm:p-7 md:p-8 bg-gradient-to-br from-sky-50/60 via-white to-blue-50/40 rounded-3xl border border-sky-200 space-y-6 animate-fadeIn shadow-md">
             
             {/* Detalles de la Canción de YouTube */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 pb-5 border-b border-sky-100">
@@ -702,22 +702,22 @@ export default function DownloadsView({
                   e.target.onerror = null;
                   e.target.src = `https://img.youtube.com/vi/${resolvedTrack.videoId}/0.jpg`;
                 }}
-                className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl object-cover shadow-lg ring-2 ring-sky-400 flex-shrink-0"
+                className="w-28 h-28 sm:w-36 sm:h-36 rounded-2xl object-cover shadow-sm ring-2 ring-sky-300 flex-shrink-0"
               />
 
               <div className="flex-1 min-w-0 text-center sm:text-left space-y-2">
                 <div className="flex items-center justify-center sm:justify-start space-x-2">
-                  <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white tracking-wider flex items-center space-x-1 shadow-sm">
+                  <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-gradient-to-r from-sky-400 to-sky-600 text-white tracking-wider flex items-center space-x-1 shadow-xs">
                     <Youtube className="w-3 h-3 fill-current" />
                     <span>Video de YouTube Listo</span>
                   </span>
-                  <span className="text-[10px] font-bold text-sky-800 font-mono bg-sky-100 px-2 py-0.5 rounded-full border border-sky-200">
+                  <span className="text-[10px] font-bold text-sky-700 font-mono bg-sky-100/80 px-2 py-0.5 rounded-full border border-sky-200/80">
                     {resolvedTrack.duration}
                   </span>
                 </div>
                 <h3 className="text-base sm:text-2xl font-black text-slate-900 truncate">{resolvedTrack.title}</h3>
                 <p className="text-xs sm:text-sm text-slate-600 font-semibold">{resolvedTrack.artist}</p>
-                <p className="text-[11px] sm:text-xs text-slate-500 font-mono">
+                <p className="text-[11px] sm:text-xs text-slate-400 font-mono">
                   URL: https://www.youtube.com/watch?v={resolvedTrack.videoId}
                 </p>
                 
@@ -725,18 +725,18 @@ export default function DownloadsView({
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-2">
                   <button
                     onClick={() => handleCopyUrlAndPrepareDownload(resolvedTrack)}
-                    className="px-3 py-1.5 bg-sky-100 hover:bg-sky-200 text-sky-800 border border-sky-300 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                    className="px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
                   >
-                    <Copy className="w-3.5 h-3.5 text-sky-600" />
+                    <Copy className="w-3.5 h-3.5 text-sky-500" />
                     <span>Copiar Enlace</span>
                   </button>
 
                   <button
                     onClick={() => togglePreview(resolvedTrack)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 shadow-sm ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 cursor-pointer hover:scale-105 active:scale-95 shadow-xs ${
                       previewTrack?.videoId === resolvedTrack.videoId && isPreviewPlaying
-                        ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sky-500/20'
-                        : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                        ? 'bg-gradient-to-r from-sky-400 to-sky-500 text-white shadow-sky-400/20'
+                        : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200'
                     }`}
                   >
                     {previewTrack?.videoId === resolvedTrack.videoId && isPreviewPlaying ? (
@@ -746,7 +746,7 @@ export default function DownloadsView({
                       </>
                     ) : (
                       <>
-                        <Play className="w-3.5 h-3.5 fill-sky-600 text-sky-600" />
+                        <Play className="w-3.5 h-3.5 fill-sky-500 text-sky-500" />
                         <span>Escuchar Preview</span>
                       </>
                     )}
@@ -754,35 +754,35 @@ export default function DownloadsView({
 
                   <button
                     onClick={() => setEffectsTrack(resolvedTrack)}
-                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
                     title="Ajustar graves y potencia"
                   >
-                    <Sliders className="w-3.5 h-3.5 text-sky-600" />
+                    <Sliders className="w-3.5 h-3.5 text-sky-500" />
                     <span>Bass Booster / EQ</span>
                   </button>
 
                   <button
                     onClick={() => setQrTrack(resolvedTrack)}
-                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
                     title="Generar código QR para celular"
                   >
-                    <QrCode className="w-3.5 h-3.5 text-sky-600" />
+                    <QrCode className="w-3.5 h-3.5 text-sky-500" />
                     <span>Código QR</span>
                   </button>
 
                   <button
                     onClick={() => setLyricsTrack(resolvedTrack)}
-                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
                   >
-                    <Mic2 className="w-3.5 h-3.5 text-sky-600" />
+                    <Mic2 className="w-3.5 h-3.5 text-sky-500" />
                     <span>Letra</span>
                   </button>
 
                   <button
                     onClick={() => setRingtoneTrack(resolvedTrack)}
-                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-sm"
+                    className="px-2.5 py-1.5 bg-white hover:bg-sky-50 text-slate-600 hover:text-sky-700 border border-slate-200 hover:border-sky-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 cursor-pointer hover:scale-105 active:scale-95 shadow-xs"
                   >
-                    <Scissors className="w-3.5 h-3.5 text-sky-600" />
+                    <Scissors className="w-3.5 h-3.5 text-sky-500" />
                     <span>Ringtone</span>
                   </button>
 
@@ -790,7 +790,7 @@ export default function DownloadsView({
                     href={`https://www.youtube.com/watch?v=${resolvedTrack.videoId}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-all flex items-center space-x-1 shadow-sm"
+                    className="px-2.5 py-1.5 bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1 shadow-xs"
                   >
                     <ExternalLink className="w-3.5 h-3.5 text-rose-500" />
                     <span>YouTube</span>
@@ -801,9 +801,9 @@ export default function DownloadsView({
 
             {/* Preview player embebido */}
             {previewTrack?.videoId === resolvedTrack.videoId && isPreviewPlaying && (
-              <div className="p-3.5 bg-sky-50 rounded-2xl border border-sky-200 flex items-center justify-between shadow-inner">
-                <div className="flex items-center space-x-2 text-xs text-sky-800 font-bold">
-                  <Radio className="w-4 h-4 text-sky-600 animate-pulse" />
+              <div className="p-3.5 bg-sky-50/80 rounded-2xl border border-sky-200/80 flex items-center justify-between shadow-inner">
+                <div className="flex items-center space-x-2 text-xs text-sky-800 font-semibold">
+                  <Radio className="w-4 h-4 text-sky-500 animate-pulse" />
                   <span>Reproduciendo previa desde YouTube...</span>
                 </div>
                 <iframe
@@ -814,7 +814,7 @@ export default function DownloadsView({
                 />
                 <button
                   onClick={() => setIsPreviewPlaying(false)}
-                  className="text-xs text-slate-700 hover:text-slate-900 px-3 py-1 bg-white border border-slate-200 rounded-lg cursor-pointer font-bold shadow-sm"
+                  className="text-xs text-slate-700 hover:text-slate-900 px-3 py-1 bg-white border border-slate-200 rounded-lg cursor-pointer font-bold shadow-xs"
                 >
                   Detener
                 </button>
@@ -823,8 +823,8 @@ export default function DownloadsView({
 
             {/* LOS 2 BOTONES PRINCIPALES DE DESCARGA: AUDIO Y VIDEO */}
             <div className="space-y-3">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-900 flex items-center space-x-2">
-                <Download className="w-4 h-4 text-[#0284C7]" />
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center space-x-2">
+                <Download className="w-4 h-4 text-sky-500" />
                 <span>Elige tu formato de descarga para guardar en tu dispositivo:</span>
               </label>
 
@@ -834,14 +834,14 @@ export default function DownloadsView({
                 <button
                   onClick={() => triggerDownloadAction(resolvedTrack, 'audio')}
                   disabled={downloadingId === resolvedTrack.videoId + 'audio'}
-                  className="p-5 sm:p-6 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white rounded-3xl font-black shadow-lg shadow-sky-500/25 transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer border border-sky-400 disabled:opacity-70 disabled:cursor-wait"
+                  className="p-5 sm:p-6 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white rounded-3xl font-black shadow-lg shadow-sky-400/25 transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer border border-sky-300 disabled:opacity-70 disabled:cursor-wait"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-sky-600 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white text-sky-500 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0">
                       {downloadingId === resolvedTrack.videoId + 'audio' ? (
-                        <Loader2 className="w-7 h-7 animate-spin text-sky-600" />
+                        <Loader2 className="w-7 h-7 animate-spin text-sky-500" />
                       ) : (
-                        <FileAudio className="w-7 h-7 fill-sky-600 text-sky-600" />
+                        <FileAudio className="w-7 h-7 fill-sky-500 text-sky-500" />
                       )}
                     </div>
                     <div>
@@ -869,14 +869,14 @@ export default function DownloadsView({
                 <button
                   onClick={() => triggerDownloadAction(resolvedTrack, 'video')}
                   disabled={downloadingId === resolvedTrack.videoId + 'video'}
-                  className="p-5 sm:p-6 bg-white hover:bg-sky-50 border-2 border-sky-300 hover:border-sky-500 text-slate-900 rounded-3xl font-black transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer shadow-md disabled:opacity-70 disabled:cursor-wait"
+                  className="p-5 sm:p-6 bg-white hover:bg-sky-50/60 border-2 border-sky-200 hover:border-sky-400 text-slate-900 rounded-3xl font-black transition-all hover:scale-[1.02] flex items-center justify-between text-left group cursor-pointer shadow-sm disabled:opacity-70 disabled:cursor-wait"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-sky-100 text-sky-700 rounded-2xl flex items-center justify-center flex-shrink-0 border border-sky-200">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center flex-shrink-0 border border-sky-100">
                       {downloadingId === resolvedTrack.videoId + 'video' ? (
-                        <Loader2 className="w-7 h-7 animate-spin text-sky-600" />
+                        <Loader2 className="w-7 h-7 animate-spin text-sky-500" />
                       ) : (
-                        <Film className="w-7 h-7 text-sky-600" />
+                        <Film className="w-7 h-7 text-sky-500" />
                       )}
                     </div>
                     <div>
@@ -884,7 +884,7 @@ export default function DownloadsView({
                         <span className="font-black text-base sm:text-lg text-slate-900">
                           {downloadingId === resolvedTrack.videoId + 'video' ? 'DESCARGANDO...' : 'DESCARGAR VIDEO (MP4)'}
                         </span>
-                        <span className="text-[9px] bg-sky-100 border border-sky-200 text-sky-800 px-2 py-0.5 rounded font-bold">{videoQuality.toUpperCase()}</span>
+                        <span className="text-[9px] bg-sky-50 border border-sky-200 text-sky-700 px-2 py-0.5 rounded font-bold">{videoQuality.toUpperCase()}</span>
                       </div>
                       <p className="text-xs text-slate-500 font-medium mt-1">
                         {downloadingId === resolvedTrack.videoId + 'video'
@@ -894,9 +894,9 @@ export default function DownloadsView({
                     </div>
                   </div>
                   {downloadingId === resolvedTrack.videoId + 'video' ? (
-                    <Loader2 className="w-5 h-5 animate-spin text-sky-600 flex-shrink-0 ml-2" />
+                    <Loader2 className="w-5 h-5 animate-spin text-sky-500 flex-shrink-0 ml-2" />
                   ) : (
-                    <ArrowRight className="w-5 h-5 text-sky-600 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
+                    <ArrowRight className="w-5 h-5 text-sky-500 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" />
                   )}
                 </button>
 
@@ -904,13 +904,13 @@ export default function DownloadsView({
             </div>
 
             {/* Indicaciones para PC y Celular */}
-            <div className="p-4 bg-white rounded-2xl border border-sky-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 text-xs text-slate-600 shadow-sm">
+            <div className="p-4 bg-white rounded-2xl border border-sky-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 text-xs text-slate-600 shadow-xs">
               <div className="flex items-center space-x-2">
-                <Laptop className="w-4 h-4 text-sky-600 flex-shrink-0" />
+                <Laptop className="w-4 h-4 text-sky-500 flex-shrink-0" />
                 <span><strong>En PC:</strong> Se guardará en tu carpeta <em>Descargas</em> o donde elijas.</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Smartphone className="w-4 h-4 text-sky-600 flex-shrink-0" />
+                <Smartphone className="w-4 h-4 text-sky-500 flex-shrink-0" />
                 <span><strong>En Celular:</strong> Se guardará automáticamente en tu almacenamiento interno.</span>
               </div>
             </div>
@@ -920,16 +920,16 @@ export default function DownloadsView({
 
         {/* Detector de Playlists de YouTube */}
         {resolvedPlaylist && (
-          <div className="p-5 sm:p-7 bg-gradient-to-br from-sky-50 via-white to-blue-50 rounded-3xl border-2 border-sky-300 space-y-5 animate-fadeIn shadow-xl">
+          <div className="p-5 sm:p-7 bg-gradient-to-br from-sky-50/60 via-white to-blue-50/40 rounded-3xl border border-sky-200 space-y-5 animate-fadeIn shadow-md">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-sky-100">
               <div className="flex items-center space-x-3 min-w-0">
-                <div className="w-12 h-12 bg-gradient-to-tr from-sky-500 to-blue-600 text-white rounded-2xl flex items-center justify-center shadow-md flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-tr from-sky-400 to-sky-600 text-white rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0">
                   <FolderDown className="w-6 h-6" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] bg-sky-600 px-2 py-0.5 rounded text-white font-black">PLAYLIST DE YOUTUBE</span>
-                    <span className="text-xs text-slate-500 font-bold">{resolvedPlaylist.tracks.length} canciones</span>
+                    <span className="text-[10px] bg-sky-500 px-2 py-0.5 rounded text-white font-bold">PLAYLIST DE YOUTUBE</span>
+                    <span className="text-xs text-slate-500 font-semibold">{resolvedPlaylist.tracks.length} canciones</span>
                   </div>
                   <h3 className="text-base sm:text-lg font-black text-slate-900 truncate">{resolvedPlaylist.title}</h3>
                   <p className="text-xs text-slate-600 truncate">{resolvedPlaylist.author}</p>
@@ -938,10 +938,10 @@ export default function DownloadsView({
             </div>
 
             {batchProgress && (
-              <div className="p-4 bg-white border border-sky-200 rounded-2xl space-y-3 animate-fadeIn shadow-md">
+              <div className="p-4 bg-white border border-sky-200 rounded-2xl space-y-3 animate-fadeIn shadow-xs">
                 <div className="flex items-center justify-between text-xs">
-                  <div className="flex items-center space-x-2 text-slate-900 font-bold min-w-0 truncate">
-                    <Loader2 className="w-4 h-4 text-sky-600 animate-spin flex-shrink-0" />
+                  <div className="flex items-center space-x-2 text-slate-900 font-semibold min-w-0 truncate">
+                    <Loader2 className="w-4 h-4 text-sky-500 animate-spin flex-shrink-0" />
                     <span className="truncate">
                       Descargando {batchProgress.current} de {batchProgress.total}: <em>"{batchProgress.trackTitle}"</em>
                     </span>
@@ -957,7 +957,7 @@ export default function DownloadsView({
 
                 <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                   <div 
-                    className="bg-gradient-to-r from-sky-500 to-blue-600 h-full rounded-full transition-all duration-300 shadow-sm"
+                    className="bg-gradient-to-r from-sky-400 to-sky-500 h-full rounded-full transition-all duration-300 shadow-xs"
                     style={{ width: `${Math.round((batchProgress.current / batchProgress.total) * 100)}%` }}
                   />
                 </div>
@@ -965,8 +965,8 @@ export default function DownloadsView({
             )}
 
             <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
-                <Zap className="w-3.5 h-3.5 text-sky-600" />
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
+                <Zap className="w-3.5 h-3.5 text-sky-500" />
                 <span>Descarga automática de toda la playlist:</span>
               </label>
 
@@ -974,7 +974,7 @@ export default function DownloadsView({
                 <button
                   onClick={() => handleDownloadAllPlaylist(resolvedPlaylist, 'audio')}
                   disabled={batchProgress?.isRunning}
-                  className="p-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white rounded-2xl font-black text-xs sm:text-sm shadow-md shadow-sky-500/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+                  className="p-4 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white rounded-2xl font-bold text-xs sm:text-sm shadow-md shadow-sky-400/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
                 >
                   <FileAudio className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>⚡ DESCARGAR TODAS EN AUDIO (MP3)</span>
@@ -983,9 +983,9 @@ export default function DownloadsView({
                 <button
                   onClick={() => handleDownloadAllPlaylist(resolvedPlaylist, 'video')}
                   disabled={batchProgress?.isRunning}
-                  className="p-4 bg-white hover:bg-sky-50 border-2 border-sky-300 text-sky-800 rounded-2xl font-black text-xs sm:text-sm transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 cursor-pointer shadow-sm disabled:opacity-50"
+                  className="p-4 bg-white hover:bg-sky-50 border-2 border-sky-200 text-sky-800 rounded-2xl font-bold text-xs sm:text-sm transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 cursor-pointer shadow-xs disabled:opacity-50"
                 >
-                  <Film className="w-4 h-4 sm:w-5 sm:h-5 text-sky-600" />
+                  <Film className="w-4 h-4 sm:w-5 sm:h-5 text-sky-500" />
                   <span>🎬 DESCARGAR TODAS EN VIDEO (MP4)</span>
                 </button>
               </div>
@@ -997,13 +997,13 @@ export default function DownloadsView({
         {searchResults.length > 0 && (
           <div className="space-y-4 pt-2">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-900 flex items-center space-x-2">
+              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 flex items-center space-x-2">
                 <Youtube className="w-4 h-4 text-rose-500 fill-rose-500" />
                 <span>Resultados de YouTube para "{activeSearchTerm}" ({searchResults.length})</span>
               </h3>
               <button
                 onClick={() => setSearchResults([])}
-                className="text-xs text-slate-500 hover:text-slate-800 font-bold"
+                className="text-xs text-slate-500 hover:text-slate-800 font-semibold"
               >
                 Ocultar resultados
               </button>
@@ -1039,7 +1039,7 @@ export default function DownloadsView({
                   Canciones & Videos en Vivo de YouTube
                 </h3>
                 {isLoadingTrending && (
-                  <Loader2 className="w-4 h-4 text-sky-600 animate-spin" />
+                  <Loader2 className="w-4 h-4 text-sky-500 animate-spin" />
                 )}
               </div>
               <p className="text-xs text-slate-500">
@@ -1069,7 +1069,7 @@ export default function DownloadsView({
             </div>
           ) : (
             <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
-              <Loader2 className="w-8 h-8 text-sky-600 animate-spin mx-auto" />
+              <Loader2 className="w-8 h-8 text-sky-500 animate-spin mx-auto" />
               <p className="text-xs sm:text-sm text-slate-600 font-medium">
                 Cargando canciones y videos directamente desde YouTube...
               </p>
@@ -1084,13 +1084,13 @@ export default function DownloadsView({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base sm:text-lg md:text-xl font-black text-slate-900 flex items-center space-x-2">
-            <HardDrive className="w-4 h-4 sm:w-5 sm:h-5 text-[#0284C7]" />
+            <HardDrive className="w-4 h-4 sm:w-5 sm:h-5 text-sky-500" />
             <span>Historial de Descargas ({downloads.length})</span>
           </h2>
           {downloads.length > 0 && (
             <button
               onClick={handleClearAllDownloads}
-              className="text-xs font-bold text-slate-600 hover:text-rose-600 px-3.5 py-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95 shadow-sm"
+              className="text-xs font-bold text-slate-600 hover:text-rose-600 px-3.5 py-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95 shadow-xs"
               title="Vaciar todo el historial"
             >
               <Trash2 className="w-3.5 h-3.5 text-rose-500" />
@@ -1100,7 +1100,7 @@ export default function DownloadsView({
         </div>
 
         {downloads.length === 0 ? (
-          <div className="p-8 sm:p-12 text-center bg-white rounded-2xl sm:rounded-3xl border border-sky-100 shadow-sm space-y-3 text-slate-500">
+          <div className="p-8 sm:p-12 text-center bg-white rounded-3xl border border-sky-100 shadow-xs space-y-3 text-slate-500">
             <Download className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-sky-300" />
             <h3 className="text-sm sm:text-base font-bold text-slate-900">No tienes descargas registradas todavía</h3>
             <p className="text-xs max-w-md mx-auto">
@@ -1112,7 +1112,7 @@ export default function DownloadsView({
             {downloads.map((track) => (
               <div
                 key={track.videoId}
-                className="p-3.5 sm:p-4 bg-white hover:bg-sky-50/50 rounded-2xl border border-slate-200 hover:border-sky-300 transition-all flex items-center space-x-3 group shadow-sm hover:shadow-md"
+                className="p-3.5 sm:p-4 bg-white hover:bg-sky-50/40 rounded-2xl border border-slate-200/80 hover:border-sky-200 transition-all flex items-center space-x-3 group shadow-xs hover:shadow-sm"
               >
                 <img 
                   src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
@@ -1123,14 +1123,14 @@ export default function DownloadsView({
                     e.target.onerror = null;
                     e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
                   }}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover flex-shrink-0 shadow ring-1 ring-sky-100"
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover flex-shrink-0 shadow-xs ring-1 ring-sky-100"
                 />
                 
                 <div className="flex-1 min-w-0">
                   <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">{track.title}</h4>
                   <p className="text-[11px] text-slate-500 truncate">{track.artist}</p>
                   <div className="flex items-center space-x-2 mt-1">
-                    <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">
+                    <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-100">
                       {track.downloadFormat || 'Audio (MP3)'}
                     </span>
                     <span className="text-[10px] text-slate-400">{track.duration}</span>
@@ -1140,7 +1140,7 @@ export default function DownloadsView({
                 <div className="flex items-center space-x-1 flex-shrink-0">
                   <button
                     onClick={() => triggerDownloadAction(track, 'audio')}
-                    className="p-2 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl hover:scale-105 transition-transform shadow-md shadow-sky-500/20 cursor-pointer"
+                    className="p-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-xl hover:scale-105 transition-transform shadow-xs cursor-pointer"
                     title="Descargar Audio MP3"
                   >
                     <FileAudio className="w-3.5 h-3.5" />
@@ -1170,7 +1170,7 @@ export default function DownloadsView({
 
       {/* Barra Flotante de Reproducción de Preview */}
       {previewTrack && isPreviewPlaying && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 bg-white/95 backdrop-blur-xl border border-sky-300 p-3.5 rounded-2xl shadow-2xl flex items-center justify-between gap-3 animate-slideUp">
+        <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 bg-white/95 backdrop-blur-xl border border-sky-200 p-3.5 rounded-2xl shadow-xl flex items-center justify-between gap-3 animate-slideUp">
           <iframe
             src={`https://www.youtube-nocookie.com/embed/${previewTrack.videoId}?autoplay=1`}
             className="w-0 h-0 opacity-0 pointer-events-none absolute"
@@ -1187,12 +1187,12 @@ export default function DownloadsView({
                 e.target.onerror = null;
                 e.target.src = `https://img.youtube.com/vi/${previewTrack.videoId}/0.jpg`;
               }}
-              className="w-11 h-11 rounded-xl object-cover ring-1 ring-sky-300 flex-shrink-0 shadow-sm"
+              className="w-11 h-11 rounded-xl object-cover ring-1 ring-sky-200 flex-shrink-0 shadow-xs"
             />
             <div className="min-w-0">
               <div className="flex items-center space-x-1.5">
-                <Radio className="w-3.5 h-3.5 text-sky-600 animate-pulse flex-shrink-0" />
-                <span className="text-[10px] font-black uppercase text-sky-700">Escuchando Previa</span>
+                <Radio className="w-3.5 h-3.5 text-sky-500 animate-pulse flex-shrink-0" />
+                <span className="text-[10px] font-bold uppercase text-sky-700">Escuchando Previa</span>
               </div>
               <h5 className="text-xs font-black text-slate-900 truncate">{previewTrack.title}</h5>
               <p className="text-[10px] text-slate-500 truncate">{previewTrack.artist}</p>
@@ -1202,7 +1202,7 @@ export default function DownloadsView({
           <div className="flex items-center space-x-1.5 flex-shrink-0">
             <button
               onClick={() => triggerDownloadAction(previewTrack, 'audio')}
-              className="p-2 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl text-xs font-bold transition-transform hover:scale-105 cursor-pointer shadow-md shadow-sky-500/20"
+              className="p-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-xl text-xs font-bold transition-transform hover:scale-105 cursor-pointer shadow-xs"
               title="Descargar MP3"
             >
               <FileAudio className="w-3.5 h-3.5" />
@@ -1266,12 +1266,12 @@ function SongCard({
   isVideoDownloading
 }) {
   return (
-    <div className="p-3.5 bg-white hover:bg-sky-50/40 rounded-2xl border border-slate-200 hover:border-sky-300 transition-all flex flex-col justify-between space-y-3 group shadow-sm hover:shadow-md">
+    <div className="p-3.5 bg-white hover:bg-sky-50/30 rounded-2xl border border-slate-200/80 hover:border-sky-200 transition-all flex flex-col justify-between space-y-3 group shadow-xs hover:shadow-sm">
       
       {/* Miniatura y Metadatos */}
       <div className="flex items-start space-x-3">
         <div 
-          className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 cursor-pointer shadow ring-1 ring-slate-100"
+          className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 cursor-pointer shadow-xs ring-1 ring-slate-100"
           onClick={onTogglePreview}
           title="Clic para escuchar previa"
         >
@@ -1286,7 +1286,7 @@ function SongCard({
             }}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div className="absolute inset-0 bg-sky-900/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute inset-0 bg-sky-950/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
             {isPreviewPlaying ? (
               <Pause className="w-5 h-5 text-white fill-white" />
             ) : (
@@ -1298,7 +1298,7 @@ function SongCard({
         <div className="flex-1 min-w-0">
           <h4 
             onClick={() => onSelect(track)}
-            className="text-xs sm:text-sm font-bold text-slate-900 truncate hover:text-[#0284C7] cursor-pointer transition-colors"
+            className="text-xs sm:text-sm font-bold text-slate-900 truncate hover:text-sky-600 cursor-pointer transition-colors"
             title={track.title}
           >
             {track.title}
@@ -1306,7 +1306,7 @@ function SongCard({
           <p className="text-[11px] text-slate-500 truncate mt-0.5">{track.artist}</p>
           
           <div className="flex items-center space-x-2 mt-1.5">
-            <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-200 truncate flex items-center space-x-1">
+            <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-rose-50 text-rose-600 border border-rose-100 truncate flex items-center space-x-1">
               <Youtube className="w-2.5 h-2.5 fill-rose-600" />
               <span>YouTube</span>
             </span>
@@ -1319,10 +1319,10 @@ function SongCard({
       <button
         type="button"
         onClick={() => onCopyAndDownload(track)}
-        className={`w-full py-2.5 px-3 rounded-xl font-black text-xs transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-sm ${
+        className={`w-full py-2.5 px-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-xs ${
           isCopied
-            ? 'bg-emerald-600 text-white shadow-emerald-500/20'
-            : 'bg-sky-50 hover:bg-sky-500 text-sky-700 hover:text-white border border-sky-200 hover:border-sky-500'
+            ? 'bg-emerald-600 text-white'
+            : 'bg-sky-50 hover:bg-sky-500 text-sky-700 hover:text-white border border-sky-200/80 hover:border-sky-400'
         }`}
         title="Copiar el enlace de YouTube y colocarlo arriba listo para descargar"
       >
@@ -1345,7 +1345,7 @@ function SongCard({
           type="button"
           onClick={onDownloadAudio}
           disabled={isAudioDownloading}
-          className="py-2 px-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-black text-xs rounded-xl shadow-md shadow-sky-500/20 transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60"
+          className="py-2 px-2 bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60"
           title="Descargar Audio en MP3"
         >
           {isAudioDownloading ? (
@@ -1365,17 +1365,17 @@ function SongCard({
           type="button"
           onClick={onDownloadVideo}
           disabled={isVideoDownloading}
-          className="py-2 px-2 bg-white hover:bg-sky-50 border border-sky-200 hover:border-sky-300 text-sky-800 font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60 shadow-sm"
+          className="py-2 px-2 bg-white hover:bg-sky-50 border border-sky-200 text-sky-800 font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-60 shadow-xs"
           title="Descargar Video en MP4"
         >
           {isVideoDownloading ? (
             <>
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-600" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-sky-500" />
               <span className="text-[11px]">Guardando...</span>
             </>
           ) : (
             <>
-              <Film className="w-3.5 h-3.5 text-sky-600" />
+              <Film className="w-3.5 h-3.5 text-sky-500" />
               <span>Video MP4</span>
             </>
           )}
@@ -1386,20 +1386,20 @@ function SongCard({
       <button
         type="button"
         onClick={onTogglePreview}
-        className={`w-full py-1 rounded-lg text-[11px] font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
+        className={`w-full py-1 rounded-lg text-[11px] font-medium transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
           isPreviewPlaying
-            ? 'bg-sky-100 text-sky-800 border border-sky-300'
+            ? 'bg-sky-100/80 text-sky-700 border border-sky-200'
             : 'bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800'
         }`}
       >
         {isPreviewPlaying ? (
           <>
-            <Pause className="w-3 h-3 text-sky-600" />
+            <Pause className="w-3 h-3 text-sky-500" />
             <span>Pausar Preview</span>
           </>
         ) : (
           <>
-            <Play className="w-3 h-3 text-sky-600" />
+            <Play className="w-3 h-3 text-sky-500" />
             <span>Escuchar Preview</span>
           </>
         )}
