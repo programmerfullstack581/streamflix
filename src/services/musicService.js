@@ -241,7 +241,70 @@ export const CURATED_TOP_HITS = [
     thumbnail: 'https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96',
     views: '6.1B',
     genre: 'Pop'
+  },
+  {
+    videoId: '3a3k6i_7c7c',
+    title: 'Cancelada de Mi Vida',
+    artist: 'Martín Elías',
+    album: 'Imparables',
+    duration: '4:20',
+    seconds: 260,
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+    views: '80M',
+    genre: 'Vallenato'
+  },
+  {
+    videoId: 'D-g3aSgxHCo',
+    title: 'El Preso (En Vivo)',
+    artist: 'Jeivy Dance ft. Papoiriarte & Rey de Rocha',
+    album: 'En Vivo',
+    duration: '4:30',
+    seconds: 270,
+    thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=80',
+    views: '45M',
+    genre: 'Champeta'
+  },
+  {
+    videoId: 'k8mRPqvMbE0',
+    title: 'La Invité a Bailar',
+    artist: 'Kevin Flórez',
+    album: 'La Máquina',
+    duration: '3:45',
+    seconds: 225,
+    thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80',
+    views: '120M',
+    genre: 'Champeta'
+  },
+  {
+    videoId: 'G6h2k1J99fQ',
+    title: 'Una Aventura',
+    artist: 'Grupo Niche',
+    album: 'Cielo de Tambores',
+    duration: '5:30',
+    seconds: 330,
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+    views: '230M',
+    genre: 'Salsa'
+  },
+  {
+    videoId: 'f9j39j_39fj',
+    title: 'Vivo en el Limbo',
+    artist: 'Kaleth Morales',
+    album: 'La Hora de la Verdad',
+    duration: '4:10',
+    seconds: 250,
+    thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80',
+    views: '90M',
+    genre: 'Vallenato'
   }
+];
+
+export const TRENDING_GENRES_TABS = [
+  { id: 'all', label: '🔥 Top Éxitos', genre: 'all' },
+  { id: 'vallenato', label: '🪗 Vallenato de Oro', genre: 'Vallenato' },
+  { id: 'reggaeton', label: '🌴 Reggaetón & Urbano', genre: 'Reggaetón' },
+  { id: 'champeta_salsa', label: '💃 Champeta & Salsa', genre: 'Champeta,Salsa' },
+  { id: 'pop', label: '✨ Pop & Rock', genre: 'Pop,Rock' }
 ];
 
 export const FEATURED_PLAYLISTS = [
@@ -578,5 +641,10 @@ export const MusicStorage = {
     const updated = current.filter(t => t.videoId !== videoId);
     localStorage.setItem('redstream_downloads', JSON.stringify(updated));
     return updated;
+  },
+
+  clearAllDownloads() {
+    localStorage.removeItem('redstream_downloads');
+    return [];
   }
 };

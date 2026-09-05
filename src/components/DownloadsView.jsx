@@ -27,12 +27,14 @@ import {
   Scissors,
   Mic2,
   Share2,
-  FolderDown,
   SlidersHorizontal,
   Square,
   Flame,
   Filter,
-  Youtube
+  Youtube,
+  ShieldCheck,
+  Music2,
+  TrendingUp
 } from 'lucide-react';
 import { 
   MusicStorage, 
@@ -41,7 +43,9 @@ import {
   getPlaylistTracks,
   getTrackDetailsById,
   searchMusicOnline,
-  getYoutubeThumbnail 
+  getYoutubeThumbnail,
+  CURATED_TOP_HITS,
+  TRENDING_GENRES_TABS
 } from '../services/musicService';
 import RingtoneModal from './RingtoneModal';
 import LyricsModal from './LyricsModal';
@@ -232,6 +236,15 @@ export default function DownloadsView({
   const handleDelete = (videoId) => {
     MusicStorage.removeDownload(videoId);
     if (onRefreshDownloads) onRefreshDownloads();
+  };
+
+  const handleClearAllDownloads = () => {
+    if (window.confirm('¿Deseas vaciar todo tu historial de descargas?')) {
+      MusicStorage.clearAllDownloads();
+      if (onRefreshDownloads) onRefreshDownloads();
+      setDownloadSuccess('🧹 Historial de descargas vaciado correctamente.');
+      setTimeout(() => setDownloadSuccess(''), 4000);
+    }
   };
 
   const handleClearInput = () => {
@@ -504,6 +517,49 @@ export default function DownloadsView({
               <Film className="w-4 h-4 text-red-400" />
               <span>Video MP4 ({videoQuality})</span>
             </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Barra de Calidad Profesional & Confianza */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="p-3.5 sm:p-4 bg-[#121212]/90 backdrop-blur-md rounded-2xl border border-red-500/20 hover:border-red-500/50 transition-all flex items-center space-x-3 shadow-lg group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white flex-shrink-0 shadow-red-neon group-hover:scale-105 transition-transform">
+            <FileAudio className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-black text-white truncate">MP3 320 kbps</h4>
+            <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Audio HD de estudio</p>
+          </div>
+        </div>
+
+        <div className="p-3.5 sm:p-4 bg-[#121212]/90 backdrop-blur-md rounded-2xl border border-red-500/20 hover:border-red-500/50 transition-all flex items-center space-x-3 shadow-lg group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white flex-shrink-0 shadow-red-neon group-hover:scale-105 transition-transform">
+            <Film className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-black text-white truncate">Video MP4 1080p</h4>
+            <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Full HD sin cortes</p>
+          </div>
+        </div>
+
+        <div className="p-3.5 sm:p-4 bg-[#121212]/90 backdrop-blur-md rounded-2xl border border-red-500/20 hover:border-red-500/50 transition-all flex items-center space-x-3 shadow-lg group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white flex-shrink-0 shadow-red-neon group-hover:scale-105 transition-transform">
+            <Smartphone className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-black text-white truncate">Carátula & Auto</h4>
+            <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Listo para Celular & Bluetooth</p>
+          </div>
+        </div>
+
+        <div className="p-3.5 sm:p-4 bg-[#121212]/90 backdrop-blur-md rounded-2xl border border-red-500/20 hover:border-red-500/50 transition-all flex items-center space-x-3 shadow-lg group">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center text-white flex-shrink-0 shadow-red-neon group-hover:scale-105 transition-transform">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <h4 className="text-xs sm:text-sm font-black text-white truncate">100% Gratis</h4>
+            <p className="text-[10px] sm:text-[11px] text-gray-400 truncate">Sin límites ni registro</p>
           </div>
         </div>
       </div>
@@ -995,6 +1051,16 @@ export default function DownloadsView({
             <HardDrive className="w-4 h-4 sm:w-5 sm:h-5 text-[#E50914]" />
             <span>Historial de Descargas ({downloads.length})</span>
           </h2>
+          {downloads.length > 0 && (
+            <button
+              onClick={handleClearAllDownloads}
+              className="text-xs font-bold text-gray-400 hover:text-red-400 px-3 py-1.5 bg-white/5 hover:bg-red-950/60 border border-white/10 hover:border-red-500/40 rounded-xl transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95"
+              title="Vaciar todo el historial"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-red-500" />
+              <span>Vaciar Historial</span>
+            </button>
+          )}
         </div>
 
         {downloads.length === 0 ? (
