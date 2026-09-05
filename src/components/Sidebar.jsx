@@ -1,242 +1,152 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Home, 
-  Search, 
-  Library, 
-  Plus, 
-  Heart, 
   Download, 
-  Music, 
+  HardDrive, 
+  Smartphone, 
+  Zap, 
   Radio, 
   Sparkles,
-  Smartphone,
-  ListMusic,
-  Disc3,
-  ExternalLink,
-  Zap,
-  Link as LinkIcon,
-  Flame
+  FileAudio,
+  Film,
+  Music2,
+  CheckCircle2,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function Sidebar({
-  activeTab,
+  activeTab = 'inicio',
   setActiveTab,
-  likedCount = 0,
   downloadsCount = 0,
-  customPlaylists = [],
-  onCreatePlaylist,
-  onSelectPlaylist
+  onOpenInstallModal
 }) {
-  const [isCreating, setIsCreating] = useState(false);
-  const [newPlaylistName, setNewPlaylistName] = useState('');
-
-  const handleCreate = (e) => {
-    e.preventDefault();
-    if (!newPlaylistName.trim()) return;
-    onCreatePlaylist(newPlaylistName.trim());
-    setNewPlaylistName('');
-    setIsCreating(false);
-  };
-
   return (
-    <aside className="w-64 bg-[#050505] flex flex-col h-full p-2 space-y-2 select-none flex-shrink-0 hidden md:flex border-r border-red-600/10">
+    <aside className="w-64 bg-white border-r border-sky-100 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs">
       
-      {/* Top Box: Brand & Navigation */}
-      <div className="bg-[#101010] rounded-2xl p-4 space-y-4 border border-white/5 shadow-xl">
-        {/* Logo */}
+      {/* Top Section: Logo & Navigation */}
+      <div className="space-y-6">
+        
+        {/* Brand Header */}
         <div 
           onClick={() => setActiveTab('inicio')}
-          className="flex items-center space-x-2.5 cursor-pointer group"
+          className="flex items-center space-x-3 cursor-pointer group px-2 py-1"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center shadow-red-neon group-hover:scale-105 transition-transform">
-            <Radio className="w-5 h-5 text-white font-black" />
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 to-sky-600 flex items-center justify-center shadow-md shadow-sky-400/20 text-white group-hover:scale-105 transition-transform">
+            <Radio className="w-5 h-5 font-black" />
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-xl font-black text-white tracking-tight">STREAM</span>
-              <span className="text-xl font-black text-red-600 tracking-tight">BEAT</span>
+              <span className="text-xl font-black text-slate-900 tracking-tight">STREAM</span>
+              <span className="text-xl font-black text-sky-500 tracking-tight">BEAT</span>
             </div>
-            <span className="text-[9px] font-black uppercase tracking-widest text-red-400 bg-red-600/20 px-2 py-0.2 rounded-full border border-red-500/40">
-              RED EDITION
+            <span className="text-[9px] font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
+              AUDIO (MP3) & VIDEO (MP4)
             </span>
           </div>
         </div>
 
-        {/* Main Nav Items */}
-        <nav className="space-y-1.5 pt-1">
+        {/* Main Navigation Menu */}
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pb-1">
+            Menú Principal
+          </p>
+
+          {/* Tab 1: Inicio / Descargador */}
           <button
             onClick={() => setActiveTab('inicio')}
-            className={`w-full flex items-center space-x-3.5 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'inicio' 
-                ? 'text-white bg-red-600 shadow-red-neon font-black' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
+            className={`w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'inicio'
+                ? 'bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 text-white shadow-md shadow-sky-400/25'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/70 border border-transparent hover:border-sky-100'
             }`}
           >
-            <Home className="w-4 h-4" />
-            <span>Inicio</span>
-          </button>
-
-          {/* Dedicated Tab: Descargar Música con URL */}
-          <button
-            onClick={() => setActiveTab('descargar-url')}
-            className={`w-full flex items-center space-x-3.5 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all relative overflow-hidden group ${
-              activeTab === 'descargar-url' 
-                ? 'text-white bg-gradient-to-r from-red-600 to-rose-700 shadow-red-neon font-black' 
-                : 'text-red-400 hover:text-white bg-red-950/30 hover:bg-red-900/50 border border-red-600/30'
-            }`}
-          >
-            <Zap className="w-4 h-4 text-red-400 group-hover:text-white fill-current animate-pulse" />
+            <Home className="w-4 h-4 flex-shrink-0" />
             <div className="flex items-center justify-between flex-1">
-              <span>Descargar con URL</span>
-              <span className="text-[9px] font-black px-1.5 py-0.2 bg-black/60 rounded text-white border border-red-500/40">
-                MP3
-              </span>
-            </div>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('buscar')}
-            className={`w-full flex items-center space-x-3.5 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'buscar' 
-                ? 'text-white bg-red-600 shadow-red-neon font-black' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Search className="w-4 h-4" />
-            <span>Buscar & Explorar</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('descargas')}
-            className={`w-full flex items-center space-x-3.5 px-3.5 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'descargas' 
-                ? 'text-white bg-red-600 shadow-red-neon font-black' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Download className="w-4 h-4" />
-            <div className="flex items-center justify-between flex-1">
-              <span>Mis Descargas</span>
-              {downloadsCount > 0 && (
-                <span className="text-[10px] bg-white text-black font-black px-2 py-0.2 rounded-full">
-                  {downloadsCount}
+              <span>Inicio / Descargador</span>
+              {activeTab === 'inicio' && (
+                <span className="text-[9px] bg-white/20 text-white px-1.5 py-0.5 rounded-md font-bold">
+                  Activo
                 </span>
               )}
             </div>
           </button>
-        </nav>
-      </div>
 
-      {/* Bottom Box: Library & Playlists */}
-      <div className="bg-[#101010] rounded-2xl flex-1 p-3.5 flex flex-col overflow-hidden border border-white/5">
-        
-        {/* Library Header */}
-        <div className="flex items-center justify-between px-2 py-2 mb-2">
-          <div 
-            onClick={() => setActiveTab('favoritos')}
-            className="flex items-center space-x-2.5 text-gray-400 hover:text-white cursor-pointer transition-colors"
-          >
-            <Library className="w-5 h-5 text-red-500" />
-            <span className="text-xs sm:text-sm font-bold">Tu Biblioteca</span>
-          </div>
-
+          {/* Tab 2: Historial de Descargas Separado */}
           <button
-            onClick={() => setIsCreating(true)}
-            className="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
-            title="Crear Playlist"
+            onClick={() => setActiveTab('historial')}
+            className={`w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'historial'
+                ? 'bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 text-white shadow-md shadow-sky-400/25'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/70 border border-transparent hover:border-sky-100'
+            }`}
           >
-            <Plus className="w-4 h-4" />
+            <HardDrive className="w-4 h-4 flex-shrink-0" />
+            <div className="flex items-center justify-between flex-1">
+              <span>Historial de Descargas</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                activeTab === 'historial'
+                  ? 'bg-white text-sky-700'
+                  : 'bg-sky-100 text-sky-700'
+              }`}>
+                {downloadsCount}
+              </span>
+            </div>
+          </button>
+
+          {/* Tab 3: Instalar App */}
+          <button
+            onClick={onOpenInstallModal}
+            className="w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-semibold text-slate-600 hover:text-sky-700 hover:bg-sky-50/70 border border-transparent hover:border-sky-100 transition-all cursor-pointer"
+          >
+            <Smartphone className="w-4 h-4 text-sky-500 flex-shrink-0" />
+            <div className="flex items-center justify-between flex-1">
+              <span>Instalar Aplicación</span>
+              <span className="text-[9px] bg-sky-100 text-sky-700 px-1.5 py-0.5 rounded-md font-bold">
+                PWA
+              </span>
+            </div>
           </button>
         </div>
 
-        {/* Create Playlist Input */}
-        {isCreating && (
-          <form onSubmit={handleCreate} className="p-2.5 bg-[#1a1a1a] rounded-xl mb-2 space-y-2 animate-fadeIn border border-red-500/30">
-            <input
-              type="text"
-              placeholder="Nombre de tu lista..."
-              value={newPlaylistName}
-              onChange={(e) => setNewPlaylistName(e.target.value)}
-              autoFocus
-              className="w-full bg-[#0d0d0d] border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-red-500"
-            />
-            <div className="flex items-center justify-end space-x-2 text-xs">
-              <button
-                type="button"
-                onClick={() => setIsCreating(false)}
-                className="px-2.5 py-1 text-gray-400 hover:text-white"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="px-3 py-1 bg-red-600 text-white font-bold rounded-lg hover:bg-red-500"
-              >
-                Crear
-              </button>
+        {/* Formatos Disponibles */}
+        <div className="p-3.5 bg-sky-50/60 rounded-2xl border border-sky-100/80 space-y-2.5">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-sky-800 flex items-center space-x-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-sky-500" />
+            <span>Calidades de Estudio</span>
+          </p>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex items-center justify-between text-slate-700 font-medium">
+              <span className="flex items-center space-x-1.5">
+                <FileAudio className="w-3.5 h-3.5 text-sky-500" />
+                <span>Audio MP3</span>
+              </span>
+              <span className="text-[10px] font-bold text-sky-700 bg-white px-2 py-0.5 rounded-md border border-sky-100">
+                320 kbps HD
+              </span>
             </div>
-          </form>
-        )}
-
-        {/* Playlists List */}
-        <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
-          
-          {/* Liked Songs Pinned */}
-          <div
-            onClick={() => setActiveTab('favoritos')}
-            className={`flex items-center space-x-3 p-2.5 rounded-xl cursor-pointer transition-colors ${
-              activeTab === 'favoritos' ? 'bg-red-950/60 border border-red-500/40 text-white' : 'hover:bg-white/5 text-gray-300'
-            }`}
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-rose-700 to-black flex items-center justify-center flex-shrink-0 shadow-md">
-              <Heart className="w-5 h-5 fill-white text-white" />
+            <div className="flex items-center justify-between text-slate-700 font-medium">
+              <span className="flex items-center space-x-1.5">
+                <Film className="w-3.5 h-3.5 text-sky-500" />
+                <span>Video MP4</span>
+              </span>
+              <span className="text-[10px] font-bold text-sky-700 bg-white px-2 py-0.5 rounded-md border border-sky-100">
+                1080p Full HD
+              </span>
             </div>
-            <div className="min-w-0">
-              <p className="text-xs font-bold text-white truncate">Favoritos Guardados</p>
-              <p className="text-[10px] text-gray-400 flex items-center space-x-1">
-                <span className="text-red-400 font-bold">Colección</span>
-                <span>•</span>
-                <span>{likedCount} canciones</span>
-              </p>
-            </div>
-          </div>
-
-          {/* Custom Playlists */}
-          {customPlaylists.map((pl) => (
-            <div
-              key={pl.id}
-              onClick={() => {
-                if (onSelectPlaylist) onSelectPlaylist(pl);
-                setActiveTab('playlist-detail');
-              }}
-              className="flex items-center space-x-3 p-2 rounded-xl cursor-pointer hover:bg-white/5 transition-colors group"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#1e1e1e] flex items-center justify-center flex-shrink-0 group-hover:bg-red-950/40 transition-colors">
-                <ListMusic className="w-5 h-5 text-gray-400 group-hover:text-red-400" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-gray-300 group-hover:text-white truncate">{pl.name}</p>
-                <p className="text-[10px] text-gray-500">{pl.tracks?.length || 0} canciones</p>
-              </div>
-            </div>
-          ))}
-
-        </div>
-
-        {/* Quick URL Download Card at Bottom */}
-        <div className="pt-2 border-t border-white/5 mt-auto">
-          <div 
-            onClick={() => setActiveTab('descargar-url')}
-            className="p-3 bg-gradient-to-r from-red-950/60 to-black border border-red-500/30 rounded-xl cursor-pointer hover:border-red-500 transition-all group"
-          >
-            <div className="flex items-center space-x-2">
-              <Zap className="w-4 h-4 text-red-500 fill-current" />
-              <span className="text-xs font-black text-white group-hover:text-red-400">Pegar URL y Descargar</span>
-            </div>
-            <p className="text-[10px] text-gray-400 mt-1">MP3 320k de YouTube, TikTok, etc.</p>
           </div>
         </div>
 
+      </div>
+
+      {/* Bottom Section: Footer Status */}
+      <div className="pt-4 border-t border-sky-100 space-y-2">
+        <div className="flex items-center space-x-2 text-xs text-slate-500">
+          <ShieldCheck className="w-4 h-4 text-emerald-500" />
+          <span>Servicio 100% Seguro y Gratis</span>
+        </div>
+        <p className="text-[10px] text-slate-400">
+          StreamBeat © 2026 • Modo Claro Pastel
+        </p>
       </div>
 
     </aside>

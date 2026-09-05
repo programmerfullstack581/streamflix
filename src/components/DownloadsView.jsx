@@ -76,7 +76,8 @@ const YOUTUBE_TRENDING_TOPICS = [
 export default function DownloadsView({
   downloads = [],
   onOpenDownloadModal,
-  onRefreshDownloads
+  onRefreshDownloads,
+  onGoToHistory
 }) {
   const [urlInput, setUrlInput] = useState('');
   const [isResolving, setIsResolving] = useState(false);
@@ -1080,91 +1081,30 @@ export default function DownloadsView({
 
       </div>
 
-      {/* Historial de Descargas */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base sm:text-lg md:text-xl font-black text-slate-900 flex items-center space-x-2">
-            <HardDrive className="w-4 h-4 sm:w-5 sm:h-5 text-sky-500" />
-            <span>Historial de Descargas ({downloads.length})</span>
-          </h2>
-          {downloads.length > 0 && (
-            <button
-              onClick={handleClearAllDownloads}
-              className="text-xs font-bold text-slate-600 hover:text-rose-600 px-3.5 py-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-xl transition-all flex items-center space-x-1.5 cursor-pointer active:scale-95 shadow-xs"
-              title="Vaciar todo el historial"
-            >
-              <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-              <span>Vaciar Historial</span>
-            </button>
-          )}
-        </div>
-
-        {downloads.length === 0 ? (
-          <div className="p-8 sm:p-12 text-center bg-white rounded-3xl border border-sky-100 shadow-xs space-y-3 text-slate-500">
-            <Download className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-sky-300" />
-            <h3 className="text-sm sm:text-base font-bold text-slate-900">No tienes descargas registradas todavía</h3>
-            <p className="text-xs max-w-md mx-auto">
-              Escribe el nombre de cualquier canción de YouTube para descargar en Audio (MP3) o Video (MP4).
+      {/* Acceso Rápido al Historial Separado */}
+      <div className="p-5 sm:p-7 bg-white rounded-3xl border border-sky-100 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center space-x-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center border border-sky-100 flex-shrink-0">
+            <HardDrive className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm sm:text-base font-bold text-slate-900">
+              Historial de Descargas ({downloads.length})
+            </h3>
+            <p className="text-xs text-slate-500">
+              Accede a tu lista completa de descargas para volver a guardar tus canciones en MP3 o MP4.
             </p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {downloads.map((track) => (
-              <div
-                key={track.videoId}
-                className="p-3.5 sm:p-4 bg-white hover:bg-sky-50/40 rounded-2xl border border-slate-200/80 hover:border-sky-200 transition-all flex items-center space-x-3 group shadow-xs hover:shadow-sm"
-              >
-                <img 
-                  src={track.thumbnail || getYoutubeThumbnail(track.videoId)} 
-                  alt={track.title} 
-                  referrerPolicy="no-referrer"
-                  loading="lazy"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = `https://img.youtube.com/vi/${track.videoId}/0.jpg`;
-                  }}
-                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover flex-shrink-0 shadow-xs ring-1 ring-sky-100"
-                />
-                
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate">{track.title}</h4>
-                  <p className="text-[11px] text-slate-500 truncate">{track.artist}</p>
-                  <div className="flex items-center space-x-2 mt-1">
-                    <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-100">
-                      {track.downloadFormat || 'Audio (MP3)'}
-                    </span>
-                    <span className="text-[10px] text-slate-400">{track.duration}</span>
-                  </div>
-                </div>
+        </div>
 
-                <div className="flex items-center space-x-1 flex-shrink-0">
-                  <button
-                    onClick={() => triggerDownloadAction(track, 'audio')}
-                    className="p-2 bg-gradient-to-r from-sky-400 to-sky-500 text-white rounded-xl hover:scale-105 transition-transform shadow-xs cursor-pointer"
-                    title="Descargar Audio MP3"
-                  >
-                    <FileAudio className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={() => triggerDownloadAction(track, 'video')}
-                    className="p-2 bg-white text-sky-700 border border-sky-200 rounded-xl hover:bg-sky-50 transition-colors cursor-pointer"
-                    title="Descargar Video MP4"
-                  >
-                    <Film className="w-3.5 h-3.5" />
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(track.videoId)}
-                    className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
-                    title="Eliminar del historial"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+        {onGoToHistory && (
+          <button
+            onClick={onGoToHistory}
+            className="w-full sm:w-auto px-5 py-2.5 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-2xl text-xs font-bold transition-all flex items-center justify-center space-x-2 cursor-pointer shadow-xs hover:scale-105 active:scale-95"
+          >
+            <span>Ver Historial Completo</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         )}
       </div>
 
