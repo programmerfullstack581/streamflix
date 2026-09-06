@@ -21,7 +21,7 @@ export default function Sidebar({
   onOpenInstallModal
 }) {
   return (
-    <aside className="w-64 bg-white border-r border-sky-100 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs">
+    <aside className="w-64 bg-white border-r border-sky-100 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs overflow-y-auto">
       
       {/* Top Section: Logo & Navigation */}
       <div className="space-y-6">

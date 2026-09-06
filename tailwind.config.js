@@ -24,6 +24,9 @@ export default {
       boxShadow: {
         'red-neon': '0 0 25px rgba(229, 9, 20, 0.4)',
         'red-glow': '0 0 15px rgba(255, 0, 51, 0.6)',
+      },
+      screens: {
+        'xs': '420px',
       }
     },
   },

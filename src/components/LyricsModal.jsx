@@ -54,31 +54,31 @@ export default function LyricsModal({ track, onClose }) {
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 text-white border-b border-sky-200">
-          <div className="flex items-center space-x-3 min-w-0">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm text-white flex items-center justify-center shadow-md flex-shrink-0">
-              <Mic2 className="w-5 h-5" />
+        <div className="flex items-center justify-between p-3.5 sm:p-5 bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 text-white border-b border-sky-200 gap-2.5">
+          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm text-white flex items-center justify-center shadow-md flex-shrink-0">
+              <Mic2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm sm:text-base font-black text-white truncate">{track.title}</h3>
-              <p className="text-xs text-sky-100 truncate">{track.artist}</p>
+              <h3 className="text-xs xs:text-sm sm:text-base font-black text-white truncate">{track.title}</h3>
+              <p className="text-[11px] sm:text-xs text-sky-100 truncate">{track.artist}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10">
+          <button onClick={onClose} className="p-1.5 sm:p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10 flex-shrink-0">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-4 text-center bg-white">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4 text-center bg-white">
           {isLoading ? (
-            <div className="py-16 flex flex-col items-center justify-center space-y-3 text-slate-500">
-              <Loader2 className="w-8 h-8 text-sky-600 animate-spin" />
+            <div className="py-12 sm:py-16 flex flex-col items-center justify-center space-y-3 text-slate-500">
+              <Loader2 className="w-7 h-7 sm:w-8 sm:h-8 text-sky-600 animate-spin" />
               <p className="text-xs font-bold">Buscando letra de la canción...</p>
             </div>
           ) : (
             <div className="space-y-4">
-              <pre className="whitespace-pre-line font-sans text-sm sm:text-base text-slate-800 leading-relaxed font-medium select-text">
+              <pre className="whitespace-pre-line font-sans text-xs sm:text-sm md:text-base text-slate-800 leading-relaxed font-medium select-text">
                 {lyrics}
               </pre>
             </div>
@@ -86,11 +86,11 @@ export default function LyricsModal({ track, onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span>Modo Letra StreamBeat</span>
+        <div className="p-3 sm:p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 gap-2">
+          <span className="truncate">Modo Letra StreamBeat</span>
           <button 
             onClick={onClose} 
-            className="px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold transition-colors cursor-pointer"
+            className="px-3.5 sm:px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold transition-colors cursor-pointer flex-shrink-0"
           >
             Cerrar
           </button>

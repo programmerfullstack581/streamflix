@@ -136,31 +136,31 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
         onClick={e => e.stopPropagation()}
       >
         {/* Header Track info Sky Blue */}
-        <div className="bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 p-5 sm:p-6 border-b border-sky-200 flex items-center justify-between text-white">
-          <div className="flex items-center space-x-4 min-w-0">
+        <div className="bg-gradient-to-r from-sky-600 via-sky-500 to-blue-700 p-3.5 sm:p-5 border-b border-sky-200 flex items-center justify-between text-white gap-2.5">
+          <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
             <img 
               src={track.thumbnail} 
               alt={track.title} 
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-lg ring-2 ring-white/60 flex-shrink-0"
+              className="w-12 h-12 xs:w-14 xs:h-14 sm:w-18 sm:h-18 rounded-xl sm:rounded-2xl object-cover shadow-lg ring-2 ring-white/60 flex-shrink-0"
             />
             <div className="min-w-0">
-              <span className="text-[10px] font-black uppercase tracking-widest text-white bg-white/20 px-2.5 py-0.5 rounded-full border border-white/30">
+              <span className="text-[9px] xs:text-[10px] font-black uppercase tracking-wider text-white bg-white/20 px-2 py-0.5 rounded-full border border-white/30 truncate inline-block">
                 Descargador Multiformato
               </span>
-              <h2 className="text-lg sm:text-xl font-black text-white truncate mt-1">{track.title}</h2>
-              <p className="text-sm text-sky-100 font-medium truncate">{track.artist}</p>
+              <h2 className="text-sm xs:text-base sm:text-lg font-black text-white truncate mt-0.5 sm:mt-1">{track.title}</h2>
+              <p className="text-xs text-sky-100 font-medium truncate">{track.artist}</p>
             </div>
           </div>
           <button 
             onClick={onClose} 
-            className="p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10 cursor-pointer flex-shrink-0"
+            className="p-1.5 sm:p-2 text-white/80 hover:text-white rounded-full hover:bg-white/10 cursor-pointer flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="p-5 sm:p-7 overflow-y-auto space-y-6 flex-1 bg-white">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-5 sm:space-y-6 flex-1 bg-white">
           
           {/* Direct URL copy bar */}
           <div className="flex items-center justify-between gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
@@ -273,11 +273,11 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-          <span className="text-xs text-slate-500 font-medium">StreamBeat © Descargador Profesional</span>
+        <div className="p-3.5 sm:p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium truncate">StreamBeat © Descargador</span>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            className="px-3.5 sm:px-4 py-1.5 sm:py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex-shrink-0"
           >
             Cerrar
           </button>

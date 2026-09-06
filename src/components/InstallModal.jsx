@@ -10,7 +10,7 @@ export default function InstallModal({ isOpen, onClose, deferredPrompt, onDirect
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-md bg-white border border-sky-100 rounded-3xl shadow-2xl overflow-hidden p-6 space-y-5"
+        className="w-full max-w-md bg-white border border-sky-100 rounded-3xl shadow-2xl p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}

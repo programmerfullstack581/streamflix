@@ -24,21 +24,21 @@ export default function QRCodeModal({ track, onClose }) {
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-sm bg-white border border-sky-100 rounded-3xl shadow-2xl overflow-hidden p-6 space-y-5 text-center"
+        className="w-full max-w-sm bg-white border border-sky-100 rounded-3xl shadow-2xl p-4 sm:p-6 space-y-3.5 sm:space-y-5 text-center max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-sky-100 pb-3">
-          <div className="flex items-center space-x-2 text-left">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center shadow-md shadow-sky-500/20 text-white">
+          <div className="flex items-center space-x-2 text-left min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center shadow-md shadow-sky-500/20 text-white flex-shrink-0">
               <QrCode className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-sm font-black text-slate-900">Código QR de Descarga</h3>
-              <p className="text-[10px] text-slate-500">Escanea con tu celular</p>
+            <div className="min-w-0">
+              <h3 className="text-sm font-black text-slate-900 truncate">Código QR de Descarga</h3>
+              <p className="text-[10px] text-slate-500 truncate">Escanea con tu celular</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 cursor-pointer">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 cursor-pointer flex-shrink-0">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -50,11 +50,11 @@ export default function QRCodeModal({ track, onClose }) {
         </div>
 
         {/* QR Code Container */}
-        <div className="p-4 bg-sky-50/50 rounded-2xl border border-sky-200 shadow-inner inline-block mx-auto">
+        <div className="p-3 sm:p-4 bg-sky-50/50 rounded-2xl border border-sky-200 shadow-inner inline-block mx-auto">
           <img 
             src={qrImageUrl} 
             alt="Código QR de la canción"
-            className="w-52 h-52 rounded-xl mx-auto shadow-sm bg-white p-2"
+            className="w-40 h-40 xs:w-48 xs:h-48 sm:w-52 sm:h-52 rounded-xl mx-auto shadow-sm bg-white p-2 object-contain"
             loading="eager"
           />
         </div>
