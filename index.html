@@ -45,9 +45,34 @@
   <link rel="apple-touch-icon" href="/icon.svg" />
   <link rel="manifest" href="/manifest.json" />
 
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://streamflix-eight-kappa.vercel.app/" />
+
+  <!-- Google Search Console Verification (reemplazar valor tras registrar en Search Console) -->
+  <meta name="google-site-verification" content="PEGAR_AQUI_CODIGO_DE_VERIFICACION" />
+
   <!-- Preconnect -->
   <link rel="preconnect" href="https://i.ytimg.com" />
   <link rel="preconnect" href="https://images.unsplash.com" />
+
+  <!-- Schema.org Structured Data (JSON-LD) para que Google reconozca el nombre de la app -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "StreamBeat",
+    "alternateName": ["StreamFlix", "StreamBeat Music Downloader"],
+    "url": "https://streamflix-eight-kappa.vercel.app/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Android, iOS, Windows, macOS, Linux",
+    "description": "Descarga cualquier canción o video de YouTube directo a tu celular o PC en Audio MP3 (320 kbps) y Video MP4 (1080p HD). 100% gratis, rápido y sin límites.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 
 <body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-sky-400 selection:text-white font-sans">
