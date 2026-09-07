@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="50%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#0284C7" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- Background Rounded Rect -->
+  <rect width="512" height="512" rx="115" fill="url(#skyGrad)" filter="url(#shadow)"/>
+  
+  <!-- Subtle inner glow ring -->
+  <rect x="12" y="12" width="488" height="488" rx="103" fill="none" stroke="white" stroke-width="4" stroke-opacity="0.25"/>
+
+  <!-- Music Note & Radio Wave Icon -->
+  <g fill="none" stroke="white" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Radio Waves -->
+    <path d="M140 180 A170 170 0 0 0 140 332" stroke-width="22" stroke-opacity="0.7"/>
+    <path d="M372 180 A170 170 0 0 1 372 332" stroke-width="22" stroke-opacity="0.7"/>
+    
+    <!-- Inner Waves -->
+    <path d="M185 210 A110 110 0 0 0 185 302" stroke-width="24" stroke-opacity="0.85"/>
+    <path d="M327 210 A110 110 0 0 1 327 302" stroke-width="24" stroke-opacity="0.85"/>
+
+    <!-- Central Musical Note Double Stem -->
+    <circle cx="230" cy="310" r="32" fill="white" stroke="none"/>
+    <circle cx="282" cy="275" r="32" fill="white" stroke="none"/>
+    <path d="M255 310 L255 180 L308 155 L308 275" stroke-width="26"/>
+    <path d="M255 180 L308 155" stroke-width="32"/>
+  </g>
+</svg>

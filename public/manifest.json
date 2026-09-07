@@ -1,0 +1,43 @@
+{
+  "id": "/",
+  "short_name": "StreamBeat",
+  "name": "StreamBeat — Descargador MP3 & MP4",
+  "description": "Descarga canciones en Audio MP3 (320 kbps) y Videos en MP4 HD directamente a tu teléfono celular o PC.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512 any",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512 maskable",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0284C7",
+  "categories": ["music", "entertainment", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Descargar Música",
+      "short_name": "Descargar",
+      "description": "Buscar y descargar canciones en MP3",
+      "url": "/",
+      "icons": [{ "src": "/icon.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Historial de Descargas",
+      "short_name": "Historial",
+      "description": "Ver canciones descargadas",
+      "url": "/#historial",
+      "icons": [{ "src": "/icon.svg", "sizes": "192x192" }]
+    }
+  ]
+}
