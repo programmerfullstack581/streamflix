@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import DownloadsView from './components/DownloadsView';
+import YoutubeFeedView from './components/YoutubeFeedView';
 import HistoryView from './components/HistoryView';
 import DownloadModal from './components/DownloadModal';
 import InstallModal from './components/InstallModal';
@@ -17,10 +18,13 @@ import {
   Sparkles,
   ShieldCheck,
   CheckCircle2
+  CheckCircle2,
+  Youtube
 } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('inicio'); // 'inicio' | 'historial'
+  const [activeTab, setActiveTab] = useState('inicio'); // 'inicio' | 'youtube' | 'historial'
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -164,6 +168,18 @@ export default function App() {
                 </button>
 
                 <button
+                  onClick={() => setActiveTab('youtube')}
+                  className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    activeTab === 'youtube'
+                      ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-red-600'
+                  }`}
+                >
+                  <Youtube className={`w-3.5 h-3.5 ${activeTab === 'youtube' ? 'text-white' : 'text-red-500'}`} />
+                  <span>Videos YouTube</span>
+                </button>
+
+                <button
                   onClick={() => setActiveTab('historial')}
                   className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     activeTab === 'historial'
@@ -206,6 +222,18 @@ export default function App() {
               </button>
 
               <button
+                onClick={() => { setActiveTab('youtube'); setIsMobileMenuOpen(false); }}
+                className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === 'youtube'
+                    ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-xs'
+                    : 'text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <Youtube className="w-4 h-4 text-red-500" />
+                <span>📺 Videos YouTube (Feed & Reproductor)</span>
+              </button>
+
+              <button
                 onClick={() => { setActiveTab('historial'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === 'historial'
@@ -237,6 +265,7 @@ export default function App() {
         {/* Vista Activa Principal */}
         <main className="max-w-6xl w-full mx-auto px-3.5 sm:px-8 py-5 sm:py-8">
           {activeTab === 'inicio' ? (
+          {activeTab === 'inicio' && (
             <DownloadsView
               downloads={downloads}
               onOpenDownloadModal={handleOpenDownload}
@@ -247,6 +276,16 @@ export default function App() {
               }}
             />
           ) : (
+          )}
+
+          {activeTab === 'youtube' && (
+            <YoutubeFeedView
+              onOpenDownloadModal={handleOpenDownload}
+              onShowToast={showToast}
+            />
+          )}
+
+          {activeTab === 'historial' && (
             <HistoryView
               downloads={downloads}
               onRefreshDownloads={handleRefreshDownloads}
@@ -276,6 +315,20 @@ export default function App() {
         >
           <Home className="w-5 h-5" />
           <span className="text-[10px] font-bold">Inicio</span>
+        </button>
+
+        {/* Botón Móvil: Videos YouTube */}
+        <button
+          onClick={() => {
+            setActiveTab('youtube');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex flex-col items-center space-y-1 transition-all cursor-pointer ${
+            activeTab === 'youtube' ? 'text-red-600 scale-105' : 'text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          <Youtube className="w-5 h-5" />
+          <span className="text-[10px] font-bold">Videos</span>
         </button>
 
         {/* Botón Móvil: Historial con burbuja contadora */}

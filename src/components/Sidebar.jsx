@@ -12,6 +12,8 @@ import {
   Music2,
   CheckCircle2,
   ShieldCheck
+  ShieldCheck,
+  Youtube
 } from 'lucide-react';
 
 export default function Sidebar({
@@ -68,6 +70,26 @@ export default function Sidebar({
                   Activo
                 </span>
               )}
+            </div>
+          </button>
+
+          {/* Tab: Feed de Videos YouTube */}
+          <button
+            onClick={() => setActiveTab('youtube')}
+            className={`w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeTab === 'youtube'
+                ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md shadow-red-500/25'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-red-50/70 border border-transparent hover:border-red-100'
+            }`}
+          >
+            <Youtube className={`w-4 h-4 flex-shrink-0 ${activeTab === 'youtube' ? 'text-white' : 'text-red-500'}`} />
+            <div className="flex items-center justify-between flex-1">
+              <span>Videos YouTube</span>
+              <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-md ${
+                activeTab === 'youtube' ? 'bg-white/20 text-white' : 'bg-red-100 text-red-600'
+              }`}>
+                NUEVO
+              </span>
             </div>
           </button>
 
