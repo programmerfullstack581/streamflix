@@ -17,11 +17,13 @@ import {
   X,
   Sparkles,
   ShieldCheck,
+  CheckCircle2
   CheckCircle2,
   Youtube
 } from 'lucide-react';
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState('inicio'); // 'inicio' | 'historial'
   const [activeTab, setActiveTab] = useState('inicio'); // 'inicio' | 'youtube' | 'historial'
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
@@ -262,6 +264,7 @@ export default function App() {
 
         {/* Vista Activa Principal */}
         <main className="max-w-6xl w-full mx-auto px-3.5 sm:px-8 py-5 sm:py-8">
+          {activeTab === 'inicio' ? (
           {activeTab === 'inicio' && (
             <DownloadsView
               downloads={downloads}
@@ -272,6 +275,7 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             />
+          ) : (
           )}
 
           {activeTab === 'youtube' && (
