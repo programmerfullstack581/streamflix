@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { 
   Home, 
   Download, 
@@ -11,7 +11,6 @@ import {
   Film,
   Music2,
   CheckCircle2,
-  ShieldCheck
   ShieldCheck,
   Youtube
 } from 'lucide-react';
