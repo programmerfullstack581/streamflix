@@ -11,7 +11,6 @@ import {
   Film,
   Music2,
   CheckCircle2,
-  ShieldCheck
   ShieldCheck,
   Youtube
 } from 'lucide-react';
