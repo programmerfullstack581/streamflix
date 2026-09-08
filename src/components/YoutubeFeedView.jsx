@@ -143,7 +143,7 @@ export default function YoutubeFeedView({
           </h1>
 
           <p className="text-xs sm:text-sm text-red-100 max-w-xl font-medium">
-            Disfruta de la experiencia completa de YouTube dentro de StreamBeat. Reproduce videos sin cortes comerciales y descárgalos con un solo clic en formato de Audio MP3 (320k) o Video MP4 (1080p).
+            Disfruta de la experiencia completa de YouTube dentro de AlgoRitmo. Reproduce videos sin cortes comerciales y descárgalos con un solo clic en formato de Audio MP3 (320k) o Video MP4 (1080p).
           </p>
 
           {/* Barra de búsqueda directa */}
@@ -425,7 +425,7 @@ export default function YoutubeFeedView({
                       <button
                         onClick={() => handleSelectVideoToWatch(video)}
                         className="flex-1 flex items-center justify-center space-x-1 px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-[11px] font-bold transition-colors cursor-pointer"
-                        title="Ver video en StreamBeat"
+                        title="Ver video en AlgoRitmo"
                       >
                         <Play className="w-3 h-3 fill-current text-slate-700" />
                         <span>Ver Video</span>

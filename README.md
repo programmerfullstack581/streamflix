@@ -1,7 +1,7 @@
-# 🎵 StreamBeat (StreamFlix) — Plataforma Multimedia & Descargas HD
+# 🎵 AlgoRitmo — Plataforma Multimedia & Descargas HD
 
 <p align="center">
-  <img src="./docs/images/screenshot-home.png" alt="StreamBeat Interfaz Principal" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" />
+  <img src="./docs/images/screenshot-home.png" alt="AlgoRitmo Interfaz Principal" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);" />
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <strong>StreamBeat</strong> es una aplicación web progresiva (PWA) moderna, rápida y 100% responsiva diseñada para la búsqueda, streaming en vivo y descarga de audio en alta fidelidad (<strong>MP3 hasta 320 kbps</strong>) y video en alta definición (<strong>MP4 hasta 1080p FHD</strong>).
+  <strong>AlgoRitmo</strong> es una aplicación web progresiva (PWA) moderna, rápida y 100% responsiva diseñada para la búsqueda, streaming en vivo y descarga de audio en alta fidelidad (<strong>MP3 hasta 320 kbps</strong>) y video en alta definición (<strong>MP4 hasta 1080p FHD</strong>).
 </p>
 
 ---
@@ -33,7 +33,7 @@ La interfaz ha sido diseñada cuidando cada detalle visual, con soporte completo
 <div align="center">
   <h3>📲 Experiencia Nativa con Instalación PWA</h3>
   <p>Instalable con un solo clic en Android, iOS, Windows y macOS, funcionando offline y sin necesidad de tiendas de aplicaciones.</p>
-  <img src="./docs/images/screenshot-install.png" alt="Instalación PWA StreamBeat" width="550" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
+  <img src="./docs/images/screenshot-install.png" alt="Instalación PWA AlgoRitmo" width="550" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.08);" />
 </div>
 
 ---

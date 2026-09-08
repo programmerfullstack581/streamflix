@@ -1,5 +1,5 @@
-// StreamBeat Progressive Web App Service Worker
-const CACHE_NAME = 'streambeat-pwa-v2';
+// AlgoRitmo Progressive Web App Service Worker
+const CACHE_NAME = 'algoritmo-pwa-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

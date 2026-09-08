@@ -62,7 +62,7 @@ export default function LibraryView({
           </h1>
           <p className="text-xs sm:text-sm text-gray-300">{description}</p>
           <p className="text-xs text-gray-400 flex items-center justify-center sm:justify-start space-x-2 pt-1">
-            <span className="font-bold text-white">StreamBeat Red</span>
+            <span className="font-bold text-white">AlgoRitmo</span>
             <span>•</span>
             <span className="text-red-400 font-bold">{tracks.length} canciones</span>
           </p>

@@ -42,7 +42,7 @@ export default function App() {
     const handleAppInstalled = () => {
       setDeferredPrompt(null);
       setIsInstallModalOpen(false);
-      showToast('🎉 ¡StreamBeat se agregó exitosamente a tu pantalla de inicio!');
+      showToast('🎉 ¡AlgoRitmo se agregó exitosamente a tu pantalla de inicio!');
     };
 
     window.addEventListener('beforeinstallprompt', handlePrompt);
@@ -65,7 +65,7 @@ export default function App() {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          showToast('🎉 ¡Instalando StreamBeat en tu dispositivo!');
+          showToast('🎉 ¡Instalando AlgoRitmo en tu dispositivo!');
         }
         setDeferredPrompt(null);
         setIsInstallModalOpen(false);
@@ -82,7 +82,7 @@ export default function App() {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          showToast('🎉 ¡StreamBeat instalada en tu pantalla de inicio!');
+          showToast('🎉 ¡AlgoRitmo instalada en tu pantalla de inicio!');
         }
         setDeferredPrompt(null);
         setIsInstallModalOpen(false);
@@ -138,8 +138,8 @@ export default function App() {
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center space-x-1">
-                    <span className="text-base sm:text-lg font-black text-slate-900 tracking-tight">STREAM</span>
-                    <span className="text-base sm:text-lg font-black text-sky-500 tracking-tight">BEAT</span>
+                    <span className="text-base sm:text-lg font-black text-slate-900 tracking-tight">ALGO</span>
+                    <span className="text-base sm:text-lg font-black text-sky-500 tracking-tight">RITMO</span>
                   </div>
                   <span className="hidden min-[380px]:inline-block text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100 truncate">
                     MP3 (320k) & MP4 (1080p)

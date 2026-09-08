@@ -43,7 +43,7 @@ export default function Navbar({
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(() => setDeferredPrompt(null));
     } else {
-      alert('Para instalar StreamBeat Red como App en tu teléfono o PC, abre el menú de tu navegador y selecciona "Instalar aplicación" o "Agregar a pantalla principal".');
+      alert('Para instalar AlgoRitmo como App en tu teléfono o PC, abre el menú de tu navegador y selecciona "Instalar aplicación" o "Agregar a pantalla principal".');
     }
   };
 
@@ -69,7 +69,7 @@ export default function Navbar({
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-red-600 to-rose-600 flex items-center justify-center shadow-red-neon">
               <Radio className="w-4 h-4 text-white font-black" />
             </div>
-            <span className="text-lg font-black text-white">STREAM<span className="text-red-500">BEAT</span></span>
+            <span className="text-lg font-black text-white">ALGO<span className="text-sky-400">RITMO</span></span>
           </div>
 
           {/* Desktop Back / Forward */}
@@ -186,7 +186,7 @@ export default function Navbar({
               className="w-full flex items-center justify-center space-x-2 py-3 bg-red-950/40 border border-red-500/30 text-white rounded-xl text-xs font-bold"
             >
               <Smartphone className="w-4 h-4 text-red-400" />
-              <span>Instalar StreamBeat en tu celular</span>
+              <span>Instalar AlgoRitmo en tu celular</span>
             </button>
           </div>
         </div>

@@ -37,8 +37,8 @@ export default function Sidebar({
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-xl font-black text-slate-900 tracking-tight">STREAM</span>
-              <span className="text-xl font-black text-sky-500 tracking-tight">BEAT</span>
+              <span className="text-xl font-black text-slate-900 tracking-tight">ALGO</span>
+              <span className="text-xl font-black text-sky-500 tracking-tight">RITMO</span>
             </div>
             <span className="text-[9px] font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
               AUDIO (MP3) & VIDEO (MP4)
@@ -166,7 +166,7 @@ export default function Sidebar({
           <span>Servicio 100% Seguro y Gratis</span>
         </div>
         <p className="text-[10px] text-slate-400">
-          StreamBeat © 2026 • Modo Claro Pastel
+          AlgoRitmo © 2026 • Modo Claro Pastel
         </p>
       </div>
 

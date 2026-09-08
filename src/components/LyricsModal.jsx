@@ -31,7 +31,7 @@ export default function LyricsModal({ track, onClose }) {
         if (data && data.lyrics) {
           setLyrics(data.lyrics);
         } else {
-          setLyrics(`🎵 "${track.title}" — ${track.artist}\n\n(Disfruta del ritmo de esta canción en StreamBeat)\n\n♪ ♫ ♩ ♬`);
+          setLyrics(`🎵 "${track.title}" — ${track.artist}\n\n(Disfruta del ritmo de esta canción en AlgoRitmo)\n\n♪ ♫ ♩ ♬`);
         }
         setIsLoading(false);
       })
@@ -87,7 +87,7 @@ export default function LyricsModal({ track, onClose }) {
 
         {/* Footer */}
         <div className="p-3 sm:p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 gap-2">
-          <span className="truncate">Modo Letra StreamBeat</span>
+          <span className="truncate">Modo Letra AlgoRitmo</span>
           <button 
             onClick={onClose} 
             className="px-3.5 sm:px-4 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold transition-colors cursor-pointer flex-shrink-0"

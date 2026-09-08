@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "short_name": "StreamBeat",
-  "name": "StreamBeat — Descargador MP3 & MP4",
+  "short_name": "AlgoRitmo",
+  "name": "AlgoRitmo — Descargador MP3 & MP4",
   "description": "Descarga canciones en Audio MP3 (320 kbps) y Videos en MP4 HD directamente a tu teléfono celular o PC.",
   "icons": [
     {

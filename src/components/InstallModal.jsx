@@ -20,7 +20,7 @@ export default function InstallModal({ isOpen, onClose, deferredPrompt, onDirect
               <Smartphone className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-black text-slate-900">Instalar StreamBeat App</h3>
+              <h3 className="text-base font-black text-slate-900">Instalar AlgoRitmo App</h3>
               <p className="text-xs text-slate-500">Sin Play Store ni descargas pesadas</p>
             </div>
           </div>

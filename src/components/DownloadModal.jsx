@@ -274,7 +274,7 @@ export default function DownloadModal({ track, onClose, onDownloadRecorded }) {
 
         {/* Footer */}
         <div className="p-3.5 sm:p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-          <span className="text-[11px] sm:text-xs text-slate-500 font-medium truncate">StreamBeat © Descargador</span>
+          <span className="text-[11px] sm:text-xs text-slate-500 font-medium truncate">AlgoRitmo © Descargador</span>
           <button
             onClick={onClose}
             className="px-3.5 sm:px-4 py-1.5 sm:py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex-shrink-0"
