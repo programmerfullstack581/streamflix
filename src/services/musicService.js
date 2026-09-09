@@ -410,8 +410,60 @@ export async function getPlaylistTracks(playlistId) {
   }
   return null;
 }
+const YOUTUBE_API_KEY = 'AIzaSyBBWsMyi_RmMFAqn6jCWvwMIJ0tQxM9C88';
+
+// Helper para parsear la duración de YouTube (ej. PT3M33S -> {text: "3:33", seconds: 213})
+function parseYTDuration(durationStr) {
+  const match = durationStr.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  if (!match) return { text: '3:30', seconds: 210 };
+  const h = parseInt(match[1]) || 0;
+  const m = parseInt(match[2]) || 0;
+  const s = parseInt(match[3]) || 0;
+  const totalSeconds = h * 3600 + m * 60 + s;
+  const mins = Math.floor(totalSeconds / 60);
+  const remaining = String(totalSeconds % 60).padStart(2, '0');
+  return {
+    text: h > 0 ? `${h}:${String(m).padStart(2, '0')}:${remaining}` : `${mins}:${remaining}`,
+    seconds: totalSeconds
+  };
+}
+
 export async function getTrackDetailsById(videoId) {
-  // 1. Intento con instancias Invidious / Piped para obtener duración y metadatos exactos
+  // 1. API Oficial de YouTube
+  try {
+    const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.items && data.items.length > 0) {
+        const v = data.items[0];
+        const dur = parseYTDuration(v.contentDetails?.duration || '');
+        let viewsFormatted = 'YouTube';
+        const vc = v.statistics?.viewCount;
+        if (vc) {
+          const count = parseInt(vc, 10);
+          viewsFormatted = count > 1e9 ? (count / 1e9).toFixed(1) + 'B' 
+            : count > 1e6 ? (count / 1e6).toFixed(0) + 'M' 
+            : (count / 1e3).toFixed(0) + 'K';
+        }
+        return {
+          videoId: videoId,
+          title: v.snippet.title,
+          artist: v.snippet.channelTitle,
+          album: 'YouTube Oficial',
+          duration: dur.text,
+          seconds: dur.seconds,
+          thumbnail: v.snippet.thumbnails?.high?.url || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+          views: viewsFormatted,
+          youtubeUrl: `https://www.youtube.com/watch?v=${videoId}`
+        };
+      }
+    }
+  } catch (error) {
+    console.warn("Fallo en API oficial de YouTube para getTrackDetailsById, usando fallback", error);
+  }
+
+  // 2. Intento con instancias Invidious / Piped para obtener duración y metadatos exactos (Fallback)
   const instances = [
     'https://inv.nadeko.net',
     'https://invidious.nerdvpn.de',
@@ -448,27 +500,7 @@ export async function getTrackDetailsById(videoId) {
     }
   }
 
-  // 2. Intento con noembed.com
-  try {
-    const noembedRes = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`, { signal: AbortSignal.timeout(3500) });
-    if (noembedRes.ok) {
-      const data = await noembedRes.json();
-      if (data && data.title && !data.error) {
-        return {
-          videoId: videoId,
-          title: data.title,
-          artist: data.author_name || 'Artista Oficial',
-          album: 'YouTube Music',
-          duration: 'YouTube Video',
-          seconds: 210,
-          thumbnail: data.thumbnail_url || `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
-          views: 'HD'
-        };
-      }
-    }
-  } catch (_) {}
-
-  // Fallback
+  // Fallback final
   return {
     videoId: videoId,
     title: 'Canción de YouTube',
@@ -494,20 +526,53 @@ export async function searchMusicOnline(query) {
     return directTrack ? [directTrack] : [];
   }
 
-  // 2. Intentar primero con el endpoint serverless /api/search
+  // 2. Intentar usar la API Oficial de YouTube
   try {
-    const apiRes = await fetch(`/api/search?q=${encodeURIComponent(cleanQuery)}`, {
-      signal: AbortSignal.timeout(6000)
-    });
-    if (apiRes.ok) {
-      const data = await apiRes.json();
-      if (data.success && Array.isArray(data.results) && data.results.length > 0) {
-        return data.results;
+    const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=24&q=${encodeURIComponent(cleanQuery)}&type=video&key=${YOUTUBE_API_KEY}`;
+    const res = await fetch(searchUrl, { signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      const searchData = await res.json();
+      if (searchData.items && searchData.items.length > 0) {
+        // Extraer los IDs para obtener las duraciones y visitas
+        const videoIds = searchData.items.map(item => item.id.videoId).join(',');
+        
+        const detailsUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds}&key=${YOUTUBE_API_KEY}`;
+        const detRes = await fetch(detailsUrl, { signal: AbortSignal.timeout(6000) });
+        
+        if (detRes.ok) {
+          const detData = await detRes.json();
+          if (detData.items && detData.items.length > 0) {
+            return detData.items.map(v => {
+              const dur = parseYTDuration(v.contentDetails?.duration || '');
+              let viewsFormatted = 'YouTube';
+              const vc = v.statistics?.viewCount;
+              if (vc) {
+                const count = parseInt(vc, 10);
+                viewsFormatted = count > 1e9 ? (count / 1e9).toFixed(1) + 'B' 
+                  : count > 1e6 ? (count / 1e6).toFixed(0) + 'M' 
+                  : (count / 1e3).toFixed(0) + 'K';
+              }
+              return {
+                videoId: v.id,
+                title: v.snippet.title,
+                artist: v.snippet.channelTitle,
+                album: 'YouTube Oficial',
+                duration: dur.text,
+                seconds: dur.seconds,
+                thumbnail: v.snippet.thumbnails?.high?.url || `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`,
+                views: viewsFormatted,
+                youtubeUrl: `https://www.youtube.com/watch?v=${v.id}`
+              };
+            });
+          }
+        }
       }
     }
-  } catch (_) {}
+  } catch (error) {
+    console.warn("Fallo la búsqueda con API oficial, usando fallback", error);
+  }
 
-  // 3. Fallback directo a instancias de YouTube públicas (Invidious / Piped)
+  // 3. Fallback directo a instancias de YouTube públicas (Invidious / Piped) si la API oficial falla o se acaba la cuota
   const instances = [
     'https://inv.nadeko.net',
     'https://invidious.nerdvpn.de',
