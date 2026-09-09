@@ -377,11 +377,12 @@ export default function YoutubeFeedView({
                     className="relative aspect-video bg-slate-900 cursor-pointer overflow-hidden"
                   >
                     <img
-                      src={video.thumbnail || getYoutubeThumbnail(video.videoId)}
+                      src={video.thumbnail || getYoutubeThumbnail(video.videoId, 'hqdefault')}
                       alt={video.title}
                       loading="lazy"
                       onError={(e) => {
-                        e.target.src = getYoutubeThumbnail(video.videoId, 'hqdefault');
+                        e.target.onerror = null; // Prevenir loop infinito
+                        e.target.src = 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=400&auto=format&fit=crop&q=80'; // Placeholder musical genérico
                       }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
