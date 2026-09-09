@@ -119,11 +119,11 @@ export default function App() {
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-3.5 sm:px-8 py-3 sm:py-3.5 border-b border-sky-100/80 select-none shadow-xs">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
             
-            {/* Logo en Móvil y Toggle */}
-            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            {/* Logo en Móvil y Toggle (oculto en desktop porque ya está en el Sidebar) */}
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 md:hidden">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 -ml-1 sm:-ml-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 md:hidden cursor-pointer flex-shrink-0"
+                className="p-2 -ml-1 sm:-ml-2 text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-100 cursor-pointer flex-shrink-0"
                 title="Menú de Navegación"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
