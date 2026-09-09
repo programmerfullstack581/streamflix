@@ -99,21 +99,22 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 flex font-sans selection:bg-sky-400 selection:text-white">
+    <div className="h-screen w-full bg-[#F8FAFC] text-slate-800 flex font-sans selection:bg-sky-400 selection:text-white overflow-hidden">
       
       {/* 1. Menú Lateral Izquierdo (Sidebar en Desktop) */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          const scrollContainer = document.getElementById('main-scroll-container');
+          if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
         }}
         downloadsCount={downloads.length}
         onOpenInstallModal={handleInstallApp}
       />
 
       {/* 2. Área Principal de Contenido (Responsive) */}
-      <div className="flex-1 flex flex-col min-w-0 pb-24 sm:pb-28 md:pb-8">
+      <div id="main-scroll-container" className="flex-1 flex flex-col h-full min-w-0 overflow-y-auto pb-24 sm:pb-28 md:pb-8">
         
         {/* Barra Superior */}
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3 border-b border-sky-100/80 select-none shadow-xs">

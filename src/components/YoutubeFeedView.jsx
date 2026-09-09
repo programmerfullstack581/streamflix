@@ -481,7 +481,8 @@ export default function YoutubeFeedView({
             <button
               onClick={() => {
                 setCurrentPage(p => Math.max(1, p - 1));
-                window.scrollTo({ top: 300, behavior: 'smooth' });
+                const scrollContainer = document.getElementById('main-scroll-container');
+                if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               disabled={currentPage === 1}
               className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all w-full sm:w-auto ${
@@ -499,7 +500,8 @@ export default function YoutubeFeedView({
                   key={i}
                   onClick={() => {
                     setCurrentPage(i + 1);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                    const scrollContainer = document.getElementById('main-scroll-container');
+                if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className={`w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-sm font-bold transition-all cursor-pointer ${
                     currentPage === i + 1
@@ -515,7 +517,8 @@ export default function YoutubeFeedView({
             <button
               onClick={() => {
                 setCurrentPage(p => Math.min(totalPages, p + 1));
-                window.scrollTo({ top: 300, behavior: 'smooth' });
+                const scrollContainer = document.getElementById('main-scroll-container');
+                if (scrollContainer) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               disabled={currentPage === totalPages}
               className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all w-full sm:w-auto ${
