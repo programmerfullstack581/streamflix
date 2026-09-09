@@ -116,7 +116,7 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0 pb-24 sm:pb-28 md:pb-8">
         
         {/* Barra Superior */}
-        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-3.5 sm:px-8 py-3 sm:py-3.5 border-b border-sky-100/80 select-none shadow-xs">
+        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3 border-b border-sky-100/80 select-none shadow-xs">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
             
             {/* Logo en Móvil y Toggle (oculto en desktop porque ya está en el Sidebar) */}
@@ -148,11 +148,62 @@ export default function App() {
               </div>
             </div>
 
-            {/* Acciones Superiores: Pestañas de Acceso Rápido & Botón Instalar */}
-            <div className="flex items-center space-x-2 sm:space-x-2.5 flex-shrink-0">
+            {/* Navegación Desktop: se expande al ancho completo */}
+            <div className="hidden md:flex items-center flex-1">
+              <div className="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80 flex-1">
+                <button
+                  onClick={() => setActiveTab('inicio')}
+                  className={`flex items-center justify-center space-x-2 px-5 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer flex-1 ${
+                    activeTab === 'inicio'
+                      ? 'bg-white text-sky-700 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Home className="w-4 h-4" />
+                  <span>Inicio</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('youtube')}
+                  className={`flex items-center justify-center space-x-2 px-5 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer flex-1 ${
+                    activeTab === 'youtube'
+                      ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-sm'
+                      : 'text-slate-600 hover:text-red-600'
+                  }`}
+                >
+                  <Youtube className={`w-4 h-4 ${activeTab === 'youtube' ? 'text-white' : 'text-red-500'}`} />
+                  <span>Videos YouTube</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('historial')}
+                  className={`flex items-center justify-center space-x-2 px-5 py-2 rounded-xl text-sm font-bold transition-all cursor-pointer flex-1 ${
+                    activeTab === 'historial'
+                      ? 'bg-white text-sky-700 shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <HardDrive className="w-4 h-4" />
+                  <span>Historial ({downloads.length})</span>
+                </button>
+              </div>
+
+              {/* Botón Instalar App Desktop */}
+              <button
+                onClick={handleInstallApp}
+                className="flex items-center space-x-2 px-5 py-2.5 ml-3 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white rounded-xl text-sm font-bold transition-all shadow-md shadow-sky-400/20 cursor-pointer active:scale-95 flex-shrink-0"
+                title="Instalar App en tu celular o PC"
+              >
+                <Smartphone className="w-4 h-4" />
+                <span>Instalar App</span>
+              </button>
+            </div>
+
+            {/* Acciones Móvil: Pestañas compactas + Instalar */}
+            <div className="flex items-center space-x-2 sm:space-x-2.5 flex-shrink-0 md:hidden">
               
-              {/* Selector de Pestañas en Header para Desktop/Tablet */}
-              <div className="hidden sm:flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
+              {/* Selector de Pestañas compacto en Header para Tablet */}
+              <div className="hidden sm:flex md:hidden items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
                 <button
                   onClick={() => setActiveTab('inicio')}
                   className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
@@ -190,7 +241,7 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Botón Instalar App */}
+              {/* Botón Instalar App Móvil */}
               <button
                 onClick={handleInstallApp}
                 className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-sky-400/20 cursor-pointer active:scale-95 flex-shrink-0"
