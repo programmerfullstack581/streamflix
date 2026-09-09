@@ -57,10 +57,19 @@ export default function YoutubeFeedView({
   const [theaterMode, setTheaterMode] = useState(false);
   const playerRef = useRef(null);
 
+  // Estados de paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const videosPerPage = 12;
+
   // Cargar videos al cambiar de categoría
   useEffect(() => {
     loadCategoryVideos(activeCategory);
   }, [activeCategory]);
+
+  // Resetear paginación cuando cambian los videos
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [videos]);
 
   const loadCategoryVideos = async (catId) => {
     setIsLoading(true);
@@ -122,6 +131,12 @@ export default function YoutubeFeedView({
       setTimeout(() => setCopiedId(null), 2500);
     });
   };
+
+  // Cálculos de paginación
+  const indexOfLastVideo = currentPage * videosPerPage;
+  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
+  const currentVideos = videos.slice(indexOfFirstVideo, indexOfLastVideo);
+  const totalPages = Math.ceil(videos.length / videosPerPage);
 
   return (
     <div className="space-y-6 animate-fadeIn pb-12">
@@ -345,7 +360,7 @@ export default function YoutubeFeedView({
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-            {videos.map((video, idx) => {
+            {currentVideos.map((video, idx) => {
               const isWatchingThis = activeWatchVideo?.videoId === video.videoId;
               return (
                 <div
@@ -457,6 +472,60 @@ export default function YoutubeFeedView({
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* Paginación UI */}
+        {!isLoading && totalPages > 1 && (
+          <div className="mt-10 mb-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:space-x-3">
+            <button
+              onClick={() => {
+                setCurrentPage(p => Math.max(1, p - 1));
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+              }}
+              disabled={currentPage === 1}
+              className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all w-full sm:w-auto ${
+                currentPage === 1 
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-70' 
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm cursor-pointer'
+              }`}
+            >
+              Anterior
+            </button>
+            
+            <div className="flex items-center space-x-1.5 overflow-x-auto max-w-full pb-1 sm:pb-0 scrollbar-none">
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setCurrentPage(i + 1);
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
+                  className={`w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                    currentPage === i + 1
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => {
+                setCurrentPage(p => Math.min(totalPages, p + 1));
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+              }}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all w-full sm:w-auto ${
+                currentPage === totalPages 
+                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed opacity-70' 
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 shadow-sm cursor-pointer'
+              }`}
+            >
+              Siguiente
+            </button>
           </div>
         )}
       </div>
