@@ -7,29 +7,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Redefinimos los colores "sky" que usa toda la App para que coincidan con la paleta de Drone.io
         sky: {
-          50: '#F4F9FD',
-          100: '#E9F1FA', // Azul claro (Fondo/Detalles)
-          200: '#CBE0F5',
-          300: '#A0CAEE',
-          400: '#4DBEF0', // Azul transicin
-          500: '#00ABE4', // Azul brillante (CTA / Brand Principal)
-          600: '#008EBD',
-          700: '#007198',
-          800: '#005F7C',
-          900: '#004F69',
+          50: '#F9FEEB', // Very light tint
+          100: '#EBFDC2',
+          200: '#DDFB99',
+          300: '#D0FA70',
+          400: '#BAFF39', // Accent
+          500: '#BAFF39', // Accent (Amarillo-verde)
+          600: '#9AE01F',
+          700: '#6E6E6E', // requested faint gray
+          800: '#505050',
+          900: '#333333',
         },
         blue: {
-          400: '#4DBEF0',
-          500: '#00ABE4',
-          600: '#008EBD',
+          400: '#BAFF39',
+          500: '#BAFF39',
+          600: '#9AE01F',
         },
-        brand: {
-          light: '#E9F1FA',
-          primary: '#00ABE4',
-          white: '#FFFFFF'
-        }
+        slate: {
+          50: '#F8F9FA',
+          100: '#F1F3F5',
+          200: '#E9ECEF',
+          300: '#DEE2E6',
+          400: '#CED4DA',
+          500: '#ADB5BD',
+          600: '#6E6E6E', // requested faint gray
+          700: '#495057',
+          800: '#343A40',
+          900: '#212529',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
