@@ -7,23 +7,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        redstream: {
-          primary: '#E50914',
-          neon: '#FF0033',
-          dark: '#000000',
-          carbon: '#0a0a0a',
-          card: '#141414',
-          cardHover: '#1f1f1f',
-          muted: '#8e8e8e',
-          accent: '#FF334B'
+        // Redefinimos los colores "sky" que usa toda la App para que coincidan con la paleta de Drone.io
+        sky: {
+          50: '#F4F9FD',
+          100: '#E9F1FA', // Azul claro (Fondo/Detalles)
+          200: '#CBE0F5',
+          300: '#A0CAEE',
+          400: '#4DBEF0', // Azul transicin
+          500: '#00ABE4', // Azul brillante (CTA / Brand Principal)
+          600: '#008EBD',
+          700: '#007198',
+          800: '#005F7C',
+          900: '#004F69',
+        },
+        blue: {
+          400: '#4DBEF0',
+          500: '#00ABE4',
+          600: '#008EBD',
+        },
+        brand: {
+          light: '#E9F1FA',
+          primary: '#00ABE4',
+          white: '#FFFFFF'
         }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
-      },
-      boxShadow: {
-        'red-neon': '0 0 25px rgba(229, 9, 20, 0.4)',
-        'red-glow': '0 0 15px rgba(255, 0, 51, 0.6)',
       },
       screens: {
         'xs': '420px',
