@@ -116,10 +116,5 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .eq-bar-1 { animation: eq-bounce 0.8s ease-in-out infinite; }
-.eq-bar-2 { animation: eq-bounce 0.8s ease-in-out infinite 0.2s; }
 .eq-bar-3 { animation: eq-bounce 0.8s ease-in-out infinite 0.4s; }
 .eq-bar-4 { animation: eq-bounce 0.8s ease-in-out infinite 0.1s; }
-
-.bg-sky-500, .from-sky-400, .from-sky-500, .to-sky-500, .to-sky-600 { 
-  color: #171717 !important; 
-}
