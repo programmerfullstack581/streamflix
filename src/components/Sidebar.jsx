@@ -37,8 +37,8 @@ export default function Sidebar({
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-xl font-black text-slate-900 tracking-tight">ALGO</span>
-              <span className="text-xl font-black text-sky-500 tracking-tight">RITMO</span>
+              <span className="text-xl font-black text-slate-900 tracking-tight">Nova</span>
+              <span className="text-xl font-black text-sky-500 tracking-tight">Stream</span>
             </div>
             <span className="text-[9px] font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
               AUDIO (MP3) & VIDEO (MP4)

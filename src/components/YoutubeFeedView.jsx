@@ -188,7 +188,7 @@ export default function YoutubeFeedView({
     <div className="space-y-6 animate-fadeIn pb-12">
       
       {/* 1. Header Banner estilo YouTube con Barra de Búsqueda */}
-      <div className="bg-gradient-to-r from-red-600 via-rose-600 to-red-700 rounded-3xl p-5 sm:p-7 text-white shadow-lg shadow-red-500/20 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-sky-600 to-blue-700 rounded-3xl p-5 sm:p-7 text-white shadow-xl relative overflow-hidden">
         {/* Adorno visual de fondo */}
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/5 skew-x-12 pointer-events-none" />
         <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none" />
@@ -319,7 +319,7 @@ export default function YoutubeFeedView({
             <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => onOpenDownloadModal(activeWatchVideo)}
-                className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white rounded-xl text-xs sm:text-sm font-black transition-all shadow-md shadow-red-500/30 cursor-pointer active:scale-95"
+                className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl text-xs sm:text-sm font-black transition-all shadow-md cursor-pointer active:scale-95"
               >
                 <Download className="w-4 h-4" />
                 <span>Descargar MP3 / MP4</span>
