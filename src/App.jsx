@@ -130,20 +130,18 @@ export default function App() {
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
 
-              <div 
-                onClick={() => setActiveTab('inicio')}
-                className="flex items-center space-x-2 sm:space-x-2.5 cursor-pointer min-w-0"
-              >
+              <div className="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer group" onClick={() => setActiveTab('inicio')}>
                 <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-sky-400 to-sky-600 flex items-center justify-center shadow-md shadow-sky-400/20 text-white flex-shrink-0">
-                  <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4 font-black" />
+                  <span className="font-bold text-lg sm:text-xl transform -skew-x-6">N</span>
                 </div>
-                <div className="min-w-0">
-                  <div className="flex items-center space-x-1">
-                    <span className="text-base sm:text-lg font-black text-slate-900 tracking-tight">ALGO</span>
-                    <span className="text-base sm:text-lg font-black text-sky-500 tracking-tight">RITMO</span>
+                
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <span className="text-base sm:text-lg font-black text-slate-800 tracking-tight">Nova</span>
+                    <span className="text-base sm:text-lg font-black text-sky-500 tracking-tight">Stream</span>
                   </div>
                   <span className="hidden min-[380px]:inline-block text-[8px] sm:text-[9px] font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100 truncate">
-                    MP3 (320k) & MP4 (1080p)
+                    Premium Music
                   </span>
                 </div>
               </div>

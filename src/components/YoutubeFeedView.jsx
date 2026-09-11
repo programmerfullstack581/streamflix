@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Play, 
   Download, 
-  Search, 
+  Search, Mic, MicOff,
   Flame, 
   Film, 
   Sparkles, 
@@ -55,6 +55,7 @@ export default function YoutubeFeedView({
   const [activeWatchVideo, setActiveWatchVideo] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [theaterMode, setTheaterMode] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const playerRef = useRef(null);
 
   // Estados de paginación
@@ -90,6 +91,51 @@ export default function YoutubeFeedView({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Bsqueda por voz
+  const handleVoiceSearch = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      if (onShowToast) onShowToast('Tu navegador no soporta búsqueda por voz. Intenta en Chrome.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onerror = (event) => {
+      console.error("Error de voz:", event.error);
+      setIsListening(false);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript;
+      setSearchQuery(transcript);
+      
+      // Auto-submit search
+      setIsLoading(true);
+      setActiveCategory('search');
+      setCurrentPage(1);
+      try {
+        const results = await searchMusicOnline(transcript.trim());
+        if (results && results.length > 0) {
+          setVideos(results);
+        } else {
+          setVideos(CURATED_TOP_HITS);
+        }
+      } catch (err) {
+        console.error('Search error:', err);
+        setVideos(CURATED_TOP_HITS);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    recognition.start();
   };
 
   const handleSearchSubmit = async (e) => {
@@ -169,18 +215,28 @@ export default function YoutubeFeedView({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Buscar videos, artistas, canciones o canales en YouTube..."
-                className="w-full pl-11 pr-10 py-3 rounded-2xl bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-hidden focus:ring-3 focus:ring-white/40 shadow-inner"
+                placeholder="Buscar por voz o escribir en NovaStream..."
+                className="w-full pl-11 pr-20 py-3 rounded-2xl bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm font-medium focus:outline-hidden focus:ring-3 focus:ring-white/40 shadow-inner"
               />
-              {searchQuery && (
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center space-x-1">
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    className="text-slate-400 hover:text-slate-600 p-1.5 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
                 <button
                   type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                  onClick={handleVoiceSearch}
+                  className={`p-1.5 rounded-full transition-all cursor-pointer ${isListening ? 'bg-red-500 text-white animate-pulse' : 'text-slate-400 hover:text-indigo-500 hover:bg-slate-100'}`}
+                  title="Búsqueda por voz"
                 >
-                  <X className="w-4 h-4" />
+                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                 </button>
-              )}
+              </div>
             </div>
             <button
               type="submit"
