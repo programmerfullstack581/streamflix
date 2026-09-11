@@ -10,19 +10,22 @@ import {
   FileAudio,
   Film,
   Music2,
-  CheckCircle2,
   ShieldCheck,
-  Youtube
+  Youtube,
+  Moon,
+  Sun
 } from 'lucide-react';
 
 export default function Sidebar({
   activeTab = 'inicio',
   setActiveTab,
   downloadsCount = 0,
-  onOpenInstallModal
+  onOpenInstallModal,
+  isDarkMode,
+  toggleDarkMode
 }) {
   return (
-    <aside className="w-64 bg-white border-r border-sky-100 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs overflow-y-auto">
+    <aside className="w-64 bg-white dark:bg-[#09090B] border-r border-sky-100 dark:border-slate-800 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs overflow-y-auto transition-colors duration-300">
       
       {/* Top Section: Logo & Navigation */}
       <div className="space-y-6">
@@ -159,14 +162,27 @@ export default function Sidebar({
 
       </div>
 
-      {/* Bottom Section: Footer Status */}
-      <div className="pt-4 border-t border-sky-100 space-y-2">
-        <div className="flex items-center space-x-2 text-xs text-slate-500">
+      {/* Footer Info & Dark Mode */}
+      <div className="mt-8 space-y-4 pb-4">
+        <button
+          onClick={toggleDarkMode}
+          className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+        >
+          <div className="flex items-center space-x-2">
+            {isDarkMode ? <Moon className="w-4 h-4 text-sky-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
+            <span className="text-xs font-bold">{isDarkMode ? 'Modo Oscuro' : 'Modo Claro'}</span>
+          </div>
+          <div className={`w-8 h-4 rounded-full relative transition-colors ${isDarkMode ? 'bg-sky-500' : 'bg-slate-300'}`}>
+            <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-transform ${isDarkMode ? 'left-4.5' : 'left-0.5'}`} />
+          </div>
+        </button>
+
+        <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
           <ShieldCheck className="w-4 h-4 text-emerald-500" />
           <span>Servicio 100% Seguro y Gratis</span>
         </div>
-        <p className="text-[10px] text-slate-400">
-          AlgoRitmo © 2026 • Modo Claro Pastel
+        <p className="text-[10px] text-slate-400 dark:text-slate-500">
+          NovaStream © 2026
         </p>
       </div>
 

@@ -22,13 +22,26 @@ import {
 } from 'lucide-react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('inicio'); // 'inicio' | 'youtube' | 'historial'
+  const [activeTab, setActiveTab] = useState('inicio');
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [downloads, setDownloads] = useState([]);
   const [toastMessage, setToastMessage] = useState(null);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   useEffect(() => {
     setDownloads(MusicStorage.getDownloads());
@@ -99,7 +112,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-[#F8FAFC] text-slate-800 flex font-sans selection:bg-sky-400 selection:text-white overflow-hidden">
+    <div className="h-screen w-full bg-[#F8FAFC] dark:bg-[#09090B] text-slate-800 dark:text-slate-200 flex font-sans selection:bg-sky-400 selection:text-white overflow-hidden transition-colors duration-300">
       
       {/* 1. Menú Lateral Izquierdo (Sidebar en Desktop) */}
       <Sidebar
@@ -111,6 +124,8 @@ export default function App() {
         }}
         downloadsCount={downloads.length}
         onOpenInstallModal={handleInstallApp}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
       />
 
       {/* 2. Área Principal de Contenido (Responsive) */}
