@@ -52,7 +52,7 @@ export default function YoutubeFeedView({
   const [searchQuery, setSearchQuery] = useState('');
   const [videos, setVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeWatchVideo, setActiveWatchVideo] = useState(null);
+  
   const [copiedId, setCopiedId] = useState(null);
   const [theaterMode, setTheaterMode] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -159,15 +159,7 @@ export default function YoutubeFeedView({
     }
   };
 
-  const handleSelectVideoToWatch = (video) => {
-    setActiveWatchVideo(video);
-    // Hacer scroll suave hacia el reproductor si no está visible
-    setTimeout(() => {
-      if (playerRef.current) {
-        playerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
-  };
+  const handleSelectVideoToWatch = (video) => { onPlayVideo(video); };
 
   const handleCopyVideoUrl = (videoId, title) => {
     const url = `https://www.youtube.com/watch?v=${videoId}`;
@@ -249,108 +241,7 @@ export default function YoutubeFeedView({
         </div>
       </div>
 
-      {/* 2. Reproductor de Video Integrado (Modo Teatro / Watch View) */}
-      {activeWatchVideo && (
-        <div 
-          ref={playerRef}
-          className="bg-slate-950 rounded-3xl p-3 sm:p-5 text-white shadow-2xl border border-slate-800 animate-fadeIn space-y-4"
-        >
-          {/* Barra superior del reproductor */}
-          <div className="flex items-center justify-between px-2">
-            <div className="flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                Reproduciendo en Directo
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setTheaterMode(!theaterMode)}
-                className="text-xs font-bold text-slate-400 hover:text-white px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors hidden sm:inline-flex items-center space-x-1 cursor-pointer"
-              >
-                <Tv className="w-3.5 h-3.5" />
-                <span>{theaterMode ? 'Vista Estándar' : 'Modo Cine'}</span>
-              </button>
-              <button
-                onClick={() => setActiveWatchVideo(null)}
-                className="p-1.5 rounded-full bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                title="Cerrar Reproductor"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Iframe 16:9 con YouTube Embed Limpio */}
-          <div className={`w-full rounded-2xl overflow-hidden bg-black shadow-inner transition-all ${
-            theaterMode ? 'aspect-[21/9] sm:aspect-video max-h-[75vh]' : 'aspect-video max-h-[65vh]'
-          }`}>
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${activeWatchVideo.videoId}?autoplay=1&rel=0`}
-              title={activeWatchVideo.title}
-              className="w-full h-full border-0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            />
-          </div>
-
-          {/* Metadatos y Barra de Descarga Rápida */}
-          <div className="p-2 sm:p-3 flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-slate-800">
-            <div className="space-y-1 min-w-0 flex-1">
-              <h2 className="text-base sm:text-lg font-black text-white line-clamp-2">
-                {activeWatchVideo.title}
-              </h2>
-              <div className="flex items-center space-x-3 text-xs text-slate-400">
-                <span className="font-bold text-red-400">{activeWatchVideo.artist}</span>
-                <span>•</span>
-                <span className="flex items-center space-x-1">
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>{activeWatchVideo.views || 'YouTube'}</span>
-                </span>
-                <span>•</span>
-                <span className="flex items-center space-x-1">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>{activeWatchVideo.duration}</span>
-                </span>
-              </div>
-            </div>
-
-            {/* Botones de acción directa bajo el video */}
-            <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-              <button
-                onClick={() => onOpenDownloadModal(activeWatchVideo)}
-                className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl text-xs sm:text-sm font-black transition-all shadow-md cursor-pointer active:scale-95"
-              >
-                <Download className="w-4 h-4" />
-                <span>Descargar MP3 / MP4</span>
-              </button>
-
-              <button
-                onClick={() => handleCopyVideoUrl(activeWatchVideo.videoId, activeWatchVideo.title)}
-                className="flex items-center space-x-1.5 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                title="Copiar enlace oficial de YouTube"
-              >
-                {copiedId === activeWatchVideo.videoId ? (
-                  <Check className="w-4 h-4 text-emerald-400" />
-                ) : (
-                  <Share2 className="w-4 h-4" />
-                )}
-                <span>Compartir</span>
-              </button>
-
-              <a
-                href={activeWatchVideo.youtubeUrl || `https://www.youtube.com/watch?v=${activeWatchVideo.videoId}`}
-                target="_blank"
-                rel="noreferrer"
-                className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-xl transition-colors"
-                title="Abrir en YouTube oficial"
-              >
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Reproductor Integrado eliminado: Ahora se usa OndaPlayer (GlobalPlayer) */}
 
       {/* 3. Chips Horizontales de Categorías (YouTube Filter Bar) */}
       <div className="relative">
@@ -417,7 +308,7 @@ export default function YoutubeFeedView({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {currentVideos.map((video, idx) => {
-              const isWatchingThis = activeWatchVideo?.videoId === video.videoId;
+              const isWatchingThis = false;
               return (
                 <div
                   key={video.videoId + idx}

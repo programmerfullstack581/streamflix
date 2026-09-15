@@ -25,7 +25,7 @@ export default function Sidebar({
   toggleDarkMode
 }) {
   return (
-    <aside className="w-64 bg-white dark:bg-[#09090B] border-r border-sky-100 dark:border-slate-800 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 shadow-xs overflow-y-auto transition-colors duration-300">
+    <aside className="w-64 bg-surface border-r border-white/5 flex-col justify-between p-4 select-none flex-shrink-0 hidden md:flex h-screen sticky top-0 z-20 overflow-y-auto">
       
       {/* Top Section: Logo & Navigation */}
       <div className="space-y-6">
@@ -35,16 +35,15 @@ export default function Sidebar({
           onClick={() => setActiveTab('inicio')}
           className="flex items-center space-x-3 cursor-pointer group px-2 py-1"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 to-sky-600 flex items-center justify-center shadow-md shadow-sky-400/20 text-white group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-2xl bg-onda-gradient flex items-center justify-center shadow-glow-cyan text-white group-hover:scale-105 transition-all duration-300">
             <Radio className="w-5 h-5 font-black" />
           </div>
           <div>
             <div className="flex items-center space-x-1.5">
-              <span className="text-xl font-black text-slate-900 tracking-tight">Nova</span>
-              <span className="text-xl font-black text-sky-500 tracking-tight">Stream</span>
+              <span className="text-2xl font-black text-transparent bg-clip-text bg-onda-gradient tracking-tight">Onda</span>
             </div>
-            <span className="text-[9px] font-bold uppercase tracking-widest text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
-              AUDIO (MP3) & VIDEO (MP4)
+            <span className="text-[9px] font-bold uppercase tracking-widest text-onda-cyan bg-onda-cyan/10 px-2 py-0.5 rounded-full border border-onda-cyan/20">
+              STREAM & DOWNLOAD
             </span>
           </div>
         </div>

@@ -4,6 +4,7 @@ import DownloadsView from './components/DownloadsView';
 import YoutubeFeedView from './components/YoutubeFeedView';
 import HistoryView from './components/HistoryView';
 import DownloadModal from './components/DownloadModal';
+import OndaPlayer from './components/OndaPlayer';
 import InstallModal from './components/InstallModal';
 import { MusicStorage } from './services/musicService';
 import { 
@@ -23,6 +24,7 @@ import {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('inicio');
+  const [globalPlayerTrack, setGlobalPlayerTrack] = useState(null);
   const [downloadModalTrack, setDownloadModalTrack] = useState(null);
   const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -112,7 +114,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-[#F8FAFC] dark:bg-[#09090B] text-slate-800 dark:text-slate-200 flex font-sans selection:bg-sky-400 selection:text-white overflow-hidden transition-colors duration-300">
+    <div className="h-screen w-full bg-background text-slate-200 flex font-sans selection:bg-onda-cyan selection:text-black overflow-hidden transition-colors duration-300">
       
       {/* 1. Menú Lateral Izquierdo (Sidebar en Desktop) */}
       <Sidebar
@@ -343,6 +345,7 @@ export default function App() {
             <YoutubeFeedView
               onOpenDownloadModal={handleOpenDownload}
               onShowToast={showToast}
+              onPlayVideo={setGlobalPlayerTrack}
             />
           )}
 
@@ -361,8 +364,15 @@ export default function App() {
 
       </div>
 
-      {/* 3. Barra de Navegación Inferior Flotante (100% Mobile Responsive con Safe-Area) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-sky-100 py-2 px-6 flex justify-around items-center shadow-lg pb-safe">
+      {/* Reproductor Persistente Onda */}
+      <OndaPlayer 
+        track={globalPlayerTrack} 
+        onClose={() => setGlobalPlayerTrack(null)} 
+        onOpenDownload={handleOpenDownload} 
+      />
+
+      {/* 3. Navegación Inferior (Mobile Solo) */}
+      <nav className="md:hidden fixed bottom-0 w-full bg-white dark:bg-[#09090B] border-t border-sky-100 dark:border-slate-800 flex justify-around p-3 pb-safe z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] transition-colors duration-300">
         
         {/* Botón Móvil: Inicio */}
         <button
