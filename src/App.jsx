@@ -19,7 +19,9 @@ import {
   Sparkles,
   ShieldCheck,
   CheckCircle2,
-  Youtube
+  Youtube,
+  Moon,
+  Sun
 } from 'lucide-react';
 
 export default function App() {
@@ -32,16 +34,19 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState(null);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // Por defecto Modo Claro (#F8FAFC); solo activa oscuro si el usuario lo activó explícitamente
+    return localStorage.getItem('theme_mode') === 'dark';
   });
 
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem('theme_mode', 'dark');
+      localStorage.removeItem('theme');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('theme_mode', 'light');
+      localStorage.removeItem('theme');
     }
   }, [isDarkMode]);
 
@@ -134,7 +139,7 @@ export default function App() {
       <div id="main-scroll-container" className="flex-1 flex flex-col h-full min-w-0 overflow-y-auto pb-24 sm:pb-28 md:pb-8">
         
         {/* Barra Superior */}
-        <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3 border-b border-sky-100/80 select-none shadow-xs">
+        <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#09090B]/90 backdrop-blur-md px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3 border-b border-sky-100/80 dark:border-slate-800 select-none shadow-xs transition-colors duration-300">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
             
             {/* Logo en Móvil y Toggle (oculto en desktop porque ya está en el Sidebar) */}
@@ -215,17 +220,17 @@ export default function App() {
               </button>
             </div>
 
-            {/* Acciones Móvil: Pestañas compactas + Instalar */}
-            <div className="flex items-center space-x-2 sm:space-x-2.5 flex-shrink-0 md:hidden">
+            {/* Acciones Móvil: Pestañas compactas + Modo Claro/Oscuro + Instalar */}
+            <div className="flex items-center space-x-1.5 sm:space-x-2.5 flex-shrink-0 md:hidden">
               
               {/* Selector de Pestañas compacto en Header para Tablet */}
-              <div className="hidden sm:flex md:hidden items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
+              <div className="hidden sm:flex md:hidden items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700">
                 <button
                   onClick={() => setActiveTab('inicio')}
                   className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     activeTab === 'inicio'
-                      ? 'bg-white text-sky-700 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-sky-700 dark:text-sky-300 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <Home className="w-3.5 h-3.5" />
@@ -237,7 +242,7 @@ export default function App() {
                   className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     activeTab === 'youtube'
                       ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-xs'
-                      : 'text-slate-600 hover:text-red-600'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-red-600 dark:hover:text-red-400'
                   }`}
                 >
                   <Youtube className={`w-3.5 h-3.5 ${activeTab === 'youtube' ? 'text-white' : 'text-red-500'}`} />
@@ -248,14 +253,24 @@ export default function App() {
                   onClick={() => setActiveTab('historial')}
                   className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     activeTab === 'historial'
-                      ? 'bg-white text-sky-700 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-sky-700 dark:text-sky-300 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <HardDrive className="w-3.5 h-3.5" />
                   <span>Historial ({downloads.length})</span>
                 </button>
               </div>
+
+              {/* Botón Modo Claro / Modo Oscuro en Móvil */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer flex items-center justify-center flex-shrink-0"
+                title={isDarkMode ? 'Cambiar a Modo Claro' : 'Cambiar a Modo Oscuro'}
+                aria-label="Cambiar tema"
+              >
+                {isDarkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-slate-600" />}
+              </button>
 
               {/* Botón Instalar App Móvil */}
               <button
@@ -273,13 +288,13 @@ export default function App() {
 
           {/* Drawer Desplegable Móvil */}
           {isMobileMenuOpen && (
-            <div className="md:hidden pt-4 pb-2 border-t border-slate-100 mt-3 space-y-2 animate-fadeIn">
+            <div className="md:hidden pt-4 pb-2 border-t border-slate-100 dark:border-slate-800 mt-3 space-y-2 animate-fadeIn bg-white dark:bg-[#141414] p-3 rounded-2xl shadow-xl">
               <button
                 onClick={() => { setActiveTab('inicio'); setIsMobileMenuOpen(false); }}
                 className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === 'inicio'
                     ? 'bg-gradient-to-r from-sky-400 to-sky-500 text-white shadow-xs'
-                    : 'text-slate-700 hover:bg-slate-100'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Home className="w-4 h-4" />
@@ -291,7 +306,7 @@ export default function App() {
                 className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === 'youtube'
                     ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-xs'
-                    : 'text-slate-700 hover:bg-slate-100'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <Youtube className="w-4 h-4 text-red-500" />
@@ -303,21 +318,35 @@ export default function App() {
                 className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   activeTab === 'historial'
                     ? 'bg-gradient-to-r from-sky-400 to-sky-500 text-white shadow-xs'
-                    : 'text-slate-700 hover:bg-slate-100'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 <div className="flex items-center space-x-3">
                   <HardDrive className="w-4 h-4" />
                   <span>📂 Historial de Descargas</span>
                 </div>
-                <span className="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-[10px]">
+                <span className="bg-sky-100 dark:bg-slate-700 text-sky-700 dark:text-sky-300 px-2 py-0.5 rounded-full text-[10px]">
                   {downloads.length}
+                </span>
+              </button>
+
+              {/* Botón de Modo Claro / Oscuro en Drawer */}
+              <button
+                onClick={() => { setIsDarkMode(!isDarkMode); setIsMobileMenuOpen(false); }}
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+              >
+                <div className="flex items-center space-x-3">
+                  {isDarkMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-slate-600" />}
+                  <span>{isDarkMode ? '☀️ Cambiar a Modo Claro' : '🌙 Cambiar a Modo Oscuro'}</span>
+                </div>
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                  {isDarkMode ? 'Oscuro' : 'Claro'}
                 </span>
               </button>
 
               <button
                 onClick={() => { handleInstallApp(); setIsMobileMenuOpen(false); }}
-                className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-all"
+                className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
               >
                 <Smartphone className="w-4 h-4 text-sky-500" />
                 <span>📱 Instalar en Pantalla Principal</span>
@@ -364,6 +393,7 @@ export default function App() {
 
       </div>
 
+<<<<<<< HEAD
       {/* Reproductor Persistente Onda */}
       <OndaPlayer 
         track={globalPlayerTrack} 
@@ -373,6 +403,10 @@ export default function App() {
 
       {/* 3. Navegación Inferior (Mobile Solo) */}
       <nav className="md:hidden fixed bottom-0 w-full bg-white dark:bg-[#09090B] border-t border-sky-100 dark:border-slate-800 flex justify-around p-3 pb-safe z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] transition-colors duration-300">
+=======
+      {/* 3. Barra de Navegación Inferior Flotante (100% Mobile Responsive con Safe-Area) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#09090B]/95 backdrop-blur-md border-t border-sky-100 dark:border-slate-800 py-2 px-6 flex justify-around items-center shadow-lg pb-safe transition-colors duration-300">
+>>>>>>> cd1393c4c6a0933d745fef907f0d786a008bded5
         
         {/* Botón Móvil: Inicio */}
         <button
